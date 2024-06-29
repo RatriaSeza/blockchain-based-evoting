@@ -4,5 +4,14 @@
   "main": "index.js",
   "repository": "https://github.com/RatriaSeza/blockchain-based-evoting.git",
   "author": "RatriaSeza <satriareza2002@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn dev",
+    "server": "cd server && ts-node src/server.ts",
+    "dev": "concurrently \"yarn client\" \"yarn server\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "ts-node": "^10.9.2"
+  }
 }
