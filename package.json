@@ -1,0 +1,8 @@
+{
+  "name": "blockchain-based-evoting",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/RatriaSeza/blockchain-based-evoting.git",
+  "author": "RatriaSeza <satriareza2002@gmail.com>",
+  "license": "MIT"
+}
