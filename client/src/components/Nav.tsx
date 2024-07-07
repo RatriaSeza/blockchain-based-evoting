@@ -24,7 +24,7 @@ const NavItem: React.FC<NavItemProps> = ({ isActive, icon: Icon, link, text }) =
 
 const Nav: React.FC<NavProps> = ({ active }) => {
   return (
-    <nav className="fixed bottom-0 w-full ">
+    <nav className="fixed bottom-0 left-0 w-full ">
       <ul className="container w-full flex justify-around items-center py-5 bg-white text-base font-normal rounded-t-[50px]">
         <NavItem isActive={active === 'home'} icon={active === 'home' ? HomeSolid : HomeOutline} link="/" text="Home" />
         <NavItem isActive={active === 'vote'} icon={active === 'vote' ? VoteSolid : VoteOutline} link="/vote" text="Vote" />
