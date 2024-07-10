@@ -12,10 +12,12 @@ export default {
       boxShadow: {
         'card': '15px 15px 30px rgb(25, 25, 25), -15px -15px 30px rgb(60, 60, 60)',
         'card-sm': '10px 10px 20px rgb(25, 25, 25), -10px -10px 20px rgb(60, 60, 60)',
-        'countdown': 'rgb(0,0,0,0.7) 5px 10px 50px ,rgb(0,0,0,0.7) -5px 0px 250px',
+        'dark-card': '0px 2px 2px 0px rgba(54, 54, 54, 0.5) inset'
       },
       backgroundImage: {
-        'countdown': 'linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85))'
+        'countdown': 'linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85))',
+        'votecount': 'linear-gradient(rgb(85, 217, 198) 0%, rgb(181, 217, 130) 100%)',
+        'dark-card': 'linear-gradient(246deg, rgb(23, 23, 23) 0%, rgb(23, 23, 23) 100%)',
       }
     },
   },

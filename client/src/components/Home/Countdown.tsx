@@ -33,7 +33,7 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-between items-center gap-4 px-6 py-4 rounded shadow-countdown bg-countdown">
+    <div className="relative flex justify-between items-center gap-4 px-6 py-4 rounded bg-countdown">
       <div className="flex flex-col justify-between gap-1">
         <h4 className="font-medium grid items-center">Time Remaining</h4>
         <div className="text-black grid grid-cols-11 gap-1">
