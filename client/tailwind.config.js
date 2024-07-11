@@ -17,6 +17,8 @@ export default {
       backgroundImage: {
         'countdown': 'linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85))',
         'votecount': 'linear-gradient(rgb(85, 217, 198) 0%, rgb(181, 217, 130) 100%)',
+        'button': 'linear-gradient(to right, rgb(85, 217, 198) 0%, rgb(181, 217, 130) 100%)',
+        'button-hover': 'linear-gradient(to right, rgb(23, 23, 23) 0%, rgb(23, 23, 23) 100%)',
         'dark-card': 'linear-gradient(246deg, rgb(23, 23, 23) 0%, rgb(23, 23, 23) 100%)',
       }
     },

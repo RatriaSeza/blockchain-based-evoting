@@ -1,4 +1,5 @@
 import Nav from "../components/Nav";
+import Button from "../components/Button";
 import Countdown from "../components/Home/Countdown";
 import LiveCount from "../components/Home/LiveCount";
 
@@ -12,6 +13,9 @@ const Home = () => {
               Hi, <br />
               <span className="text-xl font-bold">Satria Reza Ramadhan</span>
             </p>
+            <div className="flex justify-center mb-6">
+              <Button label="Vote Now!"/>
+            </div>
             <div className="mb-6">
               <Countdown />
             </div>

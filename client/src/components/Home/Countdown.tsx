@@ -37,7 +37,7 @@ const Countdown = () => {
       <div className="flex flex-col justify-between gap-1">
         <h4 className="font-medium grid items-center">Time Remaining</h4>
         <div className="text-black grid grid-cols-11 gap-1">
-          <div className="col-span-3 flex flex-col items-center bg-gray-100 font-semibold px-2 py-2 rounded">
+          <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
             <span className="text-4xl">
               {String(time.hours).padStart(2, "0")}
             </span>
@@ -46,7 +46,7 @@ const Countdown = () => {
           <span className="text-5xl self-center text-center text-gray-100">
             :
           </span>
-          <div className="col-span-3 flex flex-col items-center bg-gray-100 font-semibold px-2 py-2 rounded">
+          <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
             <span className="text-4xl">
               {String(time.minutes).padStart(2, "0")}
             </span>
@@ -55,7 +55,7 @@ const Countdown = () => {
           <span className="text-5xl self-center text-center text-gray-100">
             :
           </span>
-          <div className="col-span-3 flex flex-col items-center bg-gray-100 font-semibold px-2 py-2 rounded">
+          <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
             <span className="text-4xl">
               {String(time.seconds).padStart(2, "0")}
             </span>

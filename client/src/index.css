@@ -3,3 +3,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gradient-border-button {
+  position: relative;
+  display: inline-block;
+  border: 2px solid transparent; /* Ensure the button size doesn't change on hover */
+  border-radius: 4px; /* Match your button's border-radius */
+}
+
+.gradient-border-button:hover::before {
+  content: '';
+  position: absolute;
+  top: -2px; /* Adjust the border size */
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(to right, rgb(85, 217, 198) 0%, rgb(181, 217, 130) 100%);
+  z-index: -1;
+  border-radius: 4px;
+}
