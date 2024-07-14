@@ -14,7 +14,9 @@ const Home = () => {
               <span className="text-xl font-bold">Satria Reza Ramadhan</span>
             </p>
             <div className="flex justify-center mb-6">
-              <Button label="Vote Now!"/>
+              <a href="/vote">
+                <Button label="Vote Now!"/>
+              </a>
             </div>
             <div className="mb-6">
               <Countdown />

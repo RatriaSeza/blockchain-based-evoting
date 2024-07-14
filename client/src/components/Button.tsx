@@ -6,8 +6,10 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({ label }) => {
   return (
-    <button className='text-base cursor-pointer uppercase bg-button text-neutral-900 font-bold px-6 py-3 rounded active:scale-95 transition-all duration-700 hover:bg-button-hover hover:text-white gradient-border-button'>
-      {label}
+    <button className='group p-1 hover:bg-gradient-to-r hover:from-[rgb(85_217_198)] hover:to-[rgb(181_217_130)] rounded transition ease-in-out duration-500'>
+      <span className='text-base cursor-pointer uppercase bg-button text-neutral-900 font-bold px-6 py-3 rounded group-active:scale-95 transition-all duration-700 hover:bg-button-hover group-hover:text-white gradient-border-button'>
+        {label}
+      </span>
     </button>
   );
 };
