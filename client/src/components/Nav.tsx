@@ -2,7 +2,6 @@ import React from 'react';
 import { HomeIcon as HomeOutline, DocumentCheckIcon as VoteOutline, UserIcon as ProfileOutline } from '@heroicons/react/24/outline';
 import { HomeIcon as HomeSolid, DocumentCheckIcon as VoteSolid, UserIcon as ProfileSolid } from '@heroicons/react/24/solid';
 import Ballot from '../assets/img/ballot-box.png';
-import UserIcon from '../assets/img/user-icon.svg'
 
 type NavItemProps = {
   isActive: boolean;
@@ -26,7 +25,7 @@ const NavItem: React.FC<NavItemProps> = ({ isActive, icon: Icon, link, text }) =
 
 const Nav: React.FC<NavProps> = ({ active }) => {
   return (
-    <header className='fixed bottom-2 md:top-2 left-0 w-full z-50'>
+    <header className='fixed bottom-2 md:top-2 left-0 w-full md:h-fit z-50'>
       <nav className="md:container mx-auto">
         <div className='md:flex md:justify-between w-11/12 md:max-w-5xl py-3 md:py-2 md:pl-10 md:pr-2 bg-dark-card rounded-b-lg rounded-t-3xl md:rounded-3xl mx-auto shadow-inner shadow-neutral-800 drop-shadow-light'>
           <div className='md:flex md:justify-between md:gap-5'>
@@ -45,9 +44,13 @@ const Nav: React.FC<NavProps> = ({ active }) => {
               </div>
             </ul>
           </div>
-          <a href='/profile' className='hidden md:flex justify-center items-center bg-neutral-950 rounded-2xl p-1'>
-            Profile
-            <img className='w-[36px] h-[36px] ml-2 rounded-xl' src={UserIcon} alt="User Icon" /> 
+          <a href='/profile' className='relative group hidden md:flex justify-center items-center bg-neutral-950 rounded-2xl p-1 transition-all ease-in-out duration-300'>
+            <span className='font-semibold pr-14 pl-5 z-10'>Profile</span>
+            <span className='absolute right-1 w-[36px] h-[36px] ml-2 bg-gradient-to-br from-[#2b4162] via-[#262626] to-[#12100e] flex justify-center group-hover:justify-end items-center rounded-xl group-hover:w-32 transition-all ease-in'>
+              <span className='w-[36px] h-[36px] flex justify-center items-center'>
+              <i className="fa-solid fa-user "></i>
+              </span>
+            </span>
           </a>
         </div>
       </nav>
