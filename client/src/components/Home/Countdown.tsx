@@ -33,10 +33,10 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-between items-center gap-4 px-6 py-4 rounded bg-countdown">
+    <div className="relative flex md:block justify-between items-center gap-4 px-6 md:px-12 py-4 md:py-8 rounded bg-countdown">
       <div className="flex flex-col justify-between gap-1">
-        <h4 className="font-medium grid items-center">Time Remaining</h4>
-        <div className="text-black grid grid-cols-11 gap-1">
+        <h4 className="font-medium md:font-semibold grid items-center text-neutral-200">Time Remaining</h4>
+        <div className="text-black grid grid-cols-11 gap-1 md:max-w-xs md:mx-auto">
           <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
             <span className="text-4xl">
               {String(time.hours).padStart(2, "0")}
@@ -63,7 +63,7 @@ const Countdown = () => {
           </div>
         </div>
       </div>
-      <span className="text-2xl absolute top-3 right-4 animate-pulse">
+      <span className="text-2xl absolute top-3 md:top-8 right-4 md:right-12 animate-pulse">
         <i className="fa-solid fa-hourglass-end"></i>
       </span>
     </div>

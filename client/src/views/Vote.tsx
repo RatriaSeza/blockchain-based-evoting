@@ -34,11 +34,11 @@ const Vote = () => {
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
           <div>
-            <h2 className="mt-3 mb-6 text-center text-xl font-bold">
+            <h2 className="mt-3 mb-6 text-center text-xl md:text-2xl lg:text-3xl font-bold">
               Calon Ketua BEM FSM Undip
             </h2>
             <div className="mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
                 <CandidateCard candidate={firstCandidateData} />
                 <CandidateCard candidate={secondCandidateData} />
               </div>

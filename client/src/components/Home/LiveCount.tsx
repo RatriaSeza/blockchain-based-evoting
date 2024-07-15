@@ -2,8 +2,8 @@ import BallotIcon from "../../assets/img/ballot-box.png";
 
 const LiveCount = () => {
   return (
-    <div>
-      <div className="bg-votecount px-6 py-4 flex justify-around items-center gap-1 mb-6 rounded">
+    <div className="flex flex-col md:flex-row md:justify-between gap-6">
+      <div className="bg-votecount px-6 md:px-12 py-4 flex md:flex-col justify-around items-center gap-1 rounded">
         <img className="h-24 w-auto" src={BallotIcon} alt="BallotIcon" />
         <div className="flex flex-col justify-center items-center text-black text-center">
           <h2 className="text-5xl font-bold">1.000</h2>
@@ -12,7 +12,7 @@ const LiveCount = () => {
           </h2>
         </div>
       </div>
-      <div className="bg-dark-card px-6 py-4 shadow-dark-card rounded">
+      <div className="grow bg-dark-card px-6 py-4 shadow-dark-card rounded">
         <h4 className="flex items-center text-white font-semibold text-xl mb-3"><span className="text-xs text-red-500 mr-2"><i className="fa-solid fa-circle animate-pulse"></i></span>Live Count</h4>
         <div>
           <div className="flex justify-between items-center gap-2 mb-2">
