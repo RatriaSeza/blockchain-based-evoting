@@ -6,6 +6,7 @@ import LiveCount from "../components/Home/LiveCount";
 const Home = () => {
   return (
     <div className="bg-[#111111] text-white">
+      <Nav active="home" />
       <div className="px-6 py-4">
         <div className="mb-24">
           <div>
@@ -26,7 +27,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <Nav active="home" />
       </div>
     </div>
   );

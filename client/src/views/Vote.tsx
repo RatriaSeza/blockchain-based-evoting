@@ -32,7 +32,7 @@ const Vote = () => {
   return (
     <div className="bg-[#111111] text-white">
       <div className="px-6 py-4">
-        <div className="mb-24">
+        <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
           <div>
             <h2 className="mt-3 mb-6 text-center text-xl font-bold">
               Calon Ketua BEM FSM Undip
