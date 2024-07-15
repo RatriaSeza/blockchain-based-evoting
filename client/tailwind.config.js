@@ -9,6 +9,9 @@ export default {
       'Poppins': ['Poppins', 'sans-serif'],
     },
     extend: {
+      dropShadow: {
+        light: '0 2px 4px rgba(0, 0, 0, 1)',
+      },
       boxShadow: {
         'card': '15px 15px 30px rgb(25, 25, 25), -15px -15px 30px rgb(60, 60, 60)',
         'card-sm': '10px 10px 20px rgb(25, 25, 25), -10px -10px 20px rgb(60, 60, 60)',
