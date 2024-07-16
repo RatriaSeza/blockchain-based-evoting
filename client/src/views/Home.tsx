@@ -5,7 +5,7 @@ import LiveCount from "../components/Home/LiveCount";
 
 const Home = () => {
   return (
-    <div className="min-h-dvh text-white">
+    <div className="min-h-dvh text-neutral-100">
       <Nav active="home" />
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
