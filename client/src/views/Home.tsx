@@ -5,12 +5,12 @@ import LiveCount from "../components/Home/LiveCount";
 
 const Home = () => {
   return (
-    <div className="bg-gradient-to-r from-black to-neutral-950 min-h-dvh text-white">
+    <div className="min-h-dvh text-white">
       <Nav active="home" />
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
           <div className="md:max-w-5xl mx-auto">
-            <p className="text-base leading-4 mb-12">
+            <p className="text-base leading-4 mb mb-8 md:mb-12">
               Hi, <br />
               <span className="text-xl font-bold flex">
                 Satria Reza Ramadhan
@@ -18,8 +18,8 @@ const Home = () => {
               </span>
             </p>
             <div className="text-center mb-6">
-              <h1 className="text-6xl font-semibold mb-10">Lorem, ipsum dolor.</h1>
-              <p className="text-2xl mb-6">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi, rem!</p>
+              <h1 className="text-3xl md:text-6xl font-semibold mb-6 md:mb-10">Lorem, ipsum dolor.</h1>
+              <p className="text-base md:text-2xl mb-6">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi, rem!</p>
               <a href="/vote">
                 <Button label="Vote Now!"/>
               </a>
