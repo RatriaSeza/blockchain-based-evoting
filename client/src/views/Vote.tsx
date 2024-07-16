@@ -30,7 +30,7 @@ const secondCandidateData = {
 const Vote = () => {
 
   return (
-    <div className="bg-[#111111] text-white">
+    <div className="min-h-dvh bg-[#111111] text-white">
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
           <div>
