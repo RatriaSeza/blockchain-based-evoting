@@ -23,7 +23,7 @@ const Profile = () => {
       </div>
       <div className="mt-10 flex flex-col items-center gap-2">
         <h6 className="font-semibold text-lg">Status</h6>
-        <div className="w-fit px-6 py-2 bg-cyan-600 text-base font-medium rounded-xl">{user.status}</div>
+        <div className="w-fit px-6 py-1 bg-cyan-600 text-base font-medium opacity-90 rounded-full">{user.status}</div>
       </div>
       <div className="flex justify-center mt-20">
         <a href="/logout"
