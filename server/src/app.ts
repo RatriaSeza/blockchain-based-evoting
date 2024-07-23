@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { connectDB } from './config/db';
 import UserRoute from './routes/UserRoutes';
+import CandidateRoute from './routes/CandidateRoutes';
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', UserRoute);
+app.use('/api', CandidateRoute);
 
 export default app;

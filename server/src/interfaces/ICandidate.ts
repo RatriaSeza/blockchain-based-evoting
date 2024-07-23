@@ -1,9 +1,9 @@
 import { Document } from 'mongoose';
 
-interface ICandidate extends Document {
+export interface ICandidate extends Document {
+  candidateNumber: number,
   chiefName: string,
   viceName: string,
-  candidateNumber: number,
   chiefMajor: string,
   viceMajor: string,
   chiefClassOf: number,
