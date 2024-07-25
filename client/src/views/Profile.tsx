@@ -13,7 +13,7 @@ const Profile = () => {
   return (
     <div className="min-h-dvh text-neutral-100 md:flex md:items-center md:max-w-5xl mx-auto">
       <Nav active="profile" />
-      <div className="md:grow md:flex md:justify-between md:bg-[#202124]/10 md:backdrop-blur-sm md:h-2/3 md:py-10 md:px-16 md:rounded-3xl md:shadow-dark-card">
+      <div className="md:grow md:flex md:justify-between md:bg-neutral-600/10 md:backdrop-blur-sm md:h-2/3 md:py-10 md:px-16 md:rounded-3xl md:shadow-dark-card">
         <div>
           <div className="relative md:static w-full h-36 bg-gradient-to-br md:bg-none from-[#00b4db] to-[#0083b0] rounded-b-lg">
             <img className="absolute md:static -bottom-12 left-1/2 -translate-x-1/2 md:translate-x-0 w-24 h-24 object-cover bg-neutral-800 ring-[6px] md:ring-0 ring-black md:ring-neutral-300 rounded-full" src={avatar} alt="User Avatar" />

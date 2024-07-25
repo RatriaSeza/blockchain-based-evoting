@@ -30,9 +30,9 @@ const secondCandidateData = {
 const Vote = () => {
 
   return (
-    <div className="min-h-dvh text-white">
+    <div className="min-h-dvh text-white md:flex md:items-center justify-center">
       <div className="px-6 py-4">
-        <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">
+        <div className="mb-24 md:mb-0 md:container md:mx-auto">
           <div>
             <h2 className="mt-3 mb-6 text-center text-xl md:text-2xl lg:text-3xl font-extrabold">
               Calon Ketua BEM FSM Undip
