@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { connectDB } from './config/db';
 import UserRoute from './routes/UserRoutes';
 import CandidateRoute from './routes/CandidateRoutes';
+import MasterRoute from './routes/MasterRoutes';
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.get('/', (req, res) => {
 
 app.use('/api', UserRoute);
 app.use('/api', CandidateRoute);
+app.use('/api', MasterRoute);
 
 export default app;

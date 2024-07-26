@@ -2,10 +2,29 @@ import { useState, useEffect } from "react";
 
 const Countdown = () => {
   const [time, setTime] = useState({
-    hours: 10,
+    hours: 0,
     minutes: 0,
-    seconds: 10,
+    seconds: 0,
   });
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/master/deadline')
+      .then(res => res.json())
+      .then(res => {
+        const currentTime = new Date().getTime();
+        const deadline = new Date(res.value).getTime();
+        const diff = deadline - currentTime;
+
+        if (diff > 0) {
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          setTime({ hours, minutes, seconds });
+        }
+        // const currentTime = new Date().getTime();
+      })
+  })
 
   useEffect(() => {
     const countdown = setInterval(() => {
