@@ -1,33 +1,33 @@
+import { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import CandidateCard from "../components/Vote/CandidateCard";
-import FirstCandidateImage from "../assets/img/candidates/first-candidate.jpg";
+import { Candidate } from "../components/Vote/CandidateType";
+
+import FirstCandidateImage from "../assets/img/candidates/first-candidate-removebg-preview.png";
 import SecondCandidateImage from "../assets/img/candidates/second-candidate.jpg";
-
-const firstCandidateData = {
-  id: 1,
-  chiefName: "Satria Reza Ramadhan",
-  viceName: "Dimas Maulana",
-  candidateImage: FirstCandidateImage,
-  candidateNumber: 1,
-  chiefMajor: "Informatika",
-  viceMajor: "Biologi",
-  chiefClassOf: 2021,
-  viceClassOf: 2021,
-};
-
-const secondCandidateData = {
-  id: 2,
-  chiefName: "Donald Trump",
-  viceName: "Barack Obama",
-  candidateImage: SecondCandidateImage,
-  candidateNumber: 2,
-  chiefMajor: "Kimia",
-  viceMajor: "Fisika",
-  chiefClassOf: 2021,
-  viceClassOf: 2021,
-};
+import { CandidateSkeleton } from "../components/Vote/CandidateSkeleton";
 
 const Vote = () => {
+  const [firstCandidate, setFirstCandidate] = useState<Candidate | null>(null);
+  const [secondCandidate, setsecondCandidate] = useState<Candidate | null>(
+    null
+  );
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/candidates/1")
+      .then((res) => res.json())
+      .then((res) => {
+        setFirstCandidate(res);
+      });
+
+    fetch("http://localhost:5000/api/candidates/2")
+      .then((res) => res.json())
+      .then((res) => {
+        setsecondCandidate(res);
+      });
+  });
+
+  console.log(firstCandidate);
 
   return (
     <div className="min-h-dvh text-white md:flex md:items-center justify-center">
@@ -39,8 +39,36 @@ const Vote = () => {
             </h2>
             <div className="mb-6">
               <div className="md:max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                <CandidateCard candidate={firstCandidateData} />
-                <CandidateCard candidate={secondCandidateData} />
+                {firstCandidate ? (
+                  <CandidateCard
+                    _id={firstCandidate._id}
+                    candidateImage={FirstCandidateImage}
+                    chiefName={firstCandidate.chiefName}
+                    viceName={firstCandidate.viceName}
+                    candidateNumber={firstCandidate.candidateNumber}
+                    chiefMajor={firstCandidate.chiefMajor}
+                    viceMajor={firstCandidate.viceMajor}
+                    chiefClassOf={firstCandidate.chiefClassOf}
+                    viceClassOf={firstCandidate.viceClassOf}
+                  />
+                ) : (
+                  <CandidateSkeleton />
+                )}
+                {secondCandidate ? (
+                  <CandidateCard
+                    _id={secondCandidate._id}
+                    candidateImage={SecondCandidateImage}
+                    chiefName={secondCandidate.chiefName}
+                    viceName={secondCandidate.viceName}
+                    candidateNumber={secondCandidate.candidateNumber}
+                    chiefMajor={secondCandidate.chiefMajor}
+                    viceMajor={secondCandidate.viceMajor}
+                    chiefClassOf={secondCandidate.chiefClassOf}
+                    viceClassOf={secondCandidate.viceClassOf}
+                  />
+                ) : (
+                  <CandidateSkeleton />
+                )}
               </div>
             </div>
           </div>
