@@ -45,30 +45,26 @@
       var(--color) var(--gap)
     );
   background-size: var(--gap) var(--gap);
+  background-position: 0 0;
+
+  /* Define animation */
+  animation: moveBackground 200s linear infinite;
 }
 
 @media screen and (min-width: 640px) {
   .profile-background {
-    width: 100%;
-    height: 100%;
-
-    background: #0b0b0b;
     --gap: 10em;
     --line: 1px;
     --color: rgba(255, 255, 255, 0.2);
+  }
+}
 
-    background-image: linear-gradient(
-        -90deg,
-        transparent calc(var(--gap) - var(--line)),
-        var(--color) calc(var(--gap) - var(--line) + 1px),
-        var(--color) var(--gap)
-      ),
-      linear-gradient(
-        0deg,
-        transparent calc(var(--gap) - var(--line)),
-        var(--color) calc(var(--gap) - var(--line) + 1px),
-        var(--color) var(--gap)
-      );
-    background-size: var(--gap) var(--gap);
+/* Keyframes for background movement */
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
   }
 }
