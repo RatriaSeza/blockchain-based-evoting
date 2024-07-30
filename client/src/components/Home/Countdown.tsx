@@ -22,7 +22,6 @@ const Countdown = () => {
 
           setTime({ hours, minutes, seconds });
         }
-        // const currentTime = new Date().getTime();
       })
   })
 

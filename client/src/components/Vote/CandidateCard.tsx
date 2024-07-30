@@ -4,7 +4,7 @@ import { Candidate } from './CandidateType';
 
 const CandidateCard: React.FC<Candidate> = ({ chiefName, viceName, candidateImage, candidateNumber, chiefMajor, viceMajor, chiefClassOf, viceClassOf }) => {
   return (
-    <div className="bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-96">
+    <div className="bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-full md:w-96">
       <div className='bg-neutral-900 rounded-t-xl'>
         <img className='w-full h-60 object-cover rounded-t-xl' src={candidateImage} alt={`Candidates ${candidateNumber} image`} />
       </div>
