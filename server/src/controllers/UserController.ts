@@ -13,10 +13,16 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password, role } = req.body;
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      res.status(400).json({ message: "Username already exists" });
+      return;
+    }
+    
     const user = new User({
       username,
       password,
-      role
+      role,
     });
     await user.save();
     res.status(201).json(user);
