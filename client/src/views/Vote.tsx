@@ -9,9 +9,7 @@ import { CandidateSkeleton } from "../components/Vote/CandidateSkeleton";
 
 const Vote = () => {
   const [firstCandidate, setFirstCandidate] = useState<Candidate | null>(null);
-  const [secondCandidate, setsecondCandidate] = useState<Candidate | null>(
-    null
-  );
+  const [secondCandidate, setSecondCandidate] = useState<Candidate | null>(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/candidates/1`)
@@ -23,7 +21,7 @@ const Vote = () => {
     fetch(`${import.meta.env.VITE_API_URL}/api/candidates/2`)
       .then((res) => res.json())
       .then((res) => {
-        setsecondCandidate(res);
+        setSecondCandidate(res);
       });
   });
 

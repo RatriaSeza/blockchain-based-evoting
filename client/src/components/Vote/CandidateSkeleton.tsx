@@ -1,6 +1,6 @@
 export const CandidateSkeleton = () => {
   return (
-    <div className="bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-96">
+    <div className="relative bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-full md:w-96 shiny overflow-hidden">
       <div className='bg-neutral-900 rounded-t-xl'>
         <div className="flex justify-center items-center w-full h-60 object-cover rounded-t-xl bg-neutral-900">
           <svg className="w-10 h-10 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
