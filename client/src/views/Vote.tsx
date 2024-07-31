@@ -14,13 +14,13 @@ const Vote = () => {
   );
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/candidates/1")
+    fetch(`${import.meta.env.VITE_API_URL}/api/candidates/1`)
       .then((res) => res.json())
       .then((res) => {
         setFirstCandidate(res);
       });
 
-    fetch("http://localhost:5000/api/candidates/2")
+    fetch(`${import.meta.env.VITE_API_URL}/api/candidates/2`)
       .then((res) => res.json())
       .then((res) => {
         setsecondCandidate(res);

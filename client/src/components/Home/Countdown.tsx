@@ -8,7 +8,7 @@ const Countdown = () => {
   });
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/master/deadline')
+    fetch(`${import.meta.env.VITE_API_URL}/api/master/deadline`)
       .then(res => res.json())
       .then(res => {
         const currentTime = new Date().getTime();
