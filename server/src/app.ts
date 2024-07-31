@@ -5,6 +5,7 @@ import { connectDB } from './config/db';
 import UserRoute from './routes/UserRoutes';
 import CandidateRoute from './routes/CandidateRoutes';
 import MasterRoute from './routes/MasterRoutes';
+import LoginRoute from './routes/AuthRoutes';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
   res.send('Blockchain Based E-Voting API');
 });
 
+app.use('/api', LoginRoute)
 app.use('/api', UserRoute);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
