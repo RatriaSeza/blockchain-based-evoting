@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Vote from "./pages/Vote"
 import Profile from "./pages/Profile";
+import { NotFound } from "./pages/NotFound";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/Login" element={<Login/>} />
         <Route path="/Vote" element={<Vote/>} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )
