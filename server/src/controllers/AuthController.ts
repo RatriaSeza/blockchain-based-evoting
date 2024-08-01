@@ -34,3 +34,8 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
     console.error(error);
   }
 }
+
+export const Logout = async (req: any, res: any): Promise<void> => {
+  res.clearCookie('token');
+  res.status(200).json({ message: "Logout successful" });
+}
