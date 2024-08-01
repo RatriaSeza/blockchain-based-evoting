@@ -1,6 +1,7 @@
 import express from "express";
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db';
 import UserRoute from './routes/UserRoutes';
 import CandidateRoute from './routes/CandidateRoutes';
@@ -20,12 +21,9 @@ app.use(
 );
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
-app.get('/', (req, res) => {
-  res.send('Blockchain Based E-Voting API');
-});
-
-app.use('/api', LoginRoute)
+app.use('/', LoginRoute);
 app.use('/api', UserRoute);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);

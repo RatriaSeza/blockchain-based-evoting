@@ -5,6 +5,6 @@ dotenv.config();
 
 export const createSecretToken = (id: string) => {
   return jwt.sign({ id }, process.env.SECRET_TOKEN as string, {
-    expiresIn: "1h",
+    expiresIn: "3d",
   })
 }
