@@ -23,7 +23,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/', LoginRoute);
+app.use('/api/auth', LoginRoute);
 app.use('/api', UserRoute);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
