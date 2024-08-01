@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom"
-import Home from "./views/Home"
-import Login from "./views/Login"
-import Vote from "./views/Vote"
-import Profile from "./views/Profile";
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Vote from "./pages/Vote"
+import Profile from "./pages/Profile";
 
 function App() {
 
