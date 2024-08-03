@@ -1,40 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { ToastError, ToastSuccess, ToastWarning } from "../components/Toast";
 
-// BUG: login still not working
 const Login = () => {
-  const navigate = useNavigate();
-  const [inputValue, setInputValue] = useState({
-    nim: "",
-    password: "",
-  });
-
-  const { nim, password } = inputValue;
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
-  };
-
-  const handleError = (message: string) => {
-    toast.error(message, {
-      position: "bottom-right",
-    });
-  };
-
-  const handleSucces = (message: string) => {
-    toast.success(message, {
-      position: "bottom-right",
-    });
-  };
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -42,34 +18,44 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
-      );
-      console.log(data);
-      const { token, message } = data;
 
-      if (token) {
-        handleSucces(message);
+    if (!username || !password) {
+      return ToastWarning("Please fill all the fields.");
+    } else if (password.length < 8) {
+      return ToastWarning("Password must be at least 8 characters.");
+    }
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+        username,
+        password,
+      }, { 
+        withCredentials: true 
+      });
+      
+      const { status, data: { message } } = response;
+
+      if (status == 200) {
+        ToastSuccess(message);
         setTimeout(() => {
           navigate("/");
         }, 1000);
       } else {
-        handleError(message);
+        ToastError(message);
       }
     } catch (error: unknown) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          ToastError(error.response.data.message || "An error occurred. Please try again.");
+        } else if (error.request) {
+          ToastWarning("No response from server. Please try again later.");
+        } else {
+          ToastWarning("An error occurred. Please try again.");
+        }
+      } else {
+        ToastWarning("An unexpected error occurred. Please try again.");
+      }
     }
-
-    setInputValue({
-      ...inputValue,
-      nim: "",
-      password: "",
-    });
   };
 
   return (
@@ -86,10 +72,10 @@ const Login = () => {
                 id="nim"
                 label="NIM"
                 name="nim"
-                value={nim}
+                value={username}
                 type="text"
                 placeholder="240xxxxxxxxxxx"
-                onChange={handleOnChange}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <Input
                 id="password"
@@ -105,7 +91,7 @@ const Login = () => {
                     <i className="fa-solid fa-eye"></i>
                   )
                 }
-                onChange={handleOnChange}
+                onChange={(e) => setPassword(e.target.value)}
                 onClickIcon={handlePasswordVisibility}
               />
             </div>
@@ -114,7 +100,9 @@ const Login = () => {
               <Button label="Login" customClass="px-8 md:px-10 py-2 md:py-3" />
             </div>
           </form>
-          <ToastContainer />
+          <ToastContainer  
+            theme="dark"
+          />
         </div>
       </div>
     </div>
