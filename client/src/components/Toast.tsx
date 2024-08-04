@@ -1,19 +1,44 @@
+import React from "react";
 import { toast } from "react-toastify";
 
-export const ToastError = (message: string) => {
+type ToastProps = {
+  message: string;
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
+  duration?: number;
+};
+
+export const ToastError: React.FC<ToastProps> = ({ message, position = "bottom-right", duration = 5000}) => {
   toast.error(message, {
-    position: "bottom-right",
+    position: position,
+    autoClose: duration
   });
+
+  return null
 };
 
-export const ToastSuccess = (message: string) => {
+export const ToastSuccess: React.FC<ToastProps> = ({ message, position = "bottom-right", duration = 5000}) => {
   toast.success(message, {
-    position: "bottom-right",
+    position: position,
+    autoClose: duration
   });
+
+  return null;
 };
 
-export const ToastWarning = (message: string) => {
+export const ToastWarning: React.FC<ToastProps> = ({ message, position = "bottom-right", duration = 5000 }) => {
   toast.warning(message, {
-    position: "bottom-right",
+    position: position,
+    autoClose: duration
   });
+
+  return null;
+}
+
+export const ToastDefault: React.FC<ToastProps> = ({ message, position = "bottom-right", duration = 5000 }) => {
+  toast(message, {
+    position: position,
+    autoClose: duration
+  });
+
+  return null;
 }
