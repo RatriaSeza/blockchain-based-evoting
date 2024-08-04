@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import Input from "../components/Input";
@@ -10,6 +11,9 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [, setCookie] = useCookies(["token"], {
+    doNotParse: true,
+  });
   const navigate = useNavigate();
 
   const handlePasswordVisibility = () => {
@@ -20,9 +24,9 @@ const Login = () => {
     e.preventDefault();
 
     if (!username || !password) {
-      return ToastWarning("Please fill all the fields.");
+      return ToastWarning({ message: "Please fill all the fields." });
     } else if (password.length < 8) {
-      return ToastWarning("Password must be at least 8 characters.");
+      return ToastWarning({ message: "Password must be at least 8 characters." });
     }
 
     try {
@@ -33,27 +37,28 @@ const Login = () => {
         withCredentials: true 
       });
       
-      const { status, data: { message } } = response;
-
+      const { status, data: { message, token } } = response;
+      
       if (status == 200) {
-        ToastSuccess(message);
+        setCookie("token", token, { path: '/' });
+        ToastSuccess({ message, duration: 1500 });
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 2000);
       } else {
-        ToastError(message);
+        ToastError({ message });
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          ToastError(error.response.data.message || "An error occurred. Please try again.");
+          ToastError({ message:error.response.data.message || "An error occurred. Please try again."});
         } else if (error.request) {
-          ToastWarning("No response from server. Please try again later.");
+          ToastWarning({ message: "No response from server. Please try again later." });
         } else {
-          ToastWarning("An error occurred. Please try again.");
+          ToastWarning({ message: "An error occurred. Please try again." });
         }
       } else {
-        ToastWarning("An unexpected error occurred. Please try again.");
+        ToastWarning({ message: "An unexpected error occurred. Please try again." });
       }
     }
   };

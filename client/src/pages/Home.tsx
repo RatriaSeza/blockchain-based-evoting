@@ -1,9 +1,54 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import { ToastDefault, ToastError } from "../components/Toast";
+
 import Nav from "../components/Nav";
 import Button from "../components/Button";
 import Countdown from "../components/Home/Countdown";
 import LiveCount from "../components/Home/LiveCount";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies(["token"]);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      if (!cookies.token) {
+        console.log('No token found, redirecting to login...');
+        ToastError({ message: "You need to login first.", position: "top-right", duration: 1500 });
+
+        setTimeout(() => navigate("/login"), 2000);
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+        },{ 
+          withCredentials: true 
+        });
+        
+        const { status, data: { user } } = response;
+        setUsername(user.username);
+  
+        if (status) {
+          ToastDefault({ message: `Hello, ${user.username}!` });
+        } else {
+          removeCookie("token", { path: '/' });
+          navigate("/login");
+        }
+      } catch (error: unknown) {
+        removeCookie("token", { path: '/' });
+        navigate("/login");
+      }
+    };
+    
+    verifyToken();
+  },  [cookies, navigate, removeCookie]);
+
   return (
     <div className="min-h-dvh text-neutral-100">
       <Nav active="home" />
@@ -13,7 +58,7 @@ const Home = () => {
             <p className="text-base leading-4 mb-8">
               Hi, <br />
               <span className="text-xl font-bold flex">
-                Satria Reza Ramadhan
+                {username}
                 <img className="w-6 h-6 ml-2" alt="GIF" src="https://camo.githubusercontent.com/0c732027af8a28d138e3698181f7be7c9b97d443b4beb9c7ce8ec4cffc6b4767/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"/>
               </span>
             </p>
@@ -33,6 +78,9 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <ToastContainer  
+        theme="dark"
+      />
     </div>
   );
 };
