@@ -13,7 +13,6 @@ const Countdown = () => {
     const getDeadline = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/master/deadline`);
-        
         const currentTime = new Date().getTime();
         const deadline = new Date(response.data.value).getTime();
         const diff = deadline - currentTime;
@@ -25,13 +24,15 @@ const Countdown = () => {
   
           setTime({ hours, minutes, seconds });
         }
+
+        return;
       } catch (error: unknown) {
         console.error(error);
       }
     }
 
-    getDeadline();    
-  })
+    getDeadline();
+  }, []);
 
   useEffect(() => {
     const countdown = setInterval(() => {

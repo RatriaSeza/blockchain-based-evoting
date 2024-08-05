@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import Input from "../components/Input";
@@ -11,9 +10,6 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [, setCookie] = useCookies(["token"], {
-    doNotParse: true,
-  });
   const navigate = useNavigate();
 
   const handlePasswordVisibility = () => {
@@ -40,7 +36,9 @@ const Login = () => {
       const { status, data: { message, token } } = response;
       
       if (status == 200) {
-        setCookie("token", token, { path: '/' });
+        // setCookie("token", token, { path: '/' });
+        localStorage.setItem("token", token);
+
         ToastSuccess({ message, duration: 1500 });
         setTimeout(() => {
           navigate("/");

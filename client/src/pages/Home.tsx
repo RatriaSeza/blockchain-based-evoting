@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
-import { ToastDefault, ToastError } from "../components/Toast";
+import { ToastError } from "../components/Toast";
 
 import Nav from "../components/Nav";
 import Button from "../components/Button";
@@ -12,12 +12,12 @@ import LiveCount from "../components/Home/LiveCount";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(["token"]);
+  const [cookies, ,removeCookie] = useCookies(["token"]);
   const [username, setUsername] = useState("");
 
   useEffect(() => {
     const verifyToken = async () => {
-      if (!cookies.token) {
+      if (!localStorage.getItem("token")) {
         console.log('No token found, redirecting to login...');
         ToastError({ message: "You need to login first.", position: "top-right", duration: 1500 });
 
@@ -31,17 +31,20 @@ const Home = () => {
           withCredentials: true 
         });
         
-        const { status, data: { user } } = response;
+        const { status, data: { user, message } } = response;
+        console.log(message);
+        
         setUsername(user.username);
   
-        if (status) {
-          ToastDefault({ message: `Hello, ${user.username}!` });
-        } else {
-          removeCookie("token", { path: '/' });
-          navigate("/login");
+        if (!status) {
+          localStorage.removeItem("token");
+          ToastError({ message: "You need to login first.", position: "top-right", duration: 1500 });
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
         }
       } catch (error: unknown) {
-        removeCookie("token", { path: '/' });
+        console.error(error);
         navigate("/login");
       }
     };

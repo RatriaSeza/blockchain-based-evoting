@@ -1,5 +1,9 @@
+import axios from "axios";
 import Nav from "../components/Nav";
 import avatar from "../assets/img/stylish-boy.png";
+// import { useCookies } from "react-cookie"; 
+import { useNavigate } from "react-router-dom";
+import { ToastError, ToastSuccess } from "../components/Toast";
 
 const user = {
   name: "Satria Reza Ramadhan",
@@ -10,6 +14,29 @@ const user = {
 }
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+      },{ 
+        withCredentials: true 
+      });
+      
+      const { status, data: { message } } = response;
+
+      if (status == 200) {
+        localStorage.removeItem("token");
+        ToastSuccess({ message, duration: 1500 });
+        navigate("/login");
+      } else {
+        ToastError({ message: "An error occurred. Please try again." });
+      }
+    } catch (error: unknown) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="min-h-dvh text-neutral-100 md:flex md:items-center md:max-w-5xl mx-auto">
       <Nav active="profile" />
@@ -30,10 +57,10 @@ const Profile = () => {
             <div className="w-fit px-6 md:px-10 py-1 md:py-3 bg-cyan-600 text-base font-medium opacity-90 rounded-full">{user.status}</div>
           </div>
           <div className="flex justify-center mt-20 md:mt-0">
-            <a href="/logout"
+            <button onClick={handleLogout}
               className="select-none rounded-lg bg-red-600 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
               <span><i className="fa-solid fa-arrow-right-from-bracket mr-2"></i></span>Logout
-            </a>
+            </button>
           </div>
         </div>
       </div>
