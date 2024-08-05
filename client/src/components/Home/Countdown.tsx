@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { CountdownSkeleton } from "./CountdownSkeleton";
 
 const Countdown = () => {
@@ -8,22 +9,28 @@ const Countdown = () => {
     seconds: 0,
   });
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/master/deadline`)
-      .then(res => res.json())
-      .then(res => {
+  useEffect(() =>  {
+    const getDeadline = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/master/deadline`);
+        
         const currentTime = new Date().getTime();
-        const deadline = new Date(res.value).getTime();
+        const deadline = new Date(response.data.value).getTime();
         const diff = deadline - currentTime;
-
+  
         if (diff > 0) {
           const hours = Math.floor(diff / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
+  
           setTime({ hours, minutes, seconds });
         }
-      })
+      } catch (error: unknown) {
+        console.error(error);
+      }
+    }
+
+    getDeadline();    
   })
 
   useEffect(() => {
