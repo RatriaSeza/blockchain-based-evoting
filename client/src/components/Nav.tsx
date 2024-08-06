@@ -2,6 +2,9 @@ import React from 'react';
 import { HomeIcon as HomeOutline, DocumentCheckIcon as VoteOutline, UserIcon as ProfileOutline } from '@heroicons/react/24/outline';
 import { HomeIcon as HomeSolid, DocumentCheckIcon as VoteSolid, UserIcon as ProfileSolid } from '@heroicons/react/24/solid';
 import Ballot from '../assets/img/ballot-box.png';
+import { ToastError, ToastSuccess } from './Toast';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 type NavItemProps = {
   isActive: boolean;
@@ -12,6 +15,7 @@ type NavItemProps = {
 
 type NavProps = {
   active: string;
+  isLogin?: boolean;
 }
 
 const NavItem: React.FC<NavItemProps> = ({ isActive, icon: Icon, link, text }) => {
@@ -23,7 +27,32 @@ const NavItem: React.FC<NavItemProps> = ({ isActive, icon: Icon, link, text }) =
   )
 };
 
-const Nav: React.FC<NavProps> = ({ active }) => {
+const Nav: React.FC<NavProps> = ({ active, isLogin }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+      },{ 
+        withCredentials: true 
+      });
+      
+      const { status, data: { message } } = response;
+
+      if (status == 200) {
+        localStorage.removeItem("token");
+        ToastSuccess({ message, duration: 1400 });
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else {
+        ToastError({ message: "An error occurred. Please try again." });
+      }
+    } catch (error: unknown) {
+      console.log(error);
+    }
+  }
+
   return (
     <header className='fixed bottom-2 md:top-2 left-0 w-full md:h-fit z-50'>
       <nav className="md:container mx-auto">
@@ -43,6 +72,13 @@ const Nav: React.FC<NavProps> = ({ active }) => {
                 <NavItem isActive={active === 'profile'} icon={active === 'profile' ? ProfileSolid : ProfileOutline} link="/profile" text="Profile" />
               </div>
             </ul>
+          </div>
+          <div className='hidden md:flex md:items-center ml-auto mr-6 text-sm hover:text-neutral-300'>
+            {isLogin ? (
+              <button onClick={handleLogout}>Logout</button>
+            ) : (
+              <a href='/login' className=''>Login</a>
+            )}
           </div>
           <a href='/profile' className='relative group hidden md:flex justify-center items-center bg-neutral-950 rounded-2xl p-1 transition-all ease-in-out duration-700'>
             <span className='font-semibold text-neutral-200 pr-14 pl-5 group-hover:z-10'>Profile</span>

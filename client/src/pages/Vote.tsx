@@ -16,6 +16,7 @@ const Vote = () => {
   const [secondCandidate, setSecondCandidate] = useState<Candidate | null>(null);
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -23,7 +24,7 @@ const Vote = () => {
         console.log('No token found, redirecting to login...');
         ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
 
-        setTimeout(() => navigate("/login"), 2000);
+        navigate("/login");
         return;
       }
 
@@ -34,8 +35,9 @@ const Vote = () => {
         });
         
         const { status, data: { user } } = response;
-        console.log(user);
         
+        if (user) setIsLogin(true);
+
         if (!status) {
           localStorage.removeItem("token");
           ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
@@ -44,7 +46,6 @@ const Vote = () => {
           }, 2000);
         }
       } catch (error: unknown) {
-        console.error(error);
         navigate("/login");
       }
     };
@@ -110,7 +111,7 @@ const Vote = () => {
             </div>
           </div>
         </div>
-        <Nav active="vote" />
+        <Nav active="vote" isLogin={isLogin} />
       </div>
     </div>
   );

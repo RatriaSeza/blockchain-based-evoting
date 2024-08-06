@@ -5,7 +5,7 @@ import avatar from "../assets/img/stylish-boy.png";
 import { useNavigate } from "react-router-dom";
 import { ToastError, ToastSuccess } from "../components/Toast";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const user = {
   name: "Satria Reza Ramadhan",
@@ -18,6 +18,7 @@ const user = {
 const Profile = () => {
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -36,7 +37,8 @@ const Profile = () => {
         });
         
         const { status, data: { user } } = response;
-        console.log(user);
+
+        if (user) setIsLogin(true);
         
         if (!status) {
           localStorage.removeItem("token");
@@ -46,7 +48,6 @@ const Profile = () => {
           }, 2000);
         }
       } catch (error: unknown) {
-        console.error(error);
         navigate("/login");
       }
     };
@@ -77,7 +78,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-dvh text-neutral-100 md:flex md:items-center md:max-w-5xl mx-auto">
-      <Nav active="profile" />
+      <Nav active="profile" isLogin={isLogin} />
       <div className="md:grow md:flex md:justify-between md:bg-neutral-600/10 md:backdrop-blur-sm md:h-2/3 md:py-10 md:px-16 md:rounded-3xl md:shadow-dark-card">
         <div>
           <div className="relative md:static w-full h-36 bg-gradient-to-br md:bg-none from-[#00b4db] to-[#0083b0] rounded-b-lg">
