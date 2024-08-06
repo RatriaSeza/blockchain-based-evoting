@@ -19,7 +19,7 @@ const Home = () => {
     const verifyToken = async () => {
       if (!localStorage.getItem("token")) {
         console.log('No token found, redirecting to login...');
-        ToastError({ message: "You need to login first.", position: "top-right", duration: 1500 });
+        ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
 
         setTimeout(() => navigate("/login"), 2000);
         return;
@@ -38,7 +38,7 @@ const Home = () => {
   
         if (!status) {
           localStorage.removeItem("token");
-          ToastError({ message: "You need to login first.", position: "top-right", duration: 1500 });
+          ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
           setTimeout(() => {
             navigate("/login");
           }, 2000);

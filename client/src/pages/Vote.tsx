@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import Nav from "../components/Nav";
 import CandidateCard from "../components/Vote/CandidateCard";
 import { Candidate } from "../components/Vote/CandidateType";
@@ -6,10 +9,48 @@ import { Candidate } from "../components/Vote/CandidateType";
 import FirstCandidateImage from "../assets/img/candidates/first-candidate-removebg-preview.png";
 import SecondCandidateImage from "../assets/img/candidates/second-candidate.jpg";
 import { CandidateSkeleton } from "../components/Vote/CandidateSkeleton";
+import { ToastError } from "../components/Toast";
 
 const Vote = () => {
   const [firstCandidate, setFirstCandidate] = useState<Candidate | null>(null);
   const [secondCandidate, setSecondCandidate] = useState<Candidate | null>(null);
+  const navigate = useNavigate();
+  const [cookies, ,removeCookie] = useCookies(["token"]);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      if (!localStorage.getItem("token")) {
+        console.log('No token found, redirecting to login...');
+        ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+
+        setTimeout(() => navigate("/login"), 2000);
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+        },{ 
+          withCredentials: true 
+        });
+        
+        const { status, data: { user } } = response;
+        console.log(user);
+        
+        if (!status) {
+          localStorage.removeItem("token");
+          ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
+      } catch (error: unknown) {
+        console.error(error);
+        navigate("/login");
+      }
+    };
+    
+    verifyToken();
+  },  [cookies, navigate, removeCookie]);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/candidates/1`)
@@ -24,8 +65,6 @@ const Vote = () => {
         setSecondCandidate(res);
       });
   });
-
-  console.log(firstCandidate);
 
   return (
     <div className="min-h-dvh text-white md:flex md:items-center justify-center">

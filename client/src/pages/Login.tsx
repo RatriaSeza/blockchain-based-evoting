@@ -39,7 +39,7 @@ const Login = () => {
         // setCookie("token", token, { path: '/' });
         localStorage.setItem("token", token);
 
-        ToastSuccess({ message, duration: 1500 });
+        ToastSuccess({ message, duration: 1400 });
         setTimeout(() => {
           navigate("/");
         }, 2000);

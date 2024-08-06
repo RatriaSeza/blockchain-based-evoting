@@ -4,6 +4,8 @@ import avatar from "../assets/img/stylish-boy.png";
 // import { useCookies } from "react-cookie"; 
 import { useNavigate } from "react-router-dom";
 import { ToastError, ToastSuccess } from "../components/Toast";
+import { useCookies } from "react-cookie";
+import { useEffect } from "react";
 
 const user = {
   name: "Satria Reza Ramadhan",
@@ -15,6 +17,42 @@ const user = {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [cookies, ,removeCookie] = useCookies(["token"]);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      if (!localStorage.getItem("token")) {
+        console.log('No token found, redirecting to login...');
+        ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+        navigate("/login");
+
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+        },{ 
+          withCredentials: true 
+        });
+        
+        const { status, data: { user } } = response;
+        console.log(user);
+        
+        if (!status) {
+          localStorage.removeItem("token");
+          ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
+      } catch (error: unknown) {
+        console.error(error);
+        navigate("/login");
+      }
+    };
+    
+    verifyToken();
+  },  [cookies, navigate, removeCookie]);
 
   const handleLogout = async () => {
     try {
@@ -27,7 +65,7 @@ const Profile = () => {
 
       if (status == 200) {
         localStorage.removeItem("token");
-        ToastSuccess({ message, duration: 1500 });
+        ToastSuccess({ message, duration: 1400 });
         navigate("/login");
       } else {
         ToastError({ message: "An error occurred. Please try again." });
