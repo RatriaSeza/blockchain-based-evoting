@@ -32,6 +32,10 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
     next();
   } catch (error) {
     console.error(error);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+
     res.status(500).json({ message: "An error occurred during login. Please try again later." });
   }
 }
