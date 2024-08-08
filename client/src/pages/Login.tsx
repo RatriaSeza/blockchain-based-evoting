@@ -100,7 +100,7 @@ const Login = () => {
             </div>
 
             <div className="flex justify-center mt-4 md:mt-8">
-              <Button label="Login" customClass="px-8 md:px-10 py-2 md:py-3" />
+              <Button type="submit" label="Login" customClass="px-8 md:px-10 py-2 md:py-3" />
             </div>
           </form>
           <ToastContainer  
