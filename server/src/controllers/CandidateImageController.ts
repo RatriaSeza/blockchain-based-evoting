@@ -11,10 +11,10 @@ export const getImage = async (req: Request, res: Response, next: NextFunction):
       return;
     }
 
-    res.status(200).json({ 
-      status: "success", 
-      image: candidateImage?.image,
-    });
+    const imageBuffer = Buffer.from(candidateImage.image, "base64");
+    res.setHeader("Content-Type", "image/jpeg");
+    res.setHeader("Content-Disposition", `inline; filename="candidate_${candidateNumber}.jpg"`);
+    res.status(200).send(imageBuffer);
   }
   catch (error: any) {
     res.status(500).json({ error: error.message });

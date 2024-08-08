@@ -3,7 +3,6 @@ import Button from '../Button'
 import { CandidateType } from './CandidateType';
 
 const CandidateCard: React.FC<CandidateType> = ({ 
-  candidateImage, 
   candidateNumber, 
   chiefName,
   chiefMajor,
@@ -12,10 +11,11 @@ const CandidateCard: React.FC<CandidateType> = ({
   viceMajor,
   viceClassOf
   }) => {  
+
   return (
     <div className="bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-full md:w-96">
       <div className='bg-neutral-900 rounded-t-xl'>
-        <img className='w-full h-60 object-cover rounded-t-xl' src={candidateImage} alt={`Candidates ${candidateNumber} image`} />
+        <img className='w-full h-60 object-cover rounded-t-xl' src={`${import.meta.env.VITE_API_URL}/api/candidate/image/${candidateNumber}`} alt={`Candidates ${candidateNumber} image`} />
       </div>
       <div className='px-4 py-4 rounded-t-xl'>
         <div className='mb-2'>
