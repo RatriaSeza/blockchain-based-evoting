@@ -4,16 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Nav from "../components/Nav";
 import CandidateCard from "../components/Vote/CandidateCard";
-import { Candidate } from "../components/Vote/CandidateType";
 
-import FirstCandidateImage from "../assets/img/candidates/first-candidate-removebg-preview.png";
-import SecondCandidateImage from "../assets/img/candidates/second-candidate.jpg";
 import { CandidateSkeleton } from "../components/Vote/CandidateSkeleton";
 import { ToastError } from "../components/Toast";
 
 const Vote = () => {
-  const [firstCandidate, setFirstCandidate] = useState<Candidate | null>(null);
-  const [secondCandidate, setSecondCandidate] = useState<Candidate | null>(null);
+  const [candidates, setCandidates] = useState<[]>([]);
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
   const [isLogin, setIsLogin] = useState(false);
@@ -54,18 +50,19 @@ const Vote = () => {
   },  [cookies, navigate, removeCookie]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/candidates/1`)
-      .then((res) => res.json())
-      .then((res) => {
-        setFirstCandidate(res);
-      });
-
-    fetch(`${import.meta.env.VITE_API_URL}/api/candidates/2`)
-      .then((res) => res.json())
-      .then((res) => {
-        setSecondCandidate(res);
-      });
-  });
+    const getCandidates = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
+        
+        setCandidates(response.data);
+        
+      } catch (error: unknown) {
+        console.error(error);
+      }
+    }
+    
+    getCandidates();    
+  }, []);
 
   return (
     <div className="min-h-dvh text-white md:flex md:items-center justify-center">
@@ -77,36 +74,11 @@ const Vote = () => {
             </h2>
             <div className="mb-6">
               <div className="md:max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                {firstCandidate ? (
-                  <CandidateCard
-                    _id={firstCandidate._id}
-                    candidateImage={FirstCandidateImage}
-                    chiefName={firstCandidate.chiefName}
-                    viceName={firstCandidate.viceName}
-                    candidateNumber={firstCandidate.candidateNumber}
-                    chiefMajor={firstCandidate.chiefMajor}
-                    viceMajor={firstCandidate.viceMajor}
-                    chiefClassOf={firstCandidate.chiefClassOf}
-                    viceClassOf={firstCandidate.viceClassOf}
-                  />
-                ) : (
-                  <CandidateSkeleton />
-                )}
-                {secondCandidate ? (
-                  <CandidateCard
-                    _id={secondCandidate._id}
-                    candidateImage={SecondCandidateImage}
-                    chiefName={secondCandidate.chiefName}
-                    viceName={secondCandidate.viceName}
-                    candidateNumber={secondCandidate.candidateNumber}
-                    chiefMajor={secondCandidate.chiefMajor}
-                    viceMajor={secondCandidate.viceMajor}
-                    chiefClassOf={secondCandidate.chiefClassOf}
-                    viceClassOf={secondCandidate.viceClassOf}
-                  />
-                ) : (
-                  <CandidateSkeleton />
-                )}
+                { candidates ? candidates.map((candidate, index) => (
+                  <CandidateCard key={index} candidate={candidate} />
+                )) : Array.from({ length: 2 }).map((_, index) => (
+                  <CandidateSkeleton key={index} />
+                ))}
               </div>
             </div>
           </div>
