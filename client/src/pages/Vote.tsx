@@ -10,6 +10,7 @@ import { ToastError } from "../components/Toast";
 
 const Vote = () => {
   const [candidates, setCandidates] = useState<[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
   const [isLogin, setIsLogin] = useState(false);
@@ -51,6 +52,7 @@ const Vote = () => {
 
   useEffect(() => {
     const getCandidates = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
         
@@ -58,6 +60,8 @@ const Vote = () => {
         
       } catch (error: unknown) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     
@@ -74,11 +78,15 @@ const Vote = () => {
             </h2>
             <div className="mb-6">
               <div className="md:max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                { candidates ? candidates.map((candidate, index) => (
-                  <CandidateCard key={index} candidate={candidate} />
-                )) : Array.from({ length: 2 }).map((_, index) => (
-                  <CandidateSkeleton key={index} />
-                ))}
+                {loading ? (
+                  Array.from({ length: 2 }).map((_, index) => (
+                    <CandidateSkeleton key={index} />
+                  ))
+                ) : (
+                  candidates.map((candidate, index) => (
+                    <CandidateCard key={index} candidate={candidate} />
+                  ))
+                )}
               </div>
             </div>
           </div>
