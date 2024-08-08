@@ -7,13 +7,14 @@ import CandidateCard from "../components/Vote/CandidateCard";
 
 import { CandidateSkeleton } from "../components/Vote/CandidateSkeleton";
 import { ToastError } from "../components/Toast";
+import { CandidateType } from "../components/Vote/CandidateType";
 
 const Vote = () => {
-  const [candidates, setCandidates] = useState<[]>([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [candidates, setCandidates] = useState<CandidateType[]>([]);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -43,6 +44,7 @@ const Vote = () => {
           }, 2000);
         }
       } catch (error: unknown) {
+        if (localStorage.getItem("token")) localStorage.removeItem("token");
         navigate("/login");
       }
     };
@@ -55,9 +57,19 @@ const Vote = () => {
       setLoading(true);
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
+        const candidates = response.data;
+        console.log(candidates);
         
-        setCandidates(response.data);
-        
+        const candidatesWithImage = await Promise.all(
+          candidates.map(async (candidate: CandidateType) => {
+            const imageResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidate/image/${candidate.candidateNumber}`);
+
+            return { ...candidate, candidateImage: imageResponse.data.image };
+          })
+        );
+        setCandidates(candidatesWithImage);
+        console.log(candidatesWithImage);
+
       } catch (error: unknown) {
         console.error(error);
       } finally {
@@ -83,8 +95,8 @@ const Vote = () => {
                     <CandidateSkeleton key={index} />
                   ))
                 ) : (
-                  candidates.map((candidate, index) => (
-                    <CandidateCard key={index} candidate={candidate} />
+                  candidates.map((candidate) => (
+                    <CandidateCard key={candidate.candidateNumber} {...candidate} />
                   ))
                 )}
               </div>

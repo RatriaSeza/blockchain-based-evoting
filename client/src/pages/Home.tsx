@@ -28,11 +28,11 @@ const Home = () => {
             withCredentials: true 
           });
           
-          const { status, data: { user, message } } = response;
-          console.log(message);
+          const { status, data: { user } } = response;
           
           setUsername(user.username);
-          setIsLogin(true);
+
+          if (user) setIsLogin(true);
     
           if (!status) {
             localStorage.removeItem("token");
