@@ -8,6 +8,7 @@ export const getImage = async (req: Request, res: Response, next: NextFunction):
 
     if (!candidateImage) {
       res.status(404).json({ status: "error", error: "Image not found" });
+      return;
     }
 
     res.status(200).json({ 
@@ -24,6 +25,7 @@ export const storeImage = async (req: Request, res: Response, next: NextFunction
   try {
     if (!req.file) {
       res.status(400).json({ status: "error", error: "No image file" });
+      return;
     } 
 
     const existingImage = await CandidateImage.findOne({ candidateNumber: req.body.candidateNumber });
