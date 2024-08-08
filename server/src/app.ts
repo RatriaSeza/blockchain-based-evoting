@@ -7,6 +7,8 @@ import UserRoute from './routes/UserRoutes';
 import CandidateRoute from './routes/CandidateRoutes';
 import MasterRoute from './routes/MasterRoutes';
 import LoginRoute from './routes/AuthRoutes';
+import TestRoutes from './routes/TestRoutes';
+import CandidateImageRoutes from './routes/CandidateImageRoutes';
 
 const app = express();
 
@@ -27,5 +29,8 @@ app.use('/api/auth', LoginRoute);
 app.use('/api', UserRoute);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
+app.use('/api', CandidateImageRoutes);
+
+app.use('/api/test', TestRoutes);
 
 export default app;
