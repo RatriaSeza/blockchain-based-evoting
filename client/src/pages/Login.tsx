@@ -36,7 +36,6 @@ const Login = () => {
       const { status, data: { message, token } } = response;
       
       if (status == 200) {
-        // setCookie("token", token, { path: '/' });
         localStorage.setItem("token", token);
 
         ToastSuccess({ message, duration: 1400 });

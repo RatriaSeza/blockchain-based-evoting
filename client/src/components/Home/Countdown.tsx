@@ -8,6 +8,7 @@ const Countdown = () => {
     minutes: 0,
     seconds: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() =>  {
     const getDeadline = async () => {
@@ -24,10 +25,11 @@ const Countdown = () => {
   
           setTime({ hours, minutes, seconds });
         }
-
+        setLoading(false);
         return;
       } catch (error: unknown) {
         console.error(error);
+        setLoading(false);
       }
     }
 
@@ -63,7 +65,7 @@ const Countdown = () => {
     <div className="relative flex md:block justify-between items-center gap-4 px-6 md:px-12 py-4 md:py-8 rounded bg-countdown">
       <div className="flex flex-col justify-between gap-1">
         <h4 className="font-medium md:font-semibold grid items-center text-neutral-200">Time Remaining</h4>
-        {time && time.hours === 0 && time.minutes === 0 && time.seconds === 0 ? (
+        {loading ? (
           <CountdownSkeleton />
         ) : (
           <div className="text-black grid grid-cols-11 gap-1 md:max-w-xs md:mx-auto">
