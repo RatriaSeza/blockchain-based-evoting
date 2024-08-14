@@ -27,7 +27,7 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
       httpOnly: true,
     });
     
-    res.status(200).json({ message: "Login successful.", token });
+    res.status(200).json({ message: "Login successful.", token, user });
     
     next();
   } catch (error) {

@@ -13,12 +13,13 @@ import LiveCount from "../components/Home/LiveCount";
 const Home = () => {
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
-  const [username, setUsername] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
     const verifyToken = async () => {
       if (!localStorage.getItem("token")) {
+        if (localStorage.getItem("user")) localStorage.removeItem("user");
         setIsLogin(false);
         return;
       } else {
@@ -30,20 +31,24 @@ const Home = () => {
           
           const { status, data: { user } } = response;
           
-          setUsername(user.username);
-
           if (user) setIsLogin(true);
     
           if (!status) {
             localStorage.removeItem("token");
-            ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+            localStorage.removeItem("user");
+            ToastError({ message: "Something is wrong, please login.", position: "top-right", duration: 1400 });
             setTimeout(() => {
               navigate("/login");
             }, 2000);
           }
         } catch (error: unknown) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
           console.error(error);
-          navigate("/login");
+          ToastError({ message: "Something is wrong, please login.", position: "top-right", duration: 1400 });
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
         }
       }
     };
@@ -61,7 +66,7 @@ const Home = () => {
               <p className="text-base leading-4 mb-8">
                 Hi, <br />
                 <span className="text-xl font-bold flex">
-                  {username}
+                  {user.username}
                   <img className="w-6 h-6 ml-2" alt="GIF" src="https://camo.githubusercontent.com/0c732027af8a28d138e3698181f7be7c9b97d443b4beb9c7ce8ec4cffc6b4767/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"/>
                 </span>
               </p>

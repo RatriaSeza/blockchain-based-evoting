@@ -33,10 +33,11 @@ const Login = () => {
         withCredentials: true 
       });
       
-      const { status, data: { message, token } } = response;
+      const { status, data: { message, token, user } } = response;
       
       if (status == 200) {
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
 
         ToastSuccess({ message, duration: 1400 });
         setTimeout(() => {

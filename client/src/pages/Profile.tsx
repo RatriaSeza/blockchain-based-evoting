@@ -66,6 +66,7 @@ const Profile = () => {
 
       if (status == 200) {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         ToastSuccess({ message, duration: 1400 });
         navigate("/login");
       } else {
