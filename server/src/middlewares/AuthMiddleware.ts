@@ -13,7 +13,7 @@ export const userVerication = (req: Request, res: Response) => {
 
   jwt.verify(token, process.env.SECRET_TOKEN as string, async (err: unknown, data: any) => {
     if (err) {
-      return res.status(401).json({ message: "You need to login" });
+      return res.status(401).json({ message: "Invalid Token" });
     } 
 
     const user = await User.findById(data.id);
