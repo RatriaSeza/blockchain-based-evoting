@@ -10,9 +10,8 @@ contract Election {
   uint256 public electionEndTime;
 
   struct Voter {
-    bool isRegistered;
     bool isVoted;
-    address selectedCandidate;
+    uint256 selectedCandidateId;
   }
 
   struct Candidate {
@@ -48,6 +47,7 @@ contract Election {
     electionAdmin = msg.sender;
   }
 
+  // Admin Actions
   function setElectionTime(uint256 _startTime, uint256 _endTime) public onlyAdmin {
     require(_startTime < _endTime, "Invalid election time");
     electionStartTime = _startTime;
@@ -56,13 +56,44 @@ contract Election {
   }
 
   function addVoter(address _voter) public onlyAdmin {
-    require(!voters[_voter].isRegistered, "Voter already added");
-    voters[_voter].isRegistered = true;
+    require(voters[_voter].isVoted == false && voters[_voter].selectedCandidateId == 0, "Voter already exist");
+
+    voters[_voter] = Voter(false, 0);
+    emit VoterAdded(_voter);
   }
 
-  function vote(string memory _electtionId, address _candidate, address _voter) public {}
+  // Voter Actions
+  function vote(uint256 _candidateId) public isElectionEnded isElectionEnded {
+    require(!voters[msg.sender].isVoted, "You have already voted");
+    require(candidates[_candidateId].id != 0, "Invalid candidate");
 
-  function getVoteCount() public view returns (uint256) {
+    voters[msg.sender].isVoted = true;
+    voters[msg.sender].selectedCandidateId = _candidateId;
+    candidates[_candidateId].voteCount++;
+    totalVotes++;
+
+    emit VoteCast(msg.sender, _candidateId);
+  }
+
+  function getCandidate(uint256 _candidateId) public view returns (Candidate memory) {
+    require(candidates[_candidateId].id != 0, "Invalid candidate");
+    return candidates[_candidateId];
+  }
+
+  function getVoter(address _voter) public view returns (Voter memory) {
+    require(voters[_voter].isVoted == true || voters[_voter].selectedCandidateId != 0, "Voter not found");
+    return voters[_voter];
+  }
+
+  function getTotalVotes() public view returns (uint256) {
     return totalVotes;
+  }
+
+  function getElectionStartTime() public view returns (uint256) {
+    return electionStartTime;
+  }
+
+  function getElectionEndTime() public view returns (uint256) {
+    return electionEndTime;
   }
 }
