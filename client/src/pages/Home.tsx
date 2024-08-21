@@ -42,8 +42,8 @@ const Home = () => {
             }, 2000);
           }
         } catch (error: unknown) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+          if (localStorage.getItem("token")) localStorage.removeItem("token");
+          if (localStorage.getItem("user")) localStorage.removeItem("user");
           console.error(error);
           ToastError({ message: "Something is wrong, please login.", position: "top-right", duration: 1400 });
           setTimeout(() => {

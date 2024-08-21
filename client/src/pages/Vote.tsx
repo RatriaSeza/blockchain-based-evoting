@@ -19,33 +19,37 @@ const Vote = () => {
   useEffect(() => {
     const verifyToken = async () => {
       if (!localStorage.getItem("token")) {
-        console.log('No token found, redirecting to login...');
-        ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
-
-        navigate("/login");
+        if (localStorage.getItem("user")) localStorage.removeItem("user");
+        setIsLogin(false);
         return;
-      }
-
-      try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
-        },{ 
-          withCredentials: true 
-        });
-        
-        const { status, data: { user } } = response;
-        
-        if (user) setIsLogin(true);
-
-        if (!status) {
-          localStorage.removeItem("token");
-          ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+      } else {
+        try {
+          const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+          },{ 
+            withCredentials: true 
+          });
+          
+          const { status, data: { user } } = response;
+          
+          if (user) setIsLogin(true);
+  
+          if (!status) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            ToastError({ message: "You need to login first.", position: "top-right", duration: 1400 });
+            setTimeout(() => {
+              navigate("/login");
+            }, 2000);
+          }
+        } catch (error: unknown) {
+          if (localStorage.getItem("token")) localStorage.removeItem("token");
+          if (localStorage.getItem("user")) localStorage.removeItem("user");
+          console.error(error);
+          ToastError({ message: "Something is wrong, please login.", position: "top-right", duration: 1400 });
           setTimeout(() => {
             navigate("/login");
           }, 2000);
         }
-      } catch (error: unknown) {
-        if (localStorage.getItem("token")) localStorage.removeItem("token");
-        navigate("/login");
       }
     };
     
