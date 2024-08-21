@@ -1,6 +1,8 @@
 import React from 'react';
 import Button from '../Button'
 import { CandidateType } from './CandidateType';
+import { ToastContainer } from "react-toastify";
+import { ToastError } from "../../components/Toast";
 
 const CandidateCard: React.FC<CandidateType> = ({ 
   candidateNumber, 
@@ -9,8 +11,17 @@ const CandidateCard: React.FC<CandidateType> = ({
   chiefClassOf,
   viceName,
   viceMajor,
-  viceClassOf
+  viceClassOf,
+  isLogin
   }) => {  
+
+  const handleVoteClick = () => {
+    if (!isLogin) {
+      ToastError({ message: "You must login to vote!.", position: "bottom-right", duration: 1400 });
+    } else {
+      // TODO: Add vote function
+    }
+  }
 
   return (
     <div className="bg-dark-card shadow-inner shadow-neutral-800 rounded-xl w-full md:w-96">
@@ -36,9 +47,12 @@ const CandidateCard: React.FC<CandidateType> = ({
           </div>
         </div>
         <div className='flex justify-center'>
-          <Button label='Vote' customClass='py-2 px-8' />
+          <Button label='Vote' customClass='py-2 px-8' onClick={handleVoteClick}/>
         </div>
       </div>
+      <ToastContainer  
+        theme="dark"
+      />
     </div>
   );
 }

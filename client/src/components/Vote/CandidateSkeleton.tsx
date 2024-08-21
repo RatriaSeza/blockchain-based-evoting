@@ -22,7 +22,7 @@ export const CandidateSkeleton = () => {
               </div>
             </div>
             <p className='text-6xl font-semibold mr-2'>
-              <div className="w-8 h-14 rounded-xl bg-gray-700 mb-2.5"></div>
+              <span className="w-8 h-14 rounded-xl bg-gray-700 mb-2.5"></span>
             </p>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import Nav from "../components/Nav";
 import CandidateCard from "../components/Vote/CandidateCard";
 
@@ -10,11 +9,10 @@ import { ToastError } from "../components/Toast";
 import { CandidateType } from "../components/Vote/CandidateType";
 
 const Vote = () => {
-  const [cookies, ,removeCookie] = useCookies(["token"]);
+  const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [candidates, setCandidates] = useState<CandidateType[]>([]);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -31,7 +29,9 @@ const Vote = () => {
           
           const { status, data: { user } } = response;
           
-          if (user) setIsLogin(true);
+          if (user) {
+            setIsLogin(true);
+          }
   
           if (!status) {
             localStorage.removeItem("token");
@@ -54,7 +54,7 @@ const Vote = () => {
     };
     
     verifyToken();
-  },  [cookies, navigate, removeCookie]);
+  },  [navigate]);
 
   useEffect(() => {
     const getCandidates = async () => {
@@ -97,7 +97,7 @@ const Vote = () => {
                   ))
                 ) : (
                   candidates.map((candidate) => (
-                    <CandidateCard key={candidate.candidateNumber} {...candidate} />
+                    <CandidateCard key={candidate.candidateNumber} {...candidate} isLogin={isLogin} />
                   ))
                 )}
               </div>

@@ -6,5 +6,6 @@ export type CandidateType = {
   chiefClassOf: number;
   viceName: string;
   viceMajor: string;
-  viceClassOf: number
+  viceClassOf: number,
+  isLogin: boolean;
 }
