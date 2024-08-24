@@ -1,4 +1,5 @@
 export type CandidateType = {
+  _id: string;
   candidateImage: string;
   candidateNumber: number;
   chiefName: string;

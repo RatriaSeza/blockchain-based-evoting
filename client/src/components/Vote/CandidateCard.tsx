@@ -2,9 +2,11 @@ import React from 'react';
 import Button from '../Button'
 import { CandidateType } from './CandidateType';
 import { ToastContainer } from "react-toastify";
-import { ToastError } from "../../components/Toast";
+import { ToastError, ToastSuccess } from "../../components/Toast";
+import axios from 'axios';
 
 const CandidateCard: React.FC<CandidateType> = ({ 
+  _id,
   candidateNumber, 
   chiefName,
   chiefMajor,
@@ -15,11 +17,23 @@ const CandidateCard: React.FC<CandidateType> = ({
   isLogin
   }) => {  
 
-  const handleVoteClick = () => {
+  const handleVoteClick = async () => {
     if (!isLogin) {
       ToastError({ message: "You must login to vote!.", position: "bottom-right", duration: 1400 });
     } else {
-      // TODO: Add vote function
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/vote`, {
+          candidateId: _id
+        });
+
+        if (response.status === 200) {
+          ToastSuccess({ message: "Vote success!", position: "bottom-right", duration: 1400 });
+        } else {
+          ToastError({ message: "Vote failed!", position: "bottom-right", duration: 1400 });
+        }
+      } catch (error) {
+        ToastError({ message: "Vote failed!", position: "bottom-right", duration: 1400 });
+      }
     }
   }
 

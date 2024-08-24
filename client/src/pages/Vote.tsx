@@ -62,14 +62,7 @@ const Vote = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
         const candidates = response.data;
-        
-        // const candidatesWithImage = await Promise.all(
-        //   candidates.map(async (candidate: CandidateType) => {
-        //     const imageResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidate/image/${candidate.candidateNumber}`);
 
-        //     return { ...candidate, candidateImage: imageResponse.data.image };
-        //   })
-        // );
         setCandidates(candidates);
       } catch (error: unknown) {
         console.error(error);
