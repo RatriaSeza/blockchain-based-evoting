@@ -7,6 +7,7 @@ const VoterSchema = new Schema<IVoter>({
   classOf: { type: Number, required: true },
   isVoted: { type: Boolean, default: false },
   userId: { type: String, required: true },
+  selectedCandidateId: { type: String },
   createdAt: { type: Date, default: new Date().toLocaleString() },
   updatedAt: { type: Date, default: new Date().toLocaleString() }
 }, { collection: 'voters' });
