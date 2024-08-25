@@ -34,8 +34,16 @@ const Login = () => {
       });
       
       const { status, data: { message, token, user } } = response;
-      
+
       if (status == 200) {
+        const voterResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/voter/${user._id}`, {
+          withCredentials: true
+        });
+
+        if (voterResponse.status == 200) {
+          user.voter = voterResponse.data;
+        }
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
