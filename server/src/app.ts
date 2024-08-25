@@ -8,6 +8,8 @@ import CandidateRoute from './routes/CandidateRoutes';
 import MasterRoute from './routes/MasterRoutes';
 import LoginRoute from './routes/AuthRoutes';
 import TestRoutes from './routes/TestRoutes';
+import VoterRoutes from './routes/VoterRoutes';
+import VoteRoute from './routes/VoteRoutes';
 import CandidateImageRoutes from './routes/CandidateImageRoutes';
 
 const app = express();
@@ -27,9 +29,11 @@ app.use(cookieParser());
 
 app.use('/api/auth', LoginRoute);
 app.use('/api', UserRoute);
+app.use('/api', VoterRoutes);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
 app.use('/api', CandidateImageRoutes);
+// app.use('/api', VoteRoute)
 
 app.use('/api/test', TestRoutes);
 
