@@ -9,6 +9,7 @@ export interface ICandidate extends Document {
   chiefClassOf: number,
   viceClassOf: number,
   candidateImage: string,
+  voteCount: number,
   createdAt?: Date,
   updatedAt?: Date
 }
