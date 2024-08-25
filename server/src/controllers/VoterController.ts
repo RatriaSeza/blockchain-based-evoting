@@ -11,11 +11,11 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export const getById = async (req: Request, res: Response): Promise<void> => {
+export const getByUserId = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     
-    const voter = await Voter.findById({ _id: id });
+    const voter = await Voter.findOne({ userId });
 
     if (!voter) {
       res.status(404).json({ message: "Voter not found." });
