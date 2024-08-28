@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { create, getAll, getByUserId } from "../controllers/VoterController";
+import { create, getAll, getById, getByUserId } from "../controllers/VoterController";
 
 const router = Router();
 
 router.get("/voter", getAll);
-router.get("/voter/:userId", getByUserId);
+router.get("/voter/:id", getById)
+// router.get("/voter/:userId", getByUserId);
 router.post("/voter", create);
 
 export default router;

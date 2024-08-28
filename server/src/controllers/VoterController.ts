@@ -11,6 +11,24 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+export const getById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    
+    const voter = await Voter.findById(id);
+
+    if (!voter) {
+      res.status(404).json({ message: "Voter not found." });
+      return;
+    }
+    
+    res.status(200).json(voter);
+  }
+  catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export const getByUserId = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
