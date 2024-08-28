@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Candidate } from "../models/Candidate";
+import { getTotalVotesFromBlockchain } from "../services/blockchainService";
 
 export const getCandidates = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -38,3 +39,19 @@ export const createCandidate = async (req: Request, res: Response): Promise<void
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getTotalVotesByCandidate = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const candidateId = req.params.id;
+    const candidate = await Candidate.findById(candidateId);
+    if (!candidate) {
+      res.status(404).json({ message: "Candidate not found." });
+      return;
+    }
+
+    const result = await getTotalVotesFromBlockchain(candidateId);
+    res.status(200).send({ totalVotes: result });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
