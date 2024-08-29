@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/voter", getAll);
 router.get("/voter/:id", getById)
-// router.get("/voter/:userId", getByUserId);
+router.get("/voter/user/:userId", getByUserId);
 router.post("/voter", create);
 
 export default router;

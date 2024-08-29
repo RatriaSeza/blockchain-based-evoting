@@ -36,7 +36,7 @@ const Login = () => {
       const { status, data: { message, token, user } } = response;
 
       if (status == 200) {
-        const voterResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/voter/${user._id}`, {
+        const voterResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/voter/user/${user._id}`, {
           withCredentials: true
         });
 
