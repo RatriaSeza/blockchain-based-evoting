@@ -33,7 +33,7 @@ app.use('/api', VoterRoutes);
 app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
 app.use('/api', CandidateImageRoutes);
-// app.use('/api', VoteRoute)
+app.use('/api', VoteRoute)
 
 app.use('/api/test', TestRoutes);
 
