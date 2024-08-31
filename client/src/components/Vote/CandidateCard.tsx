@@ -15,7 +15,9 @@ const CandidateCard: React.FC<CandidateType> = ({
   viceMajor,
   viceClassOf,
   isLogin
-  }) => {  
+  }) => {
+    
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const handleVoteClick = async () => {
     if (!isLogin) {
@@ -23,15 +25,21 @@ const CandidateCard: React.FC<CandidateType> = ({
     } else {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/vote`, {
-          candidateId: _id
+          candidateId: _id,
+          voterId: user.voter._id
+        }, {
+          withCredentials: true
         });
 
+        console.log(response.data);
+
         if (response.status === 200) {
-          ToastSuccess({ message: "Vote success!", position: "bottom-right", duration: 1400 });
+          ToastSuccess({ message: response.data.message, position: "bottom-right", duration: 1400 });
         } else {
-          ToastError({ message: "Vote failed!", position: "bottom-right", duration: 1400 });
+          ToastError({ message: response.data.message, position: "bottom-right", duration: 1400 });
         }
       } catch (error) {
+        console.error(error);
         ToastError({ message: "Vote failed!", position: "bottom-right", duration: 1400 });
       }
     }
