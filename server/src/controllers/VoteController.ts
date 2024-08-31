@@ -7,22 +7,29 @@ export const Vote = async (req: Request, res: Response, next: NextFunction): Pro
   try {
     const { voterId, candidateId } = req.body;
 
-    const voter = await Voter.findById({ voterId });
-
-    if (!voter || !voter.isVoted) {
-      res.status(400).json({ message: "Voter has already voted." });
+    if (!voterId || !candidateId) {
+      res.status(400).json({ message: "Invalid request." });
       return;
     }
 
+    const voter = await Voter.findById(voterId);
+
+    
+    if (!voter || voter.isVoted) {
+      res.status(400).json({ message: "Voter has already voted or invalid voter." });
+      return;
+    }
+      
     const candidate = await Candidate.findById(candidateId);
+
     if (!candidate) {
       res.status(404).json({ message: "Candidate not found." });
       return;
     }
 
-    const result = await recordVoteOnBlockchain(voterId, candidateId);    
+    const result = await recordVoteOnBlockchain(voterId, candidate.candidateNumber);    
     if (!result.success) {
-      res.status(500).json({ message: "Failed to record vote on blockchain." });
+      res.status(500).json({ message: result.message });
       return;
     }
 
@@ -30,7 +37,6 @@ export const Vote = async (req: Request, res: Response, next: NextFunction): Pro
     await voter.save();
 
     res.status(200).json({ message: "Vote recorded successfully." });
-    
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
