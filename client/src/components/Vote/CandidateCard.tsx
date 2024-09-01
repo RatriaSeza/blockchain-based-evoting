@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../Button'
 import { CandidateType } from './CandidateType';
 import { ToastContainer } from "react-toastify";
@@ -16,12 +16,15 @@ const CandidateCard: React.FC<CandidateType> = ({
   viceClassOf,
   isLogin
   }) => {
-    
+  
+  const [isLoading, setIsLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const handleVoteClick = async () => {
+    setIsLoading(true);
     if (!isLogin) {
       ToastError({ message: "You must login to vote!.", position: "bottom-right", duration: 1400 });
+      setIsLoading(false);
     } else {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/vote`, {
@@ -30,17 +33,23 @@ const CandidateCard: React.FC<CandidateType> = ({
         }, {
           withCredentials: true
         });
-
-        console.log(response.data);
-
+        
         if (response.status === 200) {
           ToastSuccess({ message: response.data.message, position: "bottom-right", duration: 1400 });
         } else {
           ToastError({ message: response.data.message, position: "bottom-right", duration: 1400 });
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(error);
-        ToastError({ message: "Vote failed!", position: "bottom-right", duration: 1400 });
+
+        if (axios.isAxiosError(error)) {
+          const errorMessage = error.response?.data?.message || "Vote failed!";
+          ToastError({ message: errorMessage, position: "bottom-right", duration: 1400 });
+        } else {
+          ToastError({ message: "An unexpected error occurred.", position: "bottom-right", duration: 1400 });
+        }
+      } finally {
+        setIsLoading(false);
       }
     }
   }
@@ -69,7 +78,7 @@ const CandidateCard: React.FC<CandidateType> = ({
           </div>
         </div>
         <div className='flex justify-center'>
-          <Button label='Vote' customClass='py-2 px-8' onClick={handleVoteClick}/>
+          <Button label={ isLoading ? <span><i className="fa-solid fa-spinner animate-spin mr-2"></i> Processing</span> : 'Vote'} customClass='py-2 px-8' onClick={handleVoteClick}/>
         </div>
       </div>
       <ToastContainer  

@@ -14,7 +14,6 @@ export const Vote = async (req: Request, res: Response, next: NextFunction): Pro
 
     const voter = await Voter.findById(voterId);
 
-    
     if (!voter || voter.isVoted) {
       res.status(400).json({ message: "Voter has already voted or invalid voter." });
       return;
