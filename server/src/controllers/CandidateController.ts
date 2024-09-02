@@ -42,14 +42,15 @@ export const createCandidate = async (req: Request, res: Response): Promise<void
 
 export const getTotalVotesByCandidate = async (req: Request, res: Response): Promise<void> => {
   try {
-    const candidateId = req.params.id;
-    const candidate = await Candidate.findById(candidateId);
+    const { candidateNumber } = req.params;
+    const candidate = await Candidate.findOne({ candidateNumber: candidateNumber });
+
     if (!candidate) {
       res.status(404).json({ message: "Candidate not found." });
       return;
     }
 
-    const result = await getTotalVotesFromBlockchain(candidateId);
+    const result = await getTotalVotesFromBlockchain(candidate.candidateNumber);
     res.status(200).send({ totalVotes: result });
   } catch (error: any) {
     res.status(500).json({ error: error.message });

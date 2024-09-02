@@ -16,11 +16,12 @@ export const recordVoteOnBlockchain = async (voterId: string, candidateId: numbe
   }
 }
 
-export const getTotalVotesFromBlockchain = async (candidateId: string) => {
+export const getTotalVotesFromBlockchain = async (candidateNumber: number) => {
   try {
-    return await contract.methods.totalVotesFor(candidateId).call();
+    const result: BigInt = await contract.methods.totalVotesFor(candidateNumber).call();
+    return result.toString();
   } catch (error: any) {
     console.error(error);
-    return 0;
+    return "0";
   }
 }
