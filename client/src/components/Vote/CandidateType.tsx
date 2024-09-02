@@ -9,4 +9,5 @@ export type CandidateType = {
   viceMajor: string;
   viceClassOf: number,
   isLogin: boolean;
+  votes?: number;
 }
