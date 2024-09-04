@@ -75,7 +75,7 @@ const Vote = () => {
   }, []);
 
   return (
-    <div className="min-h-dvh text-white md:flex md:items-center justify-center">
+    <div className="min-h-dvh text-white md:flex md:items-center justify-center profile-background">
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-0 md:container md:mx-auto">
           <div>

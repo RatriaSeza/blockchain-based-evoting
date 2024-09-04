@@ -59,7 +59,7 @@ const Home = () => {
   },  [cookies, navigate, removeCookie]);
 
   return (
-    <div className="min-h-dvh text-neutral-100">
+    <div className="min-h-dvh text-neutral-100 profile-background">
       <Nav active="home" isLogin={isLogin} />
       <div className="px-6 py-4">
         <div className="mb-24 md:mb-8 md:mt-20 md:container md:mx-auto">

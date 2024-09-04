@@ -70,7 +70,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-dvh text-neutral-100">
+    <div className="min-h-dvh text-neutral-100 profile-background">
       <div className="h-dvh flex justify-center items-center">
         <div className="w-11/12 md:max-w-md px-6 md:px-8 py-6 md:py-8 bg-dark-card shadow-inner shadow-neutral-800 rounded-lg md:rounded-xl">
           <h3 className="text-2xl md:text-3xl font-bold text-center uppercase mb-2 md:mb-4">
