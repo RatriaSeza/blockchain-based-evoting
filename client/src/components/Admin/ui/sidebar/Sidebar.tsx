@@ -1,10 +1,10 @@
-import AdminLogo from "@assets/img/admin/logos/logo-light.svg";
+import LogoBemUndip from "@assets/img/logo-bem-undip-removed.png"
 
 export const Sidebar = () => {
   return (
     <div>
       <div className="p-4">
-        <a href="../" className="text-nowrap"><img src={AdminLogo} alt="Logo-Dark"/></a>
+        <a href="../" className="flex flex-col items-center justify-center text-gray-500 text-lg font-bold"><img src={LogoBemUndip} className="w-16  h-auto" alt="Logo-Dark"/> Pemira FSM</a>
       </div>
       <div className="scroll-sidebar" data-simplebar="">
         <nav className="w-full flex flex-col sidebar-nav px-4 mt-5">

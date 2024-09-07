@@ -9,7 +9,7 @@ import { NotFound } from "./pages/NotFound";
 
 // Admin Pages
 import { LoginAdmin } from "./pages/Admin/Login";
-import { Dashboard } from "./pages/Admin/Dashboard";
+import { Dashboard } from "./pages/Admin/dashboard/Dashboard";
 
 function App() {
   return (

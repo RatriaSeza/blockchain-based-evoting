@@ -23,7 +23,7 @@ const CandidateCard: React.FC<CandidateType> = ({
   const handleVoteClick = async () => {
     setIsLoading(true);
     if (!isLogin) {
-      ToastError({ message: "You must login to vote!.", position: "bottom-right", duration: 1400 });
+      ToastError({ message: "You must login to vote!", position: "bottom-right", duration: 1400 });
       setIsLoading(false);
     } else {
       try {

@@ -1,5 +1,5 @@
-import { Sidebar } from "../../components/Admin/ui/sidebar/Sidebar";
-import { Header } from "../../components/Admin/ui/header/Header";
+import { Sidebar } from "../../../components/Admin/ui/sidebar/Sidebar";
+import { Header } from "../../../components/Admin/ui/header/Header";
 
 export const Dashboard = () => {
   return (
