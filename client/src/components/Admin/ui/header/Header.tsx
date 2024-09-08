@@ -13,7 +13,7 @@ export const Header = () => {
             aria-label="Toggle navigation"
             href="javascript:void(0)"
           >
-            <i className="ti ti-menu-2 relative z-1"></i>
+            <i className="fa-solid fa-bars"></i>
           </a>
         </li>
       </ul>
