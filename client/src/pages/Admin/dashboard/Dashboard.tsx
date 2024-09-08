@@ -12,7 +12,7 @@ export const Dashboard = () => {
           id="application-sidebar-brand"
           className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed xl:top-5 xl:left-auto top-0 left-0 with-vertical h-screen z-[999] shrink-0 w-[270px] shadow-md xl:rounded-md rounded-none bg-white left-sidebar transition-all duration-300"
         >
-          <Sidebar />
+          <Sidebar active="dashboard" />
         </aside>
         <div className="w-full page-wrapper xl:px-6 px-0">
           <main className="h-full max-w-full">
