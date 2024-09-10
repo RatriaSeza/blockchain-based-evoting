@@ -3,8 +3,26 @@ import { Header } from "@components/Admin/ui/header/Header";
 import { Footer } from "@components/Admin/ui/footer/Footer";
 import { TotalVotesCard } from "@components/Admin/dashboard/TotalVotesCard";
 import { CountdownCard } from "@components/Admin/dashboard/CountdownCard";
+import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCard";
 
 export const Dashboard = () => {
+	const candidates = [
+		{
+			candidateNumber: 1,
+			votes: 750
+		},
+		{
+			candidateNumber: 2,
+			votes: 202
+		},
+		{
+			candidateNumber: 3,
+			votes: 123
+		}
+	]
+
+	const totalVotes = candidates.reduce((acc, candidate) => acc + candidate.votes, 0);
+
   return (
     <main className="bg-surface">
       <div id="main-wrapper" className="flex p-5 xl:pr-0">
@@ -23,10 +41,15 @@ export const Dashboard = () => {
 
               {/* main content */}
               <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-								<div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 ">
+								<div className="col-span-2 grid grid-cols-2 gap-4 md:gap-6">
                   <CountdownCard/>
                   <TotalVotesCard />
-                  <div className="card">
+                  <div className="col-span-2 flex flex-wrap justify-between gap-4 md:gap-6">
+										{candidates && candidates.map((candidate, index) => (
+											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
+										))}
+									</div>
+                  {/* <div className="card">
 										<div className="card-body">
 											<div className="flex gap-6 items-center justify-between">
 												<div className="flex flex-col gap-4">
@@ -50,32 +73,7 @@ export const Dashboard = () => {
 											</div>
 										</div>
 										<div id="earning"></div>
-									</div>
-                  <div className="card">
-										<div className="card-body">
-											<div className="flex gap-6 items-center justify-between">
-												<div className="flex flex-col gap-4">
-													<h4 className="text-gray-500 text-lg font-semibold">Product Sales</h4>
-													<div className="flex flex-col gap-4">
-														<h3 className="text-[22px] font-semibold text-gray-500">$6,820</h3>
-														<div className="flex items-center gap-1">
-															<span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-400">
-																<i className="ti ti-arrow-down-right text-red-500"></i>
-															</span>
-															<p className="text-gray-500 text-sm font-normal">+9%</p>
-															<p className="text-gray-400 text-sm font-normal text-nowrap">last year</p>
-														</div>
-													</div>
-												</div>
-
-												<div
-													className="w-11 h-11 flex justify-center items-center rounded-full bg-red-500 text-white self-start">
-													<i className="ti ti-currency-dollar text-xl"></i>
-												</div>
-											</div>
-										</div>
-										<div id="earning"></div>
-									</div>
+									</div> */}
 								</div>
 
 								<div className="flex flex-col gap-6">
