@@ -33,6 +33,7 @@ const LiveCount = () => {
 
       setCandidates(candidatesWithVotes);
       setTotalVotes(totalVotes);
+      
     } catch (error: unknown) {
       console.error(error);
       ToastError({ message: "Something is wrong, please try again.", position: "top-right", duration: 1400 });
@@ -67,7 +68,7 @@ const LiveCount = () => {
                 <p className="text-xs">{candidate.votes} votes</p>
               </div>
               <p className="basis-12 text-sm text-right">
-                {((candidate.votes ?? 0) / totalVotes * 100).toFixed(1)}%
+                { candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0'}%
               </p>
             </div>
           ))}
