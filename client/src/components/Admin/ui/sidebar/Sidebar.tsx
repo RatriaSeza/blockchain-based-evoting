@@ -16,7 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ active }) => {
         <nav className="w-full flex flex-col sidebar-nav px-4 mt-5">
           <ul id="sidebarnav" className="text-gray-600 text-sm">
             <SidebarItem isActive={active === 'dashboard'} icon="fa-solid fa-chart-simple" title="Dashboard" link="/admin/dashboard"/>
-            <SidebarItem isActive={active === 'masters'} icon="fa-solid fa-user-tie" title="Master Data" link="/admin/master"/>
+            <SidebarItem isActive={active === 'masters'} icon="fa-solid fa-database" title="Master Data" link="/admin/master"/>
             <SidebarItem isActive={active === 'voters'} icon="fa-solid fa-user-group" title="Voters" link="/admin/voters"/>
 
             <li className="text-xs font-bold mb-4 mt-8">

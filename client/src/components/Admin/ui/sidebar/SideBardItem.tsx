@@ -14,7 +14,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ icon, title, link, isA
         className={`sidebar-link gap-3 py-2.5 my-1 text-base flex items-center relative rounded-md text-gray-500 w-full ${isActive ? 'active' : ''}`}
         href={link}
       >
-        <i className={`${icon} w-8 ps-2 text-lg`}></i> <span>{title}</span>
+        <span className="flex justify-center w-8 text-lg"><i className={`${icon} ps-2`}></i></span>{title}
       </a>
     </li>
   );
