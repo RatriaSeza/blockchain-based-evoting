@@ -41,10 +41,14 @@ export const Dashboard = () => {
 
               {/* main content */}
               <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-								<div className="col-span-2 grid grid-cols-2 gap-4 md:gap-6">
-                  <CountdownCard/>
-                  <TotalVotesCard />
-                  <div className="col-span-2 flex flex-wrap justify-between gap-4 md:gap-6">
+								<div className="col-span-2 grid grid-cols-5 gap-4 md:gap-6">
+									<div className="col-span-3">
+										<CountdownCard />
+									</div>
+									<div className="col-span-2">
+										<TotalVotesCard />
+									</div>
+                  <div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
 										{candidates && candidates.map((candidate, index) => (
 											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
 										))}
