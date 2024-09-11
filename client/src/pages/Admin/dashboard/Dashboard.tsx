@@ -40,8 +40,8 @@ export const Dashboard = () => {
               </header>
 
               {/* main content */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-								<div className="col-span-2 grid grid-cols-5 gap-4 md:gap-6">
+              <div className="flex flex-col md:flex-row md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
+								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6">
 									<div className="col-span-3">
 										<CountdownCard />
 									</div>
@@ -53,10 +53,26 @@ export const Dashboard = () => {
 											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
 										))}
 									</div>
+
+
 								</div>
 
-								<div className="flex flex-col gap-6">
+								<div className="grow">
+									<div className="card mb-4 md:mb-6">
+										<div className="card-body">
+											<div>
+												<h4 className="text-gray-600 font-semibold">Vote by major</h4>
+											</div>
+										</div>
+									</div>
+									<div className="card">
+										<div className="card-body">
+
+										</div>
+									</div>
 								</div>
+
+
 							</div>
               <Footer />
             </div>
