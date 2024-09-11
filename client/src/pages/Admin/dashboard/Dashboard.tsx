@@ -53,31 +53,6 @@ export const Dashboard = () => {
 											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
 										))}
 									</div>
-                  {/* <div className="card">
-										<div className="card-body">
-											<div className="flex gap-6 items-center justify-between">
-												<div className="flex flex-col gap-4">
-													<h4 className="text-gray-500 text-lg font-semibold">Product Sales</h4>
-													<div className="flex flex-col gap-4">
-														<h3 className="text-[22px] font-semibold text-gray-500">$6,820</h3>
-														<div className="flex items-center gap-1">
-															<span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-400">
-																<i className="ti ti-arrow-down-right text-red-500"></i>
-															</span>
-															<p className="text-gray-500 text-sm font-normal">+9%</p>
-															<p className="text-gray-400 text-sm font-normal text-nowrap">last year</p>
-														</div>
-													</div>
-												</div>
-
-												<div
-													className="w-11 h-11 flex justify-center items-center rounded-full bg-red-500 text-white self-start">
-													<i className="ti ti-currency-dollar text-xl"></i>
-												</div>
-											</div>
-										</div>
-										<div id="earning"></div>
-									</div> */}
 								</div>
 
 								<div className="flex flex-col gap-6">
