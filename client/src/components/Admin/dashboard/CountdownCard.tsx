@@ -1,15 +1,18 @@
 export const CountdownCard = () => {
   return (
     <div className="card">
-      <div className="card-body p-4 md:p-6 flex items-center justify-between md:justify-normal md:gap-4 lg:gap-8">
-        <div className="bg-gray-200 w-12 md:w-14 h-12 md:h-14 flex justify-center items-center rounded-md text-xl text-gray-700">
-          <span>
-            <i className="fa-solid fa-users"></i>
-          </span>
+      <div className="card-body p-4 md:p-6 flex items-center justify-evenly md:gap-4 lg:gap-8">
+        <div className="text-center ">
+          <p className="text-sky-700 text-5xl font-semibold">10</p>
+          <p className="text-gray-500 text-sm">Hours</p>
         </div>
-        <div>
-          <h4 className="text-gray-500 text-3xl md:text-4xl font-semibold">1.000</h4>
-          <p className="text-gray-400 text-sm font-normal text-nowrap">Total Votes</p>
+        <div className="text-center ">
+          <p className="text-sky-700 text-5xl font-semibold">10</p>
+          <p className="text-gray-500 text-sm">Minutes</p>
+        </div>
+        <div className="text-center ">
+          <p className="text-sky-700 text-5xl font-semibold">10</p>
+          <p className="text-gray-500 text-sm">Seconds</p>
         </div>
       </div>
     </div>

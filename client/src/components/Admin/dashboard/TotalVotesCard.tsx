@@ -1,7 +1,7 @@
 export const TotalVotesCard = () => {
   return (
     <div className="card">
-      <div className="card-body p-4 md:p-6 flex items-center justify-between md:justify-normal md:gap-4 lg:gap-8">
+      <div className="card-body h-full p-4 md:p-6 flex items-center justify-between md:justify-normal md:gap-4 lg:gap-8">
         <div className="bg-gray-200 w-12 md:w-14 h-12 md:h-14 flex justify-center items-center rounded-md text-xl text-gray-700">
           <span>
             <i className="fa-solid fa-users"></i>
