@@ -52,7 +52,7 @@ export const SummaryChart = () => {
 
   return (
     <>
-      <h4 className="text-gray-600 font-semibold">Vote by major</h4>
+      <h4 className="text-gray-600 font-semibold">Summary</h4>
       <div className="">
         <Chart 
           options={summaryOptions}
