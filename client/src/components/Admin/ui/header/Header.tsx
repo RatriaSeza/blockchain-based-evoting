@@ -11,7 +11,6 @@ export const Header = () => {
             data-hs-overlay="#application-sidebar-brand"
             aria-controls="application-sidebar-brand"
             aria-label="Toggle navigation"
-            href="javascript:void(0)"
           >
             <i className="fa-solid fa-bars"></i>
           </a>
