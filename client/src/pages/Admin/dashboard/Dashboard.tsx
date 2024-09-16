@@ -4,6 +4,7 @@ import { Footer } from "@components/Admin/ui/footer/Footer";
 import { TotalVotesCard } from "@components/Admin/dashboard/TotalVotesCard";
 import { CountdownCard } from "@components/Admin/dashboard/CountdownCard";
 import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCard";
+import { StatisticsCard } from "@components/Admin/dashboard/StatisticsCard";
 
 export const Dashboard = () => {
 	const candidates = [
@@ -53,8 +54,9 @@ export const Dashboard = () => {
 											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
 										))}
 									</div>
-
-
+									<div className="col-span-5">
+										<StatisticsCard />
+									</div>
 								</div>
 
 								<div className="grow">
