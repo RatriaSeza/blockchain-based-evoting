@@ -15,9 +15,9 @@ export const SummaryChart = () => {
       fillSeriesColor: false,
     },
   
-    colors: ["#5284B4ff", "#DEA748ff"],
+    colors: ["#5284B4", "#DEA748ff"],
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
   
     legend: {
@@ -51,7 +51,7 @@ export const SummaryChart = () => {
   };
 
   return (
-    <>
+    <div className="mb-6 md:mb-10">
       <h4 className="text-gray-600 font-semibold">Summary</h4>
       <div className="">
         <Chart 
@@ -64,16 +64,16 @@ export const SummaryChart = () => {
         <div>
           <div className="flex gap-4">
             <div className="flex gap-2 items-center">
-              <span className="w-2 h-2 rounded-full bg-[#5284B4ff]"></span>
-              <p className="text-gray-400 font-normal text-xs">Candidate #1</p>
+              <span className="w-2 h-2 rounded-full bg-[#5284B4]"></span>
+              <p className="text-gray-400 font-normal text-xs">Candidate #1: <span className="text-gray-500 font-semibold">750</span></p>
             </div>
             <div className="flex gap-2 items-center">
               <span className="w-2 h-2 rounded-full bg-[#DEA748ff]"></span>
-              <p className="text-gray-400 font-normal text-xs">Candidate #2</p>
+              <p className="text-gray-400 font-normal text-xs">Candidate #2: <span className="text-gray-500 font-semibold">202</span></p>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

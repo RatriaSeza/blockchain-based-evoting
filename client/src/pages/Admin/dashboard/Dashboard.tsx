@@ -6,6 +6,7 @@ import { CountdownCard } from "@components/Admin/dashboard/CountdownCard";
 import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCard";
 import { StatisticsCard } from "@components/Admin/dashboard/StatisticsCard";
 import { SummaryChart } from "@components/Admin/dashboard/SummaryChart";
+import { VoteByMajor } from "@components/Admin/dashboard/VoteByMajor";
 
 export const Dashboard = () => {
 	const candidates = [
@@ -16,10 +17,6 @@ export const Dashboard = () => {
 		{
 			candidateNumber: 2,
 			votes: 202
-		},
-		{
-			candidateNumber: 3,
-			votes: 123
 		}
 	]
 
@@ -64,6 +61,7 @@ export const Dashboard = () => {
 									<div className="card mb-4 md:mb-6">
 										<div className="card-body">
 											<SummaryChart />
+											<VoteByMajor />
 										</div>
 									</div>
 									<div className="card">
