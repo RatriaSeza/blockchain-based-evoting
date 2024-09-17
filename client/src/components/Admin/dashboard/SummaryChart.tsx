@@ -2,7 +2,7 @@ import Chart from "react-apexcharts";
 
 export const SummaryChart = () => {
   const summaryOptions = {
-    series: [5368, 3500],
+    series: [750, 202],
     labels: ["Candidate #1", "Candidate #2"],
     chart: {
       height: 170,
@@ -18,6 +18,17 @@ export const SummaryChart = () => {
     colors: ["#5284B4", "#DEA748ff"],
     dataLabels: {
       enabled: true,
+      fontWeight: "bold",
+      style: {
+        colors: ['#000'],
+      },
+      background: {
+        enabled: true,
+        borderRadius: 2,
+      },
+      formatter: function (val: number, opt: { w: { globals: { labels: string[] } }, seriesIndex: number }) {
+        return `${opt.w.globals.labels[opt.seriesIndex]}: ${val.toFixed(1)}%`;
+      }
     },
   
     legend: {
