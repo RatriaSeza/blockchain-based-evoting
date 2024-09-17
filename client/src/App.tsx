@@ -10,6 +10,7 @@ import { NotFound } from "./pages/NotFound";
 // Admin Pages
 import { LoginAdmin } from "./pages/Admin/Login";
 import { Dashboard } from "./pages/Admin/dashboard/Dashboard";
+import { Masters } from "./pages/Admin/masters/Masters";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         {/* Admin */}
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/candidates" />
+        <Route path="/admin/masters" element={<Masters />} />
         <Route path="/admin/voters" />
 
         {/* 404 */}
