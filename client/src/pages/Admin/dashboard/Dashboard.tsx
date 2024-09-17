@@ -40,7 +40,7 @@ export const Dashboard = () => {
 
               {/* main content */}
               <div className="flex flex-col md:flex-row md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
-								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6">
+								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6 h-fit">
 									<div className="col-span-3">
 										<CountdownCard />
 									</div>
@@ -64,14 +64,7 @@ export const Dashboard = () => {
 											<VoteByMajor />
 										</div>
 									</div>
-									<div className="card">
-										<div className="card-body">
-
-										</div>
-									</div>
 								</div>
-
-
 							</div>
               <Footer />
             </div>
