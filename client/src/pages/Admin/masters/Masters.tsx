@@ -2,7 +2,7 @@ import { CandidatesCard } from "@components/Admin/masters/CandidatesCard"
 import { Footer } from "@components/Admin/ui/footer/Footer"
 import { Header } from "@components/Admin/ui/header/Header"
 import { Sidebar } from "@components/Admin/ui/sidebar/Sidebar"
-import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
+import { ChevronRightIcon } from "@heroicons/react/24/solid"
 import { useState } from "react"
 
 export const Masters = () => {
@@ -29,37 +29,23 @@ export const Masters = () => {
               </header>
 
               {/* main content */}
-              <p className="capitalize text-neutral-400">Masters {active !== '' && <span>/ <span className="text-sky-500 font-medium">{active}</span></span>}</p>
-
-              <div className="card p">
-                <div className="card-body">
+              <div className="card">
+                <div className={`transition-all ${active ? 'pb-6' : ''}`}>
                   {active.length == 0 && 
-                    <div>
+                    <div className="p-6">
                       <h6 className="text-lg text-gray-500 font-semibold mb-6">Masters</h6>
                       <button 
                         onClick={() => setActive(active === 'candidates' ? "" : 'candidates')}
                         className="flex justify-between w-full px-4 py-2 text-neutral-500 border rounded-lg shadow mb-2 cursor-pointer hover:bg-gray-100 active:bg-gray-50">
                         <p className="font-medium">Candidates</p>
-                        <span>
-                          {active === 'candidates' ? (
-                            <ChevronDownIcon className="size-6" />
-                          ) : (
-                            <ChevronRightIcon className="size-6" /> 
-                          )}
-                        </span>
+                        <span><ChevronRightIcon className="size-6" /> </span>
                       </button>
                       
                       <button 
                         onClick={() => setActive(active === 'deadline' ? "" : 'deadline')}
                         className="flex justify-between w-full px-4 py-2 text-neutral-500 border rounded-lg shadow mb-2 cursor-pointer hover:bg-gray-100 active:bg-gray-50">
                         <p className="font-medium">Deadline</p>
-                        <span>
-                          {active === 'deadline' ? (
-                            <ChevronDownIcon className="size-6" />
-                          ) : (
-                            <ChevronRightIcon className="size-6" /> 
-                          )}
-                        </span>
+                        <span><ChevronRightIcon className="size-6" /> </span>
                       </button>    
                     </div>
                   }
