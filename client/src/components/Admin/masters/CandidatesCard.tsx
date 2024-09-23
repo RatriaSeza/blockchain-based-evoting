@@ -2,7 +2,7 @@ import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import { CandidatesTable } from "./CandidatesTable";
 
-import { Dialog, DialogHeader, DialogFooter, DialogBody, Button } from "@material-tailwind/react";
+import { CandidatesForm } from "./CandidatesForm";
 
 type CandidatesCardProps = {
   onCloseClick: () => void;
@@ -13,8 +13,14 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 }) => {
   const [openAddModal, setOpenAddModal] = useState(false);
 
+  const handleCloseAddModal = () => {
+    setOpenAddModal(false);
+  }
+
   return (
     <div>
+      {openAddModal && <CandidatesForm onClick={handleCloseAddModal} />}
+
       <div className="flex justify-between items-center p-6">
         <h6 className="text-lg text-gray-500 font-semibold">Candidates</h6>
         <button
@@ -35,29 +41,6 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
       </div>
 
       <CandidatesTable />
-
-      <Dialog open={openAddModal}>
-        <DialogHeader>Its a simple modal.</DialogHeader>
-        <DialogBody>
-          The key to more success is to have a lot of pillows. Put it this way,
-          it took me twenty five years to get these plants, twenty five years of
-          blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-          getting started. I&apos;m up to something. Fan luv.
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={() => setOpenAddModal(!openAddModal)}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={() => setOpenAddModal(!openAddModal)}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
     </div>
   );
 };
