@@ -42,15 +42,16 @@ export const Masters = () => {
                       </button>
                       
                       <button 
-                        onClick={() => setActive(active === 'deadline' ? "" : 'deadline')}
+                        onClick={() => setActive(active === 'master-data' ? "" : 'master-data')}
                         className="flex justify-between w-full px-4 py-2 text-neutral-500 border rounded-lg shadow mb-2 cursor-pointer hover:bg-gray-100 active:bg-gray-50">
-                        <p className="font-medium">Deadline</p>
+                        <p className="font-medium">Master Data</p>
                         <span><ChevronRightIcon className="size-6" /> </span>
                       </button>    
                     </div>
                   }
 
                   {active === 'candidates' && <CandidatesCard onCloseClick={handleCloseClick} />}
+                  {active === 'master-data' && <CandidatesCard onCloseClick={handleCloseClick} />}
                 </div>
               </div>
 
