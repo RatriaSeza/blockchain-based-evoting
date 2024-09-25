@@ -1,8 +1,10 @@
 import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CandidatesTable } from "./CandidatesTable";
 
 import { CandidatesForm } from "./CandidatesForm";
+import { CandidateType } from "@components/Vote/CandidateType";
+import axios from "axios";
 
 type CandidatesCardProps = {
   onCloseClick: () => void;
@@ -12,14 +14,33 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
   onCloseClick,
 }) => {
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [candidates, setCandidates] = useState<CandidateType[]>([]);
+
+
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
+        setCandidates(response.data);
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+      }
+    };
+
+    fetchCandidates();
+  }, []);
+  
+  const handleAddCandidate = (newCandidate: CandidateType) => {
+    setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
+  };
 
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
   }
-
+  
   return (
     <div>
-      {openAddModal && <CandidatesForm onClick={handleCloseAddModal} />}
+      {openAddModal && <CandidatesForm onClick={handleCloseAddModal} onAddCandidate={handleAddCandidate} />}
 
       <div className="flex justify-between items-center p-6">
         <h6 className="text-lg text-gray-500 font-semibold">Candidates</h6>
@@ -40,7 +61,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
         </button>
       </div>
 
-      <CandidatesTable />
+      <CandidatesTable candidates={candidates}/>
     </div>
   );
 };

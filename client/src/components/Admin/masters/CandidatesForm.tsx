@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { ToastError, ToastSuccess, ToastWarning } from "../../../components/Toast";
 import axios from "axios";
+import { CandidateType } from "@components/Vote/CandidateType";
 
 type CandidatesFormType = {
   onClick: () => void;
+  onAddCandidate: (newCandidate: CandidateType) => void;
 };
 
-export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick }) => {
+export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCandidate }) => {
   const [candidate, setCandidate] = useState({
     candidateNumber: "",
     chiefName: "",
@@ -56,7 +60,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick }) => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const validationErrors = validate();
@@ -75,6 +79,38 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick }) => {
     formData.append("viceClassOf", candidate.viceClassOf);
 
     if (candidate.image) formData.append("image", candidate.image);
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/candidates`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      
+      const { status, data: { message, candidate: newCandidate } } = response;
+
+      if (status == 201) {
+        ToastSuccess({ message: 'Candidate added successfully', duration: 1400 });
+        onAddCandidate(newCandidate);
+        setTimeout(() => {
+          onClick();
+        }, 2000);
+      } else {
+        ToastError({ message });
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          ToastError({ message:error.response.data.message || "An error occurred. Please try again."});
+        } else if (error.request) {
+          ToastWarning({ message: "No response from server. Please try again later." });
+        } else {
+          ToastWarning({ message: "An error occurred. Please try again." });
+        }
+      } else {
+        ToastWarning({ message: "An unexpected error occurred. Please try again." });
+      }
+    }
   }
 
   return (
@@ -197,6 +233,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick }) => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

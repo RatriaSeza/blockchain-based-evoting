@@ -1,10 +1,12 @@
 import { CandidateType } from "@components/Vote/CandidateType";
 import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export const CandidatesTable = () => {
-  const [candidates, setCandidates] = useState([]);
+type CandidatesTableProps = {
+  candidates: CandidateType[];
+};
+
+export const CandidatesTable: React.FC<CandidatesTableProps> = ({ candidates }) => {
   const [visibleActionIndex, setVisibleActionIndex] = useState<number | null>(null);
   const actionCardRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,21 +25,6 @@ export const CandidatesTable = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    const getCandidates = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
-        const candidates = response.data;
-
-        setCandidates(candidates);
-      } catch (error: unknown) {
-        console.error(error);
-      } 
-    }
-    
-    getCandidates();
   }, []);
 
   return (

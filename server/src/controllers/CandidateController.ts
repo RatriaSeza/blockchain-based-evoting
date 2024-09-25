@@ -22,17 +22,22 @@ export const getByCandidateNumber = async (req: Request, res: Response): Promise
 
 export const createCandidate = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { candidateNumber, chiefName, viceName, chiefMajor, viceMajor, chiefClassOf, viceClassOf, candidateImage } = req.body;
+    if (!req.file) {
+      res.status(400).json({ error: "No image file" });
+      return;
+    }
+
     const candidate = new Candidate({
-      candidateNumber,
-      chiefName,
-      viceName,
-      chiefMajor,
-      viceMajor,
-      chiefClassOf,
-      viceClassOf,
-      candidateImage
+      candidateNumber: req.body.candidateNumber,
+      chiefName: req.body.chiefName,
+      viceName: req.body.viceName,
+      chiefMajor: req.body.chiefMajor,
+      viceMajor: req.body.viceMajor,
+      chiefClassOf: req.body.chiefClassOf,
+      viceClassOf: req.body.viceClassOf,
+      candidateImage: req.file.buffer.toString("base64"),
     });
+
     await candidate.save();
     res.status(201).json(candidate);
   } catch (error: any) {
