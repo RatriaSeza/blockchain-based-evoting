@@ -21,6 +21,26 @@ export const getByCandidateNumber = async (req: Request, res: Response): Promise
   }
 };
 
+export const getCandidateImage = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const candidateNumber = req.params.candidateNumber;
+    const candidate = await Candidate.findOne({ candidateNumber });
+
+    if (!candidate || !candidate.candidateImage) {
+      res.status(404).json({ status: "error", error: "Image not found" });
+      return;
+    }
+
+    // Convert base64 image back to buffer and send
+    const imageBuffer = Buffer.from(candidate.candidateImage, "base64");
+    res.setHeader("Content-Type", "image/jpeg");
+    res.setHeader("Content-Disposition", `inline; filename="candidate_${candidateNumber}.jpg"`);
+    res.status(200).send(imageBuffer);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const createCandidate = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.file) {
