@@ -21,7 +21,7 @@ export const Masters = () => {
         >
           <Sidebar active="masters" />
         </aside>
-        <div className="w-full page-wrapper xl:px-6 px-0">
+        <div className="w-full xl:ml-[270px] xl:px-6 px-0">
           <main className="h-full max-w-full">
             <div className="container full-container p-0 flex flex-col gap-6">
               <header className="bg-white shadow-md rounded-md w-full text-sm py-4 px-6">
