@@ -16,7 +16,6 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
   const [openAddModal, setOpenAddModal] = useState(false);
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
 
-
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
@@ -29,7 +28,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 
     fetchCandidates();
   }, []);
-  
+
   const handleAddCandidate = (newCandidate: CandidateType) => {
     setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
   };
@@ -61,7 +60,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
         </button>
       </div>
 
-      <CandidatesTable candidates={candidates}/>
+      <CandidatesTable initialCandidates={candidates}/>
     </div>
   );
 };

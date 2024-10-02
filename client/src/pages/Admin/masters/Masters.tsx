@@ -4,6 +4,7 @@ import { Header } from "@components/Admin/ui/header/Header"
 import { Sidebar } from "@components/Admin/ui/sidebar/Sidebar"
 import { ChevronRightIcon } from "@heroicons/react/24/solid"
 import { useState } from "react"
+import { ToastContainer } from "react-toastify"
 
 export const Masters = () => {
   const [active, setActive] = useState("");
@@ -60,6 +61,7 @@ export const Masters = () => {
           </main>
         </div>
       </div>
+      <ToastContainer />
     </main>
   )
 }

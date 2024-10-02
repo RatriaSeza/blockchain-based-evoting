@@ -61,3 +61,12 @@ export const getTotalVotesByCandidate = async (req: Request, res: Response): Pro
     res.status(500).json({ error: error.message });
   }
 }
+
+export const deleteCandidate = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const candidate = await Candidate.deleteOne({ "_id": {"$oid": req.params.id } });
+    res.status(200).json(candidate);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
