@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Candidate } from "../models/Candidate";
 import { getTotalVotesFromBlockchain } from "../services/blockchainService";
+import mongoose from "mongoose";
 
 export const getCandidates = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -64,8 +65,26 @@ export const getTotalVotesByCandidate = async (req: Request, res: Response): Pro
 
 export const deleteCandidate = async (req: Request, res: Response): Promise<void> => {
   try {
-    const candidate = await Candidate.deleteOne({ "_id": {"$oid": req.params.id } });
-    res.status(200).json(candidate);
+    const { id } = req.params;
+
+    // Ensure the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid candidate ID" });
+      return;
+    }
+
+    // Attempt to delete the candidate by ID
+    const deletedCandidate = await Candidate.findByIdAndDelete(id);
+
+    // If no candidate was found and deleted, return a 404
+    if (!deletedCandidate) {
+      res.status(404).json({ error: "Candidate not found" });
+      return;
+    }
+
+    // Success: Return the deleted candidate data
+    res.status(200).json(deletedCandidate);
+
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
