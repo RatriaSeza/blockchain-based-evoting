@@ -31,12 +31,13 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 
   const handleAddCandidate = (newCandidate: CandidateType) => {
     setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
+    setOpenAddModal(false);
   };
 
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
   }
-  
+
   return (
     <div>
       {openAddModal && <CandidatesForm onClick={handleCloseAddModal} onAddCandidate={handleAddCandidate} />}

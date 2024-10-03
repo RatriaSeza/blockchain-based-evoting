@@ -3,8 +3,8 @@ import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/re
 import React, { useEffect, useRef, useState } from "react";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import axios from "axios";
-import { ToastSuccess } from "@components/Toast";
 import { LoadingIcon } from "../LoadingIcon";
+import { toast } from "react-toastify";
 
 type CandidatesTableProps = {
   initialCandidates: CandidateType[];
@@ -52,8 +52,10 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
           setCandidates(candidates.filter(candidate => candidate._id !== candidateToDelete._id));
           setShowDeleteModal(false);
           setVisibleActionIndex(null);
-
-        ToastSuccess({ message: "Candidate deleted successfully", duration: 1400 });
+          toast.success("Candidate deleted successfully", {
+            position: "bottom-right",
+            autoClose: 1400
+          });
         } else {
           console.error("Failed to delete the candidate");
         }
@@ -122,7 +124,7 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
                             <PencilSquareIcon className="size-4 mr-2" />
                             Edit
                           </li>
-                          <li onClick={() => handleDeleteClick(candidate)} className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-gray-900">
+                          <li onClick={() => handleDeleteClick(candidate)} className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-red-500">
                             <TrashIcon className="size-4 mr-2" />
                             Delete
                           </li>

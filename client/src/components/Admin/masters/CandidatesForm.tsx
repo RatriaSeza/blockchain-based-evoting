@@ -87,16 +87,22 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
         }
       });
       
-      const { status, data: { message, candidate: newCandidate } } = response;
+      const { status, data } = response;
 
       if (status == 201) {
-        ToastSuccess({ message: 'Candidate added successfully', duration: 1400 });
-        onAddCandidate(newCandidate);
-        setTimeout(() => {
-          onClick();
-        }, 2000);
+        const newCandidate = data.candidate; 
+
+        if (newCandidate) {
+          ToastSuccess({ message: 'Candidate added successfully', duration: 1400 });
+          onAddCandidate(newCandidate);
+          setTimeout(() => {
+            onClick();
+          }, 2000);
+        } else {
+          ToastError({ message: "Failed to retrieve the new candidate" });
+        }
       } else {
-        ToastError({ message });
+        ToastError({ message: data.message });
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -114,7 +120,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   }
 
   return (
-    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300">
+    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-auto">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
         <div className="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800">
           Add Candidate

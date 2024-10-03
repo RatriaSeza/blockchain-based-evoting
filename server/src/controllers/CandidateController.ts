@@ -60,7 +60,7 @@ export const createCandidate = async (req: Request, res: Response): Promise<void
     });
 
     await candidate.save();
-    res.status(201).json(candidate);
+    res.status(201).json({ message: "Candidate created", candidate });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
