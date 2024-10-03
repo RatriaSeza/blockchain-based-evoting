@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { ToastError, ToastSuccess, ToastWarning } from "../../../components/Toast";
+import { ToastError, ToastWarning } from "../../../components/Toast";
 import axios from "axios";
 import { CandidateType } from "@components/Vote/CandidateType";
 
@@ -22,6 +22,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -61,11 +62,13 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setLoading(false);
       return;
     }
 
@@ -93,11 +96,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
         const newCandidate = data.candidate; 
 
         if (newCandidate) {
-          ToastSuccess({ message: 'Candidate added successfully', duration: 1400 });
           onAddCandidate(newCandidate);
-          setTimeout(() => {
-            onClick();
-          }, 2000);
         } else {
           ToastError({ message: "Failed to retrieve the new candidate" });
         }
@@ -116,6 +115,8 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
       } else {
         ToastWarning({ message: "An unexpected error occurred. Please try again." });
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -230,11 +231,12 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
             >
               Cancel
             </button>
-            <button
+
+            <button disabled={loading}
               className="rounded-md bg-green-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-green-700 focus:shadow-none active:bg-green-700 hover:bg-green-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
               type="submit"
             >
-              Submit
+              {loading ? "Loading..." : "Submit"}
             </button>
           </div>
         </form>

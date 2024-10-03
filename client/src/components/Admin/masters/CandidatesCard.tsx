@@ -5,6 +5,7 @@ import { CandidatesTable } from "./CandidatesTable";
 import { CandidatesForm } from "./CandidatesForm";
 import { CandidateType } from "@components/Vote/CandidateType";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 type CandidatesCardProps = {
   onCloseClick: () => void;
@@ -32,6 +33,10 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
   const handleAddCandidate = (newCandidate: CandidateType) => {
     setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
     setOpenAddModal(false);
+    toast.success("Candidate added successfully", {
+      position: "bottom-right",
+      autoClose: 1400
+    });
   };
 
   const handleCloseAddModal = () => {
@@ -62,6 +67,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
       </div>
 
       <CandidatesTable initialCandidates={candidates}/>
+      <ToastContainer />
     </div>
   );
 };
