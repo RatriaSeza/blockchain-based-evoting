@@ -39,6 +39,30 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
     });
   };
 
+  const handleDeleteCandidate = async (candidateId: string) => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/candidates/${candidateId}`);
+      if (response.status === 200) {
+        setCandidates((prevCandidates) => prevCandidates.filter(candidate => candidate._id !== candidateId));
+        toast.success("Candidate deleted successfully", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      } else {
+        toast.error("Failed to delete candidate", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
+      toast.error("Error deleting candidate", {
+        position: "bottom-right",
+        autoClose: 1400
+      });
+    }
+  };
+
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
   }
@@ -66,7 +90,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
         </button>
       </div>
 
-      <CandidatesTable initialCandidates={candidates}/>
+      <CandidatesTable initialCandidates={candidates} onDeleteCandidate={handleDeleteCandidate} />
       <ToastContainer />
     </div>
   );

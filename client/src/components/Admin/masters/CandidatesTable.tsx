@@ -2,15 +2,14 @@ import { CandidateType } from "@components/Vote/CandidateType";
 import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
-import axios from "axios";
 import { LoadingIcon } from "../LoadingIcon";
-import { toast } from "react-toastify";
 
 type CandidatesTableProps = {
   initialCandidates: CandidateType[];
+  onDeleteCandidate: (candidateId: string) => void;
 };
 
-export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandidates }) => {
+export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandidates, onDeleteCandidate }) => {
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const [visibleActionIndex, setVisibleActionIndex] = useState<number | null>(null);
   const actionCardRef = useRef<HTMLDivElement | null>(null);
@@ -45,24 +44,10 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
 
   const handleConfirmDelete = async () => {
     if (candidateToDelete) {
-      try {
-        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/candidates/${candidateToDelete._id}`);
-        
-        if (response.status === 200) {
-          setCandidates(candidates.filter(candidate => candidate._id !== candidateToDelete._id));
-          setShowDeleteModal(false);
-          setVisibleActionIndex(null);
-          toast.success("Candidate deleted successfully", {
-            position: "bottom-right",
-            autoClose: 1400
-          });
-        } else {
-          console.error("Failed to delete the candidate");
-        }
-      } catch (error) {
-        console.error("An error occurred while deleting the candidate:", error);
-      }
-    }  
+      onDeleteCandidate(candidateToDelete._id);
+      setShowDeleteModal(false);
+      setVisibleActionIndex(null);
+    }
   }
 
   return (
@@ -94,7 +79,7 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
               <tr key={index} className="text-sm border-gray-200 border-b">
                 <td className="text-gray-500 font-medium text-center py-3 border-gray-200 border-r">{candidate.candidateNumber}</td>
                 <td className="flex justify-center py-1">
-                    <img src={`${import.meta.env.VITE_API_URL}/api/candidate/image/${candidate.candidateNumber}`} alt={`Candidates ${candidate.candidateNumber} image`} className="w-24 h-auto" />
+                    <img src={`${import.meta.env.VITE_API_URL}/api/candidates/image/${candidate.candidateNumber}`} alt={`Candidates ${candidate.candidateNumber} image`} className="w-24 h-auto" />
                 </td>
                 <td className="">
                   <div className="">

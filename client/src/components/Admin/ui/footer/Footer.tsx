@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
     <footer>
-      <p className="text-base text-gray-400 font-normal p-3 text-center">
+      {/* <p className="text-base text-gray-400 font-normal p-3 text-center">
         Design and Developed by
         <a
           href="https://www.wrappixel.com/"
@@ -10,7 +10,7 @@ export const Footer = () => {
         >
           wrappixel.com
         </a>
-      </p>
+      </p> */}
     </footer>
   );
 };
