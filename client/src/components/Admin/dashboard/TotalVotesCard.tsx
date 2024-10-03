@@ -1,7 +1,7 @@
 export const TotalVotesCard = () => {
   return (
-    <div className="card">
-      <div className="card-body p-4 h-full md:p-6 md:gap-4 lg:gap-8">
+    <div className="card h-full">
+      <div className="card-body p-4 md:p-6 md:gap-4 lg:gap-8">
         <div className="md:hidden">
           <h4 className="flex items-center text-gray-500 text-3xl font-semibold"><span className="text-xl mr-2"><i className="fa-solid fa-users"></i></span> 666</h4>
           <p className="text-gray-400 text-xs font-normal text-center">Total Votes</p>
@@ -13,7 +13,7 @@ export const TotalVotesCard = () => {
             </span>
           </div>
           <div>
-            <h4 className="text-gray-500 text-4xl lg:text-5xl font-semibold">1.000</h4>
+            <h4 className="text-gray-500 text-4xl lg:text-4xl font-semibold">1.000</h4>
             <p className="text-gray-400 text-sm font-normal text-nowrap">Total Votes</p>
           </div>
         </div>
