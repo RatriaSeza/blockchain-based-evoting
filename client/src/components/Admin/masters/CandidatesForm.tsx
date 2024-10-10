@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { ToastError, ToastWarning } from "../../../components/Toast";
 import axios from "axios";
@@ -6,10 +6,11 @@ import { CandidateType } from "@components/Vote/CandidateType";
 
 type CandidatesFormType = {
   onClick: () => void;
-  onAddCandidate: (newCandidate: CandidateType) => void;
+  onAddCandidate?: (newCandidate: CandidateType) => void;
+  editingCandidate?: CandidateType | null;
 };
 
-export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCandidate }) => {
+export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCandidate, editingCandidate }) => {
   const [candidate, setCandidate] = useState({
     candidateNumber: "",
     chiefName: "",
@@ -61,6 +62,23 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
     return newErrors;
   };
 
+  useEffect(() => {
+    if (editingCandidate) {
+      console.log("Editing candidate:", editingCandidate);
+      
+      setCandidate({
+        candidateNumber: editingCandidate.candidateNumber.toString(),
+        chiefName: editingCandidate.chiefName,
+        viceName: editingCandidate.viceName,
+        chiefMajor: editingCandidate.chiefMajor,
+        viceMajor: editingCandidate.viceMajor,
+        chiefClassOf: editingCandidate.chiefClassOf.toString(),
+        viceClassOf: editingCandidate.viceClassOf.toString(),
+        image: null, // Set to null initially
+      });
+    }
+  }, [editingCandidate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
@@ -84,24 +102,28 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
     if (candidate.image) formData.append("image", candidate.image);
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/candidates`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-      
-      const { status, data } = response;
+      if (editingCandidate) {
 
-      if (status == 201) {
-        const newCandidate = data.candidate; 
-
-        if (newCandidate) {
-          onAddCandidate(newCandidate);
-        } else {
-          ToastError({ message: "Failed to retrieve the new candidate" });
-        }
       } else {
-        ToastError({ message: data.message });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/candidates`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+        
+        const { status, data } = response;
+  
+        if (status == 201) {
+          const newCandidate = data.candidate; 
+  
+          if (newCandidate) {
+            onAddCandidate?.(newCandidate);
+          } else {
+            ToastError({ message: "Failed to retrieve the new candidate" });
+          }
+        } else {
+          ToastError({ message: data.message });
+        }
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -124,7 +146,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
     <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-auto">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
         <div className="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800">
-          Add Candidate
+        {editingCandidate ? "Edit Candidate" : "Add Candidate"}
         </div>
         <form  
           onSubmit={handleSubmit}

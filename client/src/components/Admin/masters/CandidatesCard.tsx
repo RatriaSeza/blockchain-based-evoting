@@ -16,6 +16,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 }) => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
+  const [editingCandidate, setEditingCandidate] = useState<CandidateType | null>(null);
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -38,6 +39,11 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
       autoClose: 1400
     });
   };
+
+  const handleEditClik = (candidate: CandidateType) => {
+    setEditingCandidate(candidate);
+    setOpenAddModal(true);
+  }
 
   const handleDeleteCandidate = async (candidateId: string) => {
     try {
@@ -69,7 +75,13 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 
   return (
     <div>
-      {openAddModal && <CandidatesForm onClick={handleCloseAddModal} onAddCandidate={handleAddCandidate} />}
+      {openAddModal && 
+        <CandidatesForm 
+          onClick={handleCloseAddModal} 
+          onAddCandidate={handleAddCandidate}
+          editingCandidate={editingCandidate}
+        />
+      }
 
       <div className="flex justify-between items-center p-6">
         <h6 className="text-lg text-gray-500 font-semibold">Candidates</h6>
@@ -90,7 +102,11 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
         </button>
       </div>
 
-      <CandidatesTable initialCandidates={candidates} onDeleteCandidate={handleDeleteCandidate} />
+      <CandidatesTable 
+        initialCandidates={candidates} 
+        onEditClick={handleEditClik} 
+        onDeleteCandidate={handleDeleteCandidate} />
+
       <ToastContainer />
     </div>
   );

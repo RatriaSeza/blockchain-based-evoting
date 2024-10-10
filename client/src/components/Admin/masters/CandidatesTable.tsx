@@ -7,9 +7,10 @@ import { LoadingIcon } from "../LoadingIcon";
 type CandidatesTableProps = {
   initialCandidates: CandidateType[];
   onDeleteCandidate: (candidateId: string) => void;
+  onEditClick: (candidate: CandidateType) => void;
 };
 
-export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandidates, onDeleteCandidate }) => {
+export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandidates, onDeleteCandidate, onEditClick }) => {
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const [loading, setLoading] = useState(false);
   const [visibleActionIndex, setVisibleActionIndex] = useState<number | null>(null);
@@ -119,11 +120,15 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
                       {visibleActionIndex === index && (
                         <div ref={actionCardRef} className="absolute -left-14 bg-white p-1 w-32 shadow rounded z-10">
                           <ul className="flex flex-col text-gray-600 font-medium">
-                            <li className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-yellow-600 transition-colors">
+                            <li 
+                              onClick={() => onEditClick(candidate)}
+                              className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-yellow-600 transition-colors">
                               <PencilSquareIcon className="size-4 mr-2" />
                               Edit
                             </li>
-                            <li onClick={() => handleDeleteClick(candidate)} className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-red-500 transition-colors">
+                            <li 
+                              onClick={() => handleDeleteClick(candidate)} 
+                              className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-red-500 transition-colors">
                               <TrashIcon className="size-4 mr-2" />
                               Delete
                             </li>
