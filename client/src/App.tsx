@@ -11,6 +11,7 @@ import { NotFound } from "./pages/NotFound";
 import { LoginAdmin } from "./pages/Admin/Login";
 import { Dashboard } from "./pages/Admin/dashboard/Dashboard";
 import { Masters } from "./pages/Admin/masters/Masters";
+import { Voters } from "./pages/Admin/voters/Voters";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/masters" element={<Masters />} />
-        <Route path="/admin/voters" />
+        <Route path="/admin/voters" element={<Voters />} />
 
         {/* 404 */}
       </Routes>

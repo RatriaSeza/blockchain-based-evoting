@@ -3,7 +3,7 @@ import { create, getAll, getById, getByUserId } from "../controllers/VoterContro
 
 const router = Router();
 
-router.get("/voter", getAll);
+router.get("/voters", getAll);
 router.get("/voter/:id", getById)
 router.get("/voter/user/:userId", getByUserId);
 router.post("/voter", create);

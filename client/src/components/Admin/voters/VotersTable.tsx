@@ -1,28 +1,28 @@
-import { CandidateType } from "@components/Vote/CandidateType";
 import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import { LoadingIcon } from "../LoadingIcon";
+import { VoterType } from "src/types/VotersType";
 
-type CandidatesTableProps = {
-  initialCandidates: CandidateType[];
-  onDeleteCandidate: (candidateId: string) => void;
-  onEditClick: (candidate: CandidateType) => void;
+type VotersTableProps = {
+  initialVoters: VoterType[];
+  onDeleteVoter: (candidateId: string) => void;
+  onEditClick: (candidate: VoterType) => void;
 };
 
-export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandidates, onDeleteCandidate, onEditClick }) => {
-  const [candidates, setCandidates] = useState<CandidateType[]>([]);
+export const VotersTable: React.FC<VotersTableProps> = ({ initialVoters, onDeleteVoter, onEditClick }) => {
+  const [voters, setVoters] = useState<VoterType[]>([]);
   const [loading, setLoading] = useState(false);
   const [visibleActionIndex, setVisibleActionIndex] = useState<number | null>(null);
   const actionCardRef = useRef<HTMLDivElement | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [candidateToDelete, setCandidateToDelete] = useState<CandidateType | null>(null);
+  const [voterToDelete, setVoterToDelete] = useState<VoterType | null>(null);
 
   useEffect(() => {
     setLoading(true);
-    setCandidates(initialCandidates);
+    setVoters(initialVoters);
     setLoading(false);
-  }, [initialCandidates]);
+  }, [initialVoters]);
 
   const toggleActionCard = (index: number) => {
     setVisibleActionIndex(visibleActionIndex === index ? null : index);
@@ -41,14 +41,14 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
     };
   }, []);
 
-  const handleDeleteClick = (candidate: CandidateType) => {
-    setCandidateToDelete(candidate);
+  const handleDeleteClick = (voter: VoterType) => {
+    setVoterToDelete(voter);
     setShowDeleteModal(true);
   }
 
   const handleConfirmDelete = async () => {
-    if (candidateToDelete) {
-      onDeleteCandidate(candidateToDelete._id);
+    if (voterToDelete) {
+      onDeleteVoter(voterToDelete._id);
       setShowDeleteModal(false);
       setVisibleActionIndex(null);
     }
@@ -56,11 +56,11 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
 
   return (
     <>
-      {showDeleteModal && candidateToDelete && (
+      {showDeleteModal && voterToDelete && (
         <DeleteConfirmationModal
           onCancel={() => setShowDeleteModal(false)}
           onConfirm={handleConfirmDelete}
-          message="Are you sure you want to delete this candidate?"
+          message="Are you sure you want to delete this voter?"
         />
       )}
       
@@ -68,9 +68,8 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
         <thead className="bg-gray-100 text-sm border-gray-200 border-y-2">
           <tr className="text-gray-500">
             <th className="font-medium w-1/12 py-3 border-gray-200 border-r-2">No</th>
-            <th className="font-medium w-1/6">Image</th>
-            <th className="text-left font-medium py-3">Chief</th>
-            <th className="text-left font-medium py-3">Vice</th>
+            <th className="px-4 text-left font-medium">Name</th>
+            <th className="w-1/6 font-medium py-3">Status</th>
             <th className="font-medium w-1/12 py-3"></th>
           </tr>
         </thead>
@@ -85,28 +84,32 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
               </td>
             </tr>
           ) : (
-            candidates.length === 0 ? (
+            voters.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">No candidates available</td>
+                <td colSpan={5} className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">No voters available</td>
               </tr>
             ) : (
-              candidates.map((candidate: CandidateType, index: number) => (
+              voters.map((voter: VoterType, index: number) => (
                 <tr key={index} className="text-sm border-gray-200 border-b">
-                  <td className="text-gray-500 font-medium text-center py-3 border-gray-200 border-r">{candidate.candidateNumber}</td>
-                  <td className="flex justify-center py-1">
-                      <img src={`${import.meta.env.VITE_API_URL}/api/candidates/image/${candidate.candidateNumber}`} alt={`Candidates ${candidate.candidateNumber} image`} className="w-24 h-auto" />
-                  </td>
-                  <td className="">
+                  <td className="text-gray-500 font-medium text-center py-3 border-gray-200 border-r">{index+1}</td>
+                  <td className="px-4 py-2">
                     <div className="">
-                      <p className="text-gray-700 font-semibold">{candidate.chiefName}</p>
-                      <p className="text-gray-500">{candidate.chiefMajor} ({candidate.chiefClassOf})</p>
+                      <p className="text-gray-700 font-semibold">{voter.name}</p>
+                      <p className="text-gray-500">{voter.major} ({voter.classOf})</p>
                     </div>
                   </td>
                   <td className="">
-                  <div className="">
-                      <p className="text-gray-700 font-semibold">{candidate.viceName}</p>
-                      <p className="text-gray-500">{candidate.viceMajor} ({candidate.viceClassOf})</p>
+                    {voter.isVoted ? 
+                    (
+                    <div className="mx-auto w-fit rounded-md bg-green-600 py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm">
+                      Voted
                     </div>
+                    ) : (
+                    <div className="mx-auto w-fit rounded-md bg-red-600 py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm">
+                      Not Voted
+                    </div>
+                    )
+                    }
                   </td>
                   <td>
                     <div className="relative">
@@ -121,13 +124,13 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
                         <div ref={actionCardRef} className="absolute -left-14 bg-white p-1 w-32 shadow rounded z-10">
                           <ul className="flex flex-col text-gray-600 font-medium">
                             <li 
-                              onClick={() => onEditClick(candidate)}
+                              onClick={() => onEditClick(voter)}
                               className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-yellow-600 transition-colors">
                               <PencilSquareIcon className="size-4 mr-2" />
                               Edit
                             </li>
                             <li 
-                              onClick={() => handleDeleteClick(candidate)} 
+                              onClick={() => handleDeleteClick(voter)} 
                               className="flex items-center px-3 py-2 cursor-pointer rounded hover:bg-gray-50 hover:text-red-500 transition-colors">
                               <TrashIcon className="size-4 mr-2" />
                               Delete
