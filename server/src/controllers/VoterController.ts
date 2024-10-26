@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Voter } from "../models/Voter";
+import crypto from 'crypto';
+import { User } from "../models/User";
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -49,15 +51,26 @@ export const getByUserId = async (req: Request, res: Response): Promise<void> =>
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, major, classOf, userId } = req.body;
+    const { name, nim, major, classOf } = req.body;
+    
+    const defaultPassword = crypto.randomBytes(8).toString('hex');
+    const user = new User({
+      username: nim,
+      password: defaultPassword,
+      role: 'voter',
+    });
+    await user.save();
+
     const voter = new Voter({
       name,
+      nim,
       major,
       classOf,
-      userId,
+      userId: user._id,
     });
     await voter.save();
-    res.status(201).json(voter);
+
+    res.status(201).json({ voter, user: { username: user.username, password: defaultPassword } });
   }
   catch (error: any) {
     res.status(500).json({ error: error.message });

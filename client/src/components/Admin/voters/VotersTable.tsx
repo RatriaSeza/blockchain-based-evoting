@@ -1,8 +1,10 @@
-import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
+
+import { VoterType } from "src/types/VotersType";
+
+import { EllipsisVerticalIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import { LoadingIcon } from "../LoadingIcon";
-import { VoterType } from "src/types/VotersType";
 
 type VotersTableProps = {
   initialVoters: VoterType[];

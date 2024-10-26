@@ -1,4 +1,4 @@
-import { ToastContainer } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 import { Footer } from "@components/Admin/ui/footer/Footer"
@@ -8,9 +8,10 @@ import { VotersTable } from "@components/Admin/voters/VotersTable";
 import { VoterType } from "src/types/VotersType";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { VotersForm } from "@components/Admin/voters/VotersForm";
 
 export const Voters = () => {
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openFormModal, setOpenFormModal] = useState(false);
   const [voters, setVoters] = useState<VoterType[]>([]);
   // const [editingVoter, setEditingVoter] = useState<VoterType | null>(null);
 
@@ -26,6 +27,19 @@ export const Voters = () => {
 
     fetchVoters();
   }, []);
+
+  const handleAddVoter = (newVoter: VoterType) => {
+    setVoters((prevVoters) => [...prevVoters, newVoter]);
+    setOpenFormModal(false);
+    toast.success("Candidate added successfully", {
+      position: "bottom-right",
+      autoClose: 1400
+    });
+  };
+
+  const handleCloseForm = () => {
+    setOpenFormModal(false);
+  }
 
   return (
     <main className="bg-surface">
@@ -46,13 +60,13 @@ export const Voters = () => {
               {/* main content */}
               <div className="card">
                 <div className="pb-6">
-                  {/* {openAddModal && 
-                    <VotersForm 
-                      onClick={handleCloseAddModal} 
-                      onAddCandidate={handleAddCandidate}
-                      editingCandidate={editingCandidate}
+                  {openFormModal && 
+                    <VotersForm
+                      onClick={handleCloseForm} 
+                      onAddVoter={handleAddVoter}
+                      // editingCandidate={editingCandidate}
                     />
-                  } */}
+                  }
 
                   <div className="flex justify-between items-center p-6">
                     <h6 className="text-lg text-gray-500 font-semibold">Voters</h6>
@@ -60,7 +74,7 @@ export const Voters = () => {
 
                   <div className="flex justify-end mx-6">
                     <button 
-                      onClick={() => setOpenAddModal(!openAddModal)}
+                      onClick={() => setOpenFormModal(!openFormModal)}
                       className="flex items-center gap-1 px-4 py-2 text-neutral-500 text-sm font-medium border rounded-lg shadow mb-2 cursor-pointer hover:bg-gray-100 active:bg-gray-50">
                       <PlusIcon className="size-4" />
                       <p>Add</p>

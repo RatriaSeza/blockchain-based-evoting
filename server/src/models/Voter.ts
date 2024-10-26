@@ -3,6 +3,7 @@ import { IVoter } from "../interfaces/IVoter";
 
 const VoterSchema = new Schema<IVoter>({
   name: { type: String, required: true },
+  nim: { type: String, required: true },
   major: { type: String, required: true },
   classOf: { type: Number, required: true },
   isVoted: { type: Boolean, default: false },
