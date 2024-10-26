@@ -37,6 +37,26 @@ export const Voters = () => {
     });
   };
 
+  const handleDeleteVoter = async (voterId: string) => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/voters/${voterId}`);
+      if (response.status === 200) {
+        setVoters((prevVoters) => prevVoters.filter(voter => voter._id !== voterId));
+        toast.success("Candidate deleted successfully", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      } else {
+        toast.error("Failed to delete candidate", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
+    }
+  }
+
   const handleCloseForm = () => {
     setOpenFormModal(false);
   }
@@ -83,8 +103,8 @@ export const Voters = () => {
 
                   <VotersTable 
                     initialVoters={voters} 
+                    onDeleteVoter={handleDeleteVoter} 
                     // onEditClick={handleEditClik} 
-                    // onDeleteCandidate={handleDeleteCandidate} 
                   />
 
                   <ToastContainer />
