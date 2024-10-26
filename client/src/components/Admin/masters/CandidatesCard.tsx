@@ -71,6 +71,7 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
 
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
+    setEditingCandidate(null);
   }
 
   return (

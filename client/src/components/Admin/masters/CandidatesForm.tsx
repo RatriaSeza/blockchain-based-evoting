@@ -55,7 +55,8 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
     if (!candidate.viceClassOf) {
       newErrors.viceClassOf = "Vice class of year is required";
     }
-    if (!candidate.image) {
+    
+    if (!candidate.image && !editingCandidate) {
       newErrors.image = "Image is required";
     }
 
@@ -64,8 +65,6 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
   useEffect(() => {
     if (editingCandidate) {
-      console.log("Editing candidate:", editingCandidate);
-      
       setCandidate({
         candidateNumber: editingCandidate.candidateNumber.toString(),
         chiefName: editingCandidate.chiefName,
@@ -103,7 +102,25 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
     try {
       if (editingCandidate) {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/candidates/${editingCandidate._id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
 
+        const { status, data } = response;
+
+        if (status == 200) {
+          const updatedCandidate = data.candidate;
+
+          if (updatedCandidate) {
+            onAddCandidate?.(updatedCandidate);
+          } else {
+            ToastError({ message: "Failed to retrieve the updated candidate" });
+          }
+        } else {
+          ToastError({ message: data.message });
+        }
       } else {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/candidates`, formData, {
           headers: {
@@ -143,7 +160,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   }
 
   return (
-    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-auto">
+    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-hidden">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
         <div className="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800">
         {editingCandidate ? "Edit Candidate" : "Add Candidate"}
@@ -156,6 +173,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Candidate Number</label>
               <input
+                value={candidate.candidateNumber}
                 onChange={(e) => setCandidate({ ...candidate, candidateNumber: e.target.value })}
                 type="number"
                 className={`w-1/5 bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.candidateNumber ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -168,6 +186,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Chief Name</label>
                 <input
+                  value={candidate.chiefName}
                   onChange={(e) => setCandidate({ ...candidate, chiefName: e.target.value })}
                   type="text"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.chiefName ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -178,6 +197,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Vice Name</label>
                 <input
+                  value={candidate.viceName}
                   onChange={(e) => setCandidate({ ...candidate, viceName: e.target.value })}
                   type="text"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.viceName ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -191,6 +211,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Chief Major</label>
                 <input
+                  value={candidate.chiefMajor}
                   onChange={(e) => setCandidate({ ...candidate, chiefMajor: e.target.value })}
                   type="text"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.chiefMajor ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -201,6 +222,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Vice Major</label>
                 <input
+                  value={candidate.viceMajor}
                   onChange={(e) => setCandidate({ ...candidate, viceMajor: e.target.value })}
                   type="text"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.viceMajor ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -214,6 +236,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Chief Class Of</label>
                 <input
+                  value={candidate.chiefClassOf}
                   onChange={(e) => setCandidate({ ...candidate, chiefClassOf: e.target.value })}
                   type="number"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.chiefClassOf ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -224,6 +247,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
               <div className="w-full">
                 <label className="block mb-2 text-sm text-slate-600">Vice Class Of</label>
                 <input
+                  value={candidate.viceClassOf}
                   onChange={(e) => setCandidate({ ...candidate, viceClassOf: e.target.value })}
                   type="number"
                   className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.viceClassOf ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}

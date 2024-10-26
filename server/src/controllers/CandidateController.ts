@@ -83,6 +83,42 @@ export const getTotalVotesByCandidate = async (req: Request, res: Response): Pro
   }
 }
 
+export const editCandidate = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Ensure the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid candidate ID" });
+      return;
+    }
+
+    // Find the candidate by ID and update the candidate data
+    const candidate = await Candidate.findByIdAndUpdate(id, {
+      candidateNumber: req.body.candidateNumber,
+      chiefName: req.body.chiefName,
+      viceName: req.body.viceName,
+      chiefMajor: req.body.chiefMajor,
+      viceMajor: req.body.viceMajor,
+      chiefClassOf: req.body.chiefClassOf,
+      viceClassOf: req.body.viceClassOf,
+      candidateImage: req.file ? req.file.buffer.toString("base64") : undefined,
+    }, { new: true });
+
+    // If no candidate was found and updated, return a 404
+    if (!candidate) {
+      res.status(404).json({ error: "Candidate not found" });
+      return;
+    }
+
+    // Success: Return the updated candidate data
+    res.status(200).json({ message: "Candidate updated", candidate });
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export const deleteCandidate = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
