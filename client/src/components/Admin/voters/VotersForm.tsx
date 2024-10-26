@@ -41,20 +41,12 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", voter.name);
-    formData.append("nim", voter.nim);
-    formData.append("major", voter.major);
-    formData.append("classOf", voter.classOf);
-
     try {
       // if (editingCandidate) {
         // return;
       // } else {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/voter`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/voter`, { ...voter }, {
+          withCredentials: true
         });
         
         const { status, data } = response;
@@ -115,7 +107,6 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
         </div>
         <form  
           onSubmit={handleSubmit}
-          encType="multipart/form-data"
           className="relative border-t border-slate-200 py-4 leading-normal text-slate-600 font-light">
           <div className="flex flex-col gap-4">
             <div className="w-full">

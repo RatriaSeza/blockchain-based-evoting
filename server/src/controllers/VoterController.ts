@@ -51,21 +51,20 @@ export const getByUserId = async (req: Request, res: Response): Promise<void> =>
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, nim, major, classOf } = req.body;
-    
     const defaultPassword = crypto.randomBytes(8).toString('hex');
+
     const user = new User({
-      username: nim,
+      username: req.body.nim,
       password: defaultPassword,
       role: 'voter',
     });
     await user.save();
 
     const voter = new Voter({
-      name,
-      nim,
-      major,
-      classOf,
+      name: req.body.name,
+      nim: req.body.nim,
+      major: req.body.major,
+      classOf: req.body.classOf,
       userId: user._id,
     });
     await voter.save();
