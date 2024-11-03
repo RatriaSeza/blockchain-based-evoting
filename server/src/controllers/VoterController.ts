@@ -77,6 +77,36 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+export const update = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Ensure the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid voter ID" });
+      return;
+    }
+
+    // Find the voter by ID and update the voter data
+    const updatedVoter = await Voter.findByIdAndUpdate(id, {
+      name: req.body.name,
+      nim: req.body.nim,
+      major: req.body.major,
+      classOf: req.body.classOf,
+    }, { new: true });
+
+    if (!updatedVoter) {
+      res.status(404).json({ message: "Voter not found." });
+      return;
+    }
+
+    res.status(200).json({ message: "Voter updated", voter: updatedVoter });
+  }
+  catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export const deleteById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
