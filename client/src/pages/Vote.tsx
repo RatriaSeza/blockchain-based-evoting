@@ -89,7 +89,7 @@ const Vote = () => {
                     <CandidateSkeleton key={index} />
                   ))
                 ) : (
-                  candidates.map((candidate) => (
+                  candidates.sort((a,b) => a.candidateNumber - b.candidateNumber).map((candidate) => (
                     <CandidateCard key={candidate.candidateNumber} {...candidate} isLogin={isLogin} />
                   ))
                 )}
