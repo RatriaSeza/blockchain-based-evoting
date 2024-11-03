@@ -1,4 +1,5 @@
 import { CandidatesCard } from "@components/Admin/masters/CandidatesCard"
+import { MastersCard } from "@components/Admin/masters/MastersCard"
 import { Footer } from "@components/Admin/ui/footer/Footer"
 import { Header } from "@components/Admin/ui/header/Header"
 import { Sidebar } from "@components/Admin/ui/sidebar/Sidebar"
@@ -52,7 +53,7 @@ export const Masters = () => {
                   }
 
                   {active === 'candidates' && <CandidatesCard onCloseClick={handleCloseClick} />}
-                  {active === 'master-data' && <CandidatesCard onCloseClick={handleCloseClick} />}
+                  {active === 'master-data' && <MastersCard onCloseClick={handleCloseClick} />}
                 </div>
               </div>
 
