@@ -32,9 +32,21 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
   }, []);
 
   const handleAddCandidate = (newCandidate: CandidateType) => {
-    setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
+    setCandidates((prevCandidates) => {
+      const existingCandidateIndex = prevCandidates.findIndex(candidate => candidate._id === newCandidate._id);
+      if (existingCandidateIndex !== -1) {
+        // Update existing candidate
+        const updatedCandidates = [...prevCandidates];
+        updatedCandidates[existingCandidateIndex] = newCandidate;
+        return updatedCandidates;
+      } else {
+        // Add new candidate
+        return [...prevCandidates, newCandidate];
+      }
+    });
     setOpenAddModal(false);
-    toast.success("Candidate added successfully", {
+    setEditingCandidate(null);
+    toast.success("Candidate saved successfully", {
       position: "bottom-right",
       autoClose: 1400
     });

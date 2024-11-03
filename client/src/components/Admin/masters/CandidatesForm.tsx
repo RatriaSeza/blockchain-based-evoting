@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
-import { ToastError, ToastWarning } from "../../../components/Toast";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { CandidateType } from "@components/Vote/CandidateType";
 
@@ -65,6 +64,8 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
   useEffect(() => {
     if (editingCandidate) {
+      console.log(editingCandidate);
+      
       setCandidate({
         candidateNumber: editingCandidate.candidateNumber.toString(),
         chiefName: editingCandidate.chiefName,
@@ -115,11 +116,21 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
           if (updatedCandidate) {
             onAddCandidate?.(updatedCandidate);
+            toast.success("Candidate updated successfully", {
+              position: "bottom-right",
+              autoClose: 1400
+            });
           } else {
-            ToastError({ message: "Failed to retrieve the updated candidate" });
+            toast.error("Failed to retrieve the updated candidate", {
+              position: "bottom-right",
+              autoClose: 1400
+            });
           }
         } else {
-          ToastError({ message: data.message });
+          toast.error(data.message, {
+            position: "bottom-right",
+            autoClose: 1400
+          });
         }
       } else {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/candidates`, formData, {
@@ -135,24 +146,36 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   
           if (newCandidate) {
             onAddCandidate?.(newCandidate);
+            toast.success("Candidate added successfully", {
+              position: "bottom-right",
+              autoClose: 1400
+            });
           } else {
-            ToastError({ message: "Failed to retrieve the new candidate" });
+            toast.error("Failed to retrieve the new candidate", {
+              position: "bottom-right",
+              autoClose: 1400
+            });
           }
         } else {
-          ToastError({ message: data.message });
+          toast.error(data.message, {
+            position: "bottom-right",
+            autoClose: 1400
+          });
         }
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          ToastError({ message:error.response.data.message || "An error occurred. Please try again."});
-        } else if (error.request) {
-          ToastWarning({ message: "No response from server. Please try again later." });
-        } else {
-          ToastWarning({ message: "An error occurred. Please try again." });
+          toast.error(error.response.data.message || "An error occurred. Please try again.", {
+            position: "bottom-right",
+            autoClose: 1400
+          });
         }
       } else {
-        ToastWarning({ message: "An unexpected error occurred. Please try again." });
+        toast.error("An error occurred. Please try again.", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
       }
     } finally {
       setLoading(false);
@@ -160,7 +183,7 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
   }
 
   return (
-    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-hidden">
+    <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-auto">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
         <div className="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800">
         {editingCandidate ? "Edit Candidate" : "Add Candidate"}
@@ -259,11 +282,12 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Image</label>
+              {editingCandidate && <img src={`${import.meta.env.VITE_API_URL}/api/candidates/image/${candidate.candidateNumber}`} alt={`Candidates ${candidate.candidateNumber} image`} className="w-36 h-auto mb-2" /> }
               <input
                 onChange={handleFileChange}
                 type="file"
                 accept="image/*"
-                className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.image ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
+                className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.image ? 'border-red-500' : 'border-slate-200'} rounded-md px-2 py-1 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
                 placeholder=""
               />
               {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}           
