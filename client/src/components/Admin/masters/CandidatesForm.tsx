@@ -64,8 +64,6 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
 
   useEffect(() => {
     if (editingCandidate) {
-      console.log(editingCandidate);
-      
       setCandidate({
         candidateNumber: editingCandidate.candidateNumber.toString(),
         chiefName: editingCandidate.chiefName,

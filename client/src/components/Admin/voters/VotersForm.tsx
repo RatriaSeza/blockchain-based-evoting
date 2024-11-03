@@ -1,14 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { VoterType } from "src/types/VotersType";
 
 type VotersFormProps = {
   onClick: () => void;
   onAddVoter?: (newVoter: VoterType) => void;
+  editingVoter?: VoterType | null;
 };
 
-export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) => {
+export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, editingVoter }) => {
   const [voter, setVoter] = useState({
     name: '',
     nim: '',
@@ -30,6 +31,17 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
     return newErrors;
   };
 
+  useEffect(() => {
+    if (editingVoter) {
+      setVoter({
+        name: editingVoter.name,
+        nim: editingVoter.nim,
+        major: editingVoter.major,
+        classOf: editingVoter.classOf.toString(),
+      });
+    }
+  }, [editingVoter]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
@@ -42,9 +54,31 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
     }
 
     try {
-      // if (editingCandidate) {
-        // return;
-      // } else {
+      if (editingVoter) {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/voter/${editingVoter._id}`, { ...voter }, {
+          withCredentials: true
+        });
+
+        const { status, data } = response;
+
+        if (status == 200) {
+          const updatedVoter = data.voter;
+
+          if (updatedVoter) {
+            onAddVoter?.(updatedVoter);
+          } else {
+            toast.error("Failed to retrieve the updated candidate", {
+              position: "bottom-right",
+              autoClose: 1400
+            });
+          }
+        } else {
+          toast.error(data.message, {
+            position: "bottom-right",
+            autoClose: 1400
+          });
+        }
+      } else {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/voter`, { ...voter }, {
           withCredentials: true
         });
@@ -68,7 +102,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
             autoClose: 1400
           });
         }
-      // }
+      }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -102,8 +136,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
     <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-hidden">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
         <div className="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800">
-        {/* {editingCandidate ? "Edit Candidate" : "Add Candidate"} */}
-        Add Voter
+        {editingVoter ? "Edit Voter" : "Add Voter"}
         </div>
         <form  
           onSubmit={handleSubmit}
@@ -112,9 +145,11 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Name</label>
               <input
+                value={voter.name}
                 onChange={(e) => setVoter({ ...voter, name: e.target.value })}
                 type="text"
                 className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.name ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
+                autoFocus
               />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
@@ -122,6 +157,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">NIM</label>
               <input
+                value={voter.nim}
                 onChange={(e) => setVoter({ ...voter, nim: e.target.value })}
                 type="text"
                 className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.nim ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -132,6 +168,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Major</label>
               <input
+                value={voter.major}
                 onChange={(e) => setVoter({ ...voter, major: e.target.value })}
                 type="text"
                 className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.major ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
@@ -142,6 +179,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter }) =
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Class Of</label>
               <input
+                value={voter.classOf}
                 onChange={(e) => setVoter({ ...voter, classOf: e.target.value })}
                 type="number"
                 className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.classOf ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}

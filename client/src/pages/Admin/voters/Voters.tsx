@@ -13,7 +13,7 @@ import { VotersForm } from "@components/Admin/voters/VotersForm";
 export const Voters = () => {
   const [openFormModal, setOpenFormModal] = useState(false);
   const [voters, setVoters] = useState<VoterType[]>([]);
-  // const [editingVoter, setEditingVoter] = useState<VoterType | null>(null);
+  const [editingVoter, setEditingVoter] = useState<VoterType | null>(null);
 
   useEffect(() => {
     const fetchVoters = async () => {
@@ -29,13 +29,30 @@ export const Voters = () => {
   }, []);
 
   const handleAddVoter = (newVoter: VoterType) => {
-    setVoters((prevVoters) => [...prevVoters, newVoter]);
+    setVoters((prevVoters) => {
+      const existingVoterIndex = prevVoters.findIndex(voter => voter._id === newVoter._id);
+      if (existingVoterIndex !== -1) {
+        // Update existing candidate
+        const updatedVoters = [...prevVoters];
+        updatedVoters[existingVoterIndex] = newVoter;
+        return updatedVoters;
+      } else {
+        // Add new candidate
+        return [...prevVoters, newVoter];
+      }
+    });
     setOpenFormModal(false);
+    setEditingVoter(null);
     toast.success("Candidate added successfully", {
       position: "bottom-right",
       autoClose: 1400
     });
   };
+
+  const handleEditClik = (voter: VoterType) => {
+    setEditingVoter(voter);
+    setOpenFormModal(true);
+  }
 
   const handleDeleteVoter = async (voterId: string) => {
     try {
@@ -59,6 +76,7 @@ export const Voters = () => {
 
   const handleCloseForm = () => {
     setOpenFormModal(false);
+    setEditingVoter(null);
   }
 
   return (
@@ -84,7 +102,7 @@ export const Voters = () => {
                     <VotersForm
                       onClick={handleCloseForm} 
                       onAddVoter={handleAddVoter}
-                      // editingCandidate={editingCandidate}
+                      editingVoter={editingVoter}
                     />
                   }
 
@@ -104,7 +122,7 @@ export const Voters = () => {
                   <VotersTable 
                     initialVoters={voters} 
                     onDeleteVoter={handleDeleteVoter} 
-                    // onEditClick={handleEditClik} 
+                    onEditClick={handleEditClik} 
                   />
 
                   <ToastContainer />

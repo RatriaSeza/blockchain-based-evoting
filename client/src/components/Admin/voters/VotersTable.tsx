@@ -70,7 +70,7 @@ export const VotersTable: React.FC<VotersTableProps> = ({ initialVoters, onDelet
         <thead className="bg-gray-100 text-sm border-gray-200 border-y-2">
           <tr className="text-gray-500">
             <th className="font-medium w-1/12 py-3 border-gray-200 border-r-2">No</th>
-            <th className="px-4 text-left font-medium">Name</th>
+            <th className="px-4 text-left font-medium">Voter</th>
             <th className="w-1/6 font-medium py-3">Status</th>
             <th className="font-medium w-1/12 py-3"></th>
           </tr>
@@ -96,7 +96,7 @@ export const VotersTable: React.FC<VotersTableProps> = ({ initialVoters, onDelet
                   <td className="text-gray-500 font-medium text-center py-3 border-gray-200 border-r">{index+1}</td>
                   <td className="px-4 py-2">
                     <div className="">
-                      <p className="text-gray-700 font-semibold">{voter.name}</p>
+                      <p className="text-gray-700 font-semibold">{voter.name} ({voter.nim})</p>
                       <p className="text-gray-500">{voter.major} ({voter.classOf})</p>
                     </div>
                   </td>
