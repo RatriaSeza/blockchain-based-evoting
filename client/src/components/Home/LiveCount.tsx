@@ -31,7 +31,7 @@ const LiveCount = () => {
         })
       );
 
-      setCandidates(candidatesWithVotes);
+      setCandidates(candidatesWithVotes.sort((a, b) => a.candidateNumber - b.candidateNumber));
       setTotalVotes(totalVotes);
       
     } catch (error: unknown) {
