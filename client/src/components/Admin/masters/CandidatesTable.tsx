@@ -20,7 +20,7 @@ export const CandidatesTable: React.FC<CandidatesTableProps> = ({ initialCandida
 
   useEffect(() => {
     setLoading(true);
-    setCandidates(initialCandidates);
+    setCandidates(initialCandidates.sort((a, b) => a.candidateNumber - b.candidateNumber));
     setLoading(false);
   }, [initialCandidates]);
 
