@@ -83,6 +83,7 @@ export const MastersCard: React.FC<MastersCardProps> = ({
           onClick={handleCloseForm} 
           onAddMaster={handleAddMaster}
           editingMaster={editingMaster}
+          existingMasters={masters.map(master => master.key)}
         />
       }
 

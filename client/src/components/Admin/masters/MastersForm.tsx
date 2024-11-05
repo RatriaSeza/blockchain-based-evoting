@@ -8,9 +8,10 @@ type MastersFormProps = {
   onClick: () => void;
   onAddMaster?: (newMaster: MastersType) => void;
   editingMaster?: MastersType | null;
+  existingMasters: string[];
 };
 
-export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, editingMaster }) => {
+export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, editingMaster, existingMasters }) => {
   const [master, setMaster] = useState({
     key: "",
     value: "",
@@ -21,7 +22,8 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!master.key) { newErrors.key = "Master key is required"; }
+    if (master.key == '') { newErrors.key = "Master key is required"; }
+    if (existingMasters.includes(master.key)) { newErrors.key = "Master key already exists"; }
     if (!master.value) { newErrors.value = "Master value is required"; }
 
     return newErrors;
@@ -125,13 +127,15 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
           <div className="flex flex-col gap-4">
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Key</label>
-              <input
+              <select
+                className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
                 value={master.key}
                 onChange={(e) => setMaster({ ...master, key: e.target.value })}
-                type="text"
-                className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.key ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
-                autoFocus
-              />
+              >
+                <option value="">-- Select key--</option>
+                <option value="Start Time">Start Time</option>
+                <option value="End Time">End Time</option>
+              </select>
               {errors.key && <p className="text-red-500 text-xs mt-1">{errors.key}</p>}
             </div>
 
@@ -140,7 +144,7 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
               <input
                 value={master.value}
                 onChange={(e) => setMaster({ ...master, value: e.target.value })}
-                type="text"
+                type="datetime-local"
                 className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.value ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
               />
               {errors.value && <p className="text-red-500 text-xs mt-1">{errors.value}</p>}
