@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import { LoadingIcon } from "../LoadingIcon";
 import { MastersType } from "src/types/MastersType";
+import { formatDateToIndonesian } from "../../../utils/formatDateToIndonesian";
 
 type MastersTableProps = {
   initialMasters: MastersType[];
@@ -93,7 +94,7 @@ export const MastersTable: React.FC<MastersTableProps> = ({ initialMasters, onDe
                 <tr key={index} className="text-sm border-gray-200 border-b">
                   <td className="text-gray-500 font-medium text-center py-3 border-gray-200 border-r">{index+1}</td>
                   <td className="text-gray-500 font-medium text-left p-3">{master.key}</td>
-                  <td className="text-gray-500 font-medium text-left p-3">{master.value}</td>
+                  <td className="text-gray-500 font-medium text-left p-3">{formatDateToIndonesian(master.value)}</td>
                   <td>
                     <div className="relative">
                       <span className="flex justify-center">
