@@ -3,8 +3,8 @@ import { getMasters, getMasterByKey, createMaster } from "../controllers/MasterC
 
 const router = Router();
 
-router.get("/master", getMasters);
-router.get("/master/:key", getMasterByKey);
-router.post("/master", createMaster);
+router.get("/masters", getMasters);
+router.get("/masters/:key", getMasterByKey);
+router.post("/masters", createMaster);
 
 export default router;
