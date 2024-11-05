@@ -1,5 +1,10 @@
 import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { ToastContainer } from "react-toastify";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { MastersType } from "src/types/MastersType";
+import { MastersTable } from "./MastersTable";
+import { LoadingIcon } from "../LoadingIcon";
 
 type MastersCardProps = {
   onCloseClick: () => void;
@@ -8,6 +13,52 @@ type MastersCardProps = {
 export const MastersCard: React.FC<MastersCardProps> = ({
   onCloseClick,
 }) => {
+  const [masters, setMasters] = useState<MastersType[]>([]);
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [editingMaster, setEditingMaster] = useState<MastersType | null>(null);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    setLoading(true);
+    const fetchMasters = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/masters`);
+        setMasters(response.data);
+      } catch (error) {
+        console.error("Error fetching masters:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMasters();
+  }, []);
+
+  const handleEditClik = (master: MastersType) => {
+    setEditingMaster(master);
+    setOpenFormModal(true);
+  }
+
+  const handleDeleteMaster = async (masterId: string) => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/masters/${masterId}`);
+      if (response.status === 200) {
+        setMasters((prevMasters) => prevMasters.filter(master => master._id !== masterId));
+        toast.success("Master data deleted successfully", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      } else {
+        toast.error("Failed to delete master data", {
+          position: "bottom-right",
+          autoClose: 1400
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting master data:", error);
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center p-6">
@@ -22,12 +73,28 @@ export const MastersCard: React.FC<MastersCardProps> = ({
 
       <div className="flex justify-end mx-6">
         <button 
-          // onClick={() => setOpenAddModal(!openAddModal)}
+          onClick={() => setOpenFormModal(!openFormModal)}
           className="flex items-center gap-1 px-4 py-2 text-neutral-500 text-sm font-medium border rounded-lg shadow mb-2 cursor-pointer hover:bg-gray-100 active:bg-gray-50">
           <PlusIcon className="size-4" />
           <p>Add</p>
         </button>
       </div>
+
+      {loading ? (
+        <div className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">
+          <p className="inline-flex items-center">
+            <span className="mr-2"><LoadingIcon size={4}/></span>
+            Loading
+          </p>
+        </div>
+      ) : masters.length === 0 ? (
+        <div className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">No masters available</div>
+      ) : (
+        <MastersTable
+          initialMasters={masters} 
+          onEditClick={handleEditClik} 
+          onDeleteMaster={handleDeleteMaster} />
+      )}
 
       <ToastContainer />
     </div>
