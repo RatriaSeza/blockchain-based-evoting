@@ -1,10 +1,12 @@
 import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { MastersType } from "src/types/MastersType";
 import { MastersTable } from "./MastersTable";
 import { LoadingIcon } from "../LoadingIcon";
+import { MastersForm } from "./MastersForm";
+import { ToastError, ToastSuccess } from "@components/Toast";
 
 type MastersCardProps = {
   onCloseClick: () => void;
@@ -39,28 +41,51 @@ export const MastersCard: React.FC<MastersCardProps> = ({
     setOpenFormModal(true);
   }
 
+  const handleAddMaster = (newMaster: MastersType) => {
+    setMasters((prevMasters) => {
+      const existingMasterIndex = prevMasters.findIndex(master => master._id === newMaster._id);
+      if (existingMasterIndex !== -1) {
+        const updatedMasters = [...prevMasters];
+        updatedMasters[existingMasterIndex] = newMaster;
+        return updatedMasters;
+      } else {
+        return [...prevMasters, newMaster];
+      }
+    });
+
+    setOpenFormModal(false);
+    setEditingMaster(null);
+  };
+
   const handleDeleteMaster = async (masterId: string) => {
     try {
       const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/masters/${masterId}`);
       if (response.status === 200) {
         setMasters((prevMasters) => prevMasters.filter(master => master._id !== masterId));
-        toast.success("Master data deleted successfully", {
-          position: "bottom-right",
-          autoClose: 1400
-        });
+        ToastSuccess({ message: "Master data deleted successfully", duration: 1500 });
       } else {
-        toast.error("Failed to delete master data", {
-          position: "bottom-right",
-          autoClose: 1400
-        });
+        ToastError({ message: "Failed to delete master data", duration: 1500 });
       }
     } catch (error) {
       console.error("Error deleting master data:", error);
     }
   }
 
+  const handleCloseForm = () => {
+    setOpenFormModal(false);
+    setEditingMaster(null);
+  }
+
   return (
     <div>
+      {openFormModal && 
+        <MastersForm
+          onClick={handleCloseForm} 
+          onAddMaster={handleAddMaster}
+          editingMaster={editingMaster}
+        />
+      }
+
       <div className="flex justify-between items-center p-6">
         <h6 className="text-lg text-gray-500 font-semibold">Masters</h6>
         <button

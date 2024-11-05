@@ -28,7 +28,7 @@ export const createMaster = async (req: Request, res: Response): Promise<void> =
       value
     });
     await master.save();
-    res.status(201).json(master);
+    res.status(201).json({ master });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
