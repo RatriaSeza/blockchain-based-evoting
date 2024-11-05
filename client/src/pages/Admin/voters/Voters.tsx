@@ -43,7 +43,7 @@ export const Voters = () => {
     });
     setOpenFormModal(false);
     setEditingVoter(null);
-    toast.success("Candidate added successfully", {
+    toast.success("Voter added successfully", {
       position: "bottom-right",
       autoClose: 1400
     });
@@ -59,18 +59,18 @@ export const Voters = () => {
       const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/voters/${voterId}`);
       if (response.status === 200) {
         setVoters((prevVoters) => prevVoters.filter(voter => voter._id !== voterId));
-        toast.success("Candidate deleted successfully", {
+        toast.success("Voter deleted successfully", {
           position: "bottom-right",
           autoClose: 1400
         });
       } else {
-        toast.error("Failed to delete candidate", {
+        toast.error("Failed to delete voter", {
           position: "bottom-right",
           autoClose: 1400
         });
       }
     } catch (error) {
-      console.error("Error deleting candidate:", error);
+      console.error("Error deleting voter:", error);
     }
   }
 
