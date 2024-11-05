@@ -23,7 +23,7 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
     const newErrors: { [key: string]: string } = {};
 
     if (master.key == '') { newErrors.key = "Master key is required"; }
-    if (existingMasters.includes(master.key)) { newErrors.key = "Master key already exists"; }
+    if (existingMasters.includes(master.key) && !editingMaster) { newErrors.key = "Master key already exists"; }
     if (!master.value) { newErrors.value = "Master value is required"; }
 
     return newErrors;
@@ -61,7 +61,11 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
           const updatedMaster = data.master;
 
           if (updatedMaster) {
-            onAddMaster?.(updatedMaster);
+            ToastSuccess({ message: "Master data updated successfully", duration: 1400 });
+            setTimeout(() => {
+              onAddMaster?.(updatedMaster);
+              setLoading(false);
+            }, 2000);
           } else {
             toast.error("Failed to retrieve the updated master", {
               position: "bottom-right",
@@ -131,6 +135,7 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
                 value={master.key}
                 onChange={(e) => setMaster({ ...master, key: e.target.value })}
+                {...(editingMaster ? { disabled: true } : {})}
               >
                 <option value="">-- Select key--</option>
                 <option value="Start Time">Start Time</option>

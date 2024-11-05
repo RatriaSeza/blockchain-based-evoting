@@ -34,6 +34,24 @@ export const createMaster = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+export const update = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { key, value } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid master ID" });
+      return;
+    }
+
+    const updatedMaster = { key, value, _id: id };
+    await Master.findByIdAndUpdate(id, updatedMaster, { new: true });
+    res.status(200).json({ master: updatedMaster });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const deleteById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
