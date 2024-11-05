@@ -21,7 +21,7 @@ export const Voters = () => {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/voters`);
         setVoters(response.data);
       } catch (error) {
-        console.error("Error fetching candidates:", error);
+        console.error("Error fetching voters:", error);
       }
     };
 
