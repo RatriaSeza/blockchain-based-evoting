@@ -9,31 +9,45 @@ const Countdown = () => {
     seconds: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState("");
 
   useEffect(() =>  {
-    const getDeadline = async () => {
+    const getTimes = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/master/deadline`);
+        const startTimeResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/masters/start-time`);
+        const endTimeResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/masters/end-time`);
         const currentTime = new Date().getTime();
-        const deadline = new Date(response.data.value).getTime();
-        const diff = deadline - currentTime;
-  
-        if (diff > 0) {
-          const hours = Math.floor(diff / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  
-          setTime({ hours, minutes, seconds });
+        const startTime =  new Date(startTimeResponse.data.value).getTime();
+        const endTime = new Date(endTimeResponse.data.value).getTime();
+        
+        if (currentTime < startTime) {
+          setStatus("Start In:");
+          const diff = Math.floor((startTime - currentTime) / 1000);
+          setTime({
+            hours: Math.floor(diff / 3600),
+            minutes: Math.floor((diff % 3600) / 60),
+            seconds: Math.floor((diff % 3600) % 60),
+          });
+        } else if (currentTime >= startTime && currentTime < endTime) {
+          setStatus("End In:");
+          const diff = Math.floor((endTime - currentTime) / 1000);
+          setTime({
+            hours: Math.floor(diff / 3600),
+            minutes: Math.floor((diff % 3600) / 60),
+            seconds: Math.floor((diff % 3600) % 60),
+          });
+        } else {
+          setStatus("Ended");
+          setTime({hours: 0, minutes: 0, seconds: 0});
         }
         setLoading(false);
-        return;
       } catch (error: unknown) {
         console.error(error);
         setLoading(false);
       }
     }
 
-    getDeadline();
+    getTimes();
   }, []);
 
   useEffect(() => {
@@ -64,7 +78,7 @@ const Countdown = () => {
   return (
     <div className="relative flex md:block justify-between items-center gap-4 px-6 md:px-12 py-4 md:py-8 rounded bg-countdown">
       <div className="flex flex-col justify-between gap-1">
-        <h4 className="font-medium md:font-semibold grid items-center text-neutral-200">Time Remaining</h4>
+        <h4 className="font-medium md:font-semibold grid items-center text-neutral-200">{loading ? 'Loading...' : status}</h4>
         {loading ? (
           <CountdownSkeleton />
         ) : (

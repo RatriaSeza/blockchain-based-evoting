@@ -75,7 +75,7 @@ const Home = () => {
             )}
             <div className="text-center mb-6 md:mb-8">
               <h1 className="text-3xl md:text-6xl font-semibold mb-6 md:mb-8">Pemira FSM Undip</h1>
-              <p className="text-base md:text-2xl mb-6">""Satu Suara Untuk Perubahan, Beda Pilihan Jaga Persatuan"</p>
+              <p className="text-base md:text-2xl mb-6">"Satu Suara Untuk Perubahan, Beda Pilihan Jaga Persatuan"</p>
               <a href="/vote">
                 <Button label="Vote Now!"/>
               </a>

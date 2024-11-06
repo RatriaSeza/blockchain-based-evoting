@@ -138,8 +138,8 @@ export const MastersForm: React.FC<MastersFormProps> = ({ onClick, onAddMaster, 
                 {...(editingMaster ? { disabled: true } : {})}
               >
                 <option value="">-- Select key--</option>
-                <option value="Start Time">Start Time</option>
-                <option value="End Time">End Time</option>
+                <option value="start-time">Start Time</option>
+                <option value="end-time">End Time</option>
               </select>
               {errors.key && <p className="text-red-500 text-xs mt-1">{errors.key}</p>}
             </div>
