@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { CandidateType } from "@components/Vote/CandidateType";
+import { ToastSuccess } from "@components/Toast";
 
 type CandidatesFormType = {
   onClick: () => void;
@@ -113,11 +114,11 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
           const updatedCandidate = data.candidate;
 
           if (updatedCandidate) {
-            onAddCandidate?.(updatedCandidate);
-            toast.success("Candidate updated successfully", {
-              position: "bottom-right",
-              autoClose: 1400
-            });
+            ToastSuccess({ message: "Master data updated successfully", duration: 1400 });
+            setTimeout(() => {
+              onAddCandidate?.(updatedCandidate);
+              setLoading(false);
+            }, 2000);
           } else {
             toast.error("Failed to retrieve the updated candidate", {
               position: "bottom-right",
@@ -143,11 +144,11 @@ export const CandidatesForm: React.FC<CandidatesFormType> = ({ onClick, onAddCan
           const newCandidate = data.candidate; 
   
           if (newCandidate) {
-            onAddCandidate?.(newCandidate);
-            toast.success("Candidate added successfully", {
-              position: "bottom-right",
-              autoClose: 1400
-            });
+            ToastSuccess({ message: "Candidate added successfully", duration: 1400 });
+            setTimeout(() => {
+              onAddCandidate?.(newCandidate);
+              setLoading(false);
+            }, 2000);
           } else {
             toast.error("Failed to retrieve the new candidate", {
               position: "bottom-right",

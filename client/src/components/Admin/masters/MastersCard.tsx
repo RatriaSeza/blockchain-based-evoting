@@ -2,11 +2,11 @@ import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { ToastError, ToastSuccess } from "@components/Toast";
 import { MastersType } from "src/types/MastersType";
 import { MastersTable } from "./MastersTable";
-import { LoadingIcon } from "../LoadingIcon";
 import { MastersForm } from "./MastersForm";
-import { ToastError, ToastSuccess } from "@components/Toast";
+import { LoadingIcon } from "../LoadingIcon";
 
 type MastersCardProps = {
   onCloseClick: () => void;
@@ -28,6 +28,7 @@ export const MastersCard: React.FC<MastersCardProps> = ({
         setMasters(response.data);
       } catch (error) {
         console.error("Error fetching masters:", error);
+        ToastError({ message: "Error fetching masters data", duration: 1500 });
       } finally {
         setLoading(false);
       }

@@ -1,11 +1,12 @@
 import { XMarkIcon, PlusIcon } from "@heroicons/react/24/solid";
-import React, { useEffect, useState } from "react";
-import { CandidatesTable } from "./CandidatesTable";
-
-import { CandidatesForm } from "./CandidatesForm";
-import { CandidateType } from "@components/Vote/CandidateType";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { ToastError, ToastSuccess } from "@components/Toast";
+import { CandidateType } from "@components/Vote/CandidateType";
+import { CandidatesTable } from "./CandidatesTable";
+import { CandidatesForm } from "./CandidatesForm";
+import { LoadingIcon } from "../LoadingIcon";
 
 type CandidatesCardProps = {
   onCloseClick: () => void;
@@ -17,14 +18,19 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
   const [openAddModal, setOpenAddModal] = useState(false);
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const [editingCandidate, setEditingCandidate] = useState<CandidateType | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchCandidates = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
         setCandidates(response.data);
       } catch (error) {
         console.error("Error fetching candidates:", error);
+        ToastError({ message: "Error fetching candidates", duration: 1500 });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -35,21 +41,15 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
     setCandidates((prevCandidates) => {
       const existingCandidateIndex = prevCandidates.findIndex(candidate => candidate._id === newCandidate._id);
       if (existingCandidateIndex !== -1) {
-        // Update existing candidate
         const updatedCandidates = [...prevCandidates];
         updatedCandidates[existingCandidateIndex] = newCandidate;
         return updatedCandidates;
       } else {
-        // Add new candidate
         return [...prevCandidates, newCandidate];
       }
     });
     setOpenAddModal(false);
     setEditingCandidate(null);
-    toast.success("Candidate saved successfully", {
-      position: "bottom-right",
-      autoClose: 1400
-    });
   };
 
   const handleEditClik = (candidate: CandidateType) => {
@@ -62,22 +62,13 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
       const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/candidates/${candidateId}`);
       if (response.status === 200) {
         setCandidates((prevCandidates) => prevCandidates.filter(candidate => candidate._id !== candidateId));
-        toast.success("Candidate deleted successfully", {
-          position: "bottom-right",
-          autoClose: 1400
-        });
+        ToastSuccess({ message: "Candidate deleted successfully", duration: 1500 });
       } else {
-        toast.error("Failed to delete candidate", {
-          position: "bottom-right",
-          autoClose: 1400
-        });
+        ToastError({ message: "Failed to delete candidate", duration: 1500 });
       }
     } catch (error) {
       console.error("Error deleting candidate:", error);
-      toast.error("Error deleting candidate", {
-        position: "bottom-right",
-        autoClose: 1400
-      });
+      ToastError({ message: "Error deleting candidate", duration: 1500 });
     }
   };
 
@@ -115,10 +106,22 @@ export const CandidatesCard: React.FC<CandidatesCardProps> = ({
         </button>
       </div>
 
-      <CandidatesTable 
-        initialCandidates={candidates} 
-        onEditClick={handleEditClik} 
-        onDeleteCandidate={handleDeleteCandidate} />
+      {loading ? (
+        <div className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">
+          <p className="inline-flex items-center">
+            <span className="mr-2"><LoadingIcon size={4}/></span>
+            Loading
+          </p>
+        </div>
+      ) : candidates.length === 0 ? (
+        <div className="text-sm text-center py-3 text-gray-500 border-gray-200 border-b">No candidates available</div>
+      ) : (
+        <CandidatesTable 
+          initialCandidates={candidates} 
+          onEditClick={handleEditClik} 
+          onDeleteCandidate={handleDeleteCandidate} 
+        />
+      )}
 
       <ToastContainer />
     </div>
