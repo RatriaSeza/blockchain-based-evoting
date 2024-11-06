@@ -21,7 +21,7 @@ export const MastersTable: React.FC<MastersTableProps> = ({ initialMasters, onDe
 
   useEffect(() => {
     setLoading(true);
-    setMasters(initialMasters.sort((a, b) => a.value.localeCompare(b.value)));
+    setMasters(initialMasters.sort((a, b) => new Date(a.value).getTime() - new Date(b.value).getTime()));
     setLoading(false);
   }, [initialMasters]);
 

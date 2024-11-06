@@ -21,7 +21,7 @@ const Countdown = () => {
         const endTime = new Date(endTimeResponse.data.value).getTime();
         
         if (currentTime < startTime) {
-          setStatus("Start In:");
+          setStatus("Election Start In:");
           const diff = Math.floor((startTime - currentTime) / 1000);
           setTime({
             hours: Math.floor(diff / 3600),
@@ -29,7 +29,7 @@ const Countdown = () => {
             seconds: Math.floor((diff % 3600) % 60),
           });
         } else if (currentTime >= startTime && currentTime < endTime) {
-          setStatus("End In:");
+          setStatus("Election End In:");
           const diff = Math.floor((endTime - currentTime) / 1000);
           setTime({
             hours: Math.floor(diff / 3600),
@@ -37,7 +37,7 @@ const Countdown = () => {
             seconds: Math.floor((diff % 3600) % 60),
           });
         } else {
-          setStatus("Ended");
+          setStatus("Election is Ended");
           setTime({hours: 0, minutes: 0, seconds: 0});
         }
         setLoading(false);
