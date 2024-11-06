@@ -22,6 +22,23 @@ const CandidateCard: React.FC<CandidateType> = ({
 
   const handleVoteClick = async () => {
     setIsLoading(true);
+
+    const startTimeResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/masters/start-time`);
+    const endTimeResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/masters/end-time`);
+    const currentTime = new Date().getTime();
+    const startTime =  new Date(startTimeResponse.data.value).getTime();
+    const endTime = new Date(endTimeResponse.data.value).getTime();
+
+    if (currentTime < startTime) {
+      ToastError({ message: "Election has not started yet!", position: "bottom-right", duration: 1400 });
+      setIsLoading(false);
+      return;
+    } else if (currentTime >= endTime) {
+      ToastError({ message: "Election has ended!", position: "bottom-right", duration: 1400 });
+      setIsLoading(false);
+      return;
+    }
+
     if (!isLogin) {
       ToastError({ message: "You must login to vote!", position: "bottom-right", duration: 1400 });
       setIsLoading(false);
