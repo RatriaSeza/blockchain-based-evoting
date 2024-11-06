@@ -4,6 +4,7 @@ import { CountdownSkeleton } from "./CountdownSkeleton";
 
 const Countdown = () => {
   const [time, setTime] = useState({
+    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -24,21 +25,23 @@ const Countdown = () => {
           setStatus("Election Start In:");
           const diff = Math.floor((startTime - currentTime) / 1000);
           setTime({
-            hours: Math.floor(diff / 3600),
+            days: Math.floor(diff / 86400),
+            hours: Math.floor((diff % 86400) / 3600),
             minutes: Math.floor((diff % 3600) / 60),
-            seconds: Math.floor((diff % 3600) % 60),
+            seconds: diff % 60,
           });
         } else if (currentTime >= startTime && currentTime < endTime) {
           setStatus("Election End In:");
           const diff = Math.floor((endTime - currentTime) / 1000);
           setTime({
-            hours: Math.floor(diff / 3600),
+            days: Math.floor(diff / 86400),
+            hours: Math.floor((diff % 86400) / 3600),
             minutes: Math.floor((diff % 3600) / 60),
-            seconds: Math.floor((diff % 3600) % 60),
+            seconds: diff % 60,
           });
         } else {
           setStatus("Election is Ended");
-          setTime({hours: 0, minutes: 0, seconds: 0});
+          setTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         }
         setLoading(false);
       } catch (error: unknown) {
@@ -53,7 +56,7 @@ const Countdown = () => {
   useEffect(() => {
     const countdown = setInterval(() => {
       setTime((prevTime) => {
-        let { hours, minutes, seconds } = prevTime;
+        let { days, hours, minutes, seconds } = prevTime;
 
         if (seconds > 0) {
           seconds--;
@@ -64,11 +67,16 @@ const Countdown = () => {
           seconds = 59;
           minutes = 59;
           hours--;
+        } else if (days > 0) {
+          seconds = 59;
+          minutes = 59;
+          hours = 23;
+          days--;
         } else {
           clearInterval(countdown);
         }
 
-        return { hours, minutes, seconds };
+        return { days, hours, minutes, seconds };
       });
     }, 1000);
 
@@ -82,33 +90,38 @@ const Countdown = () => {
         {loading ? (
           <CountdownSkeleton />
         ) : (
-          <div className="text-black grid grid-cols-11 gap-1 md:max-w-xs md:mx-auto">
-            <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
-              <span className="text-4xl">
+          <div className="text-black flex gap-1 md:max-w-xs md:mx-auto">
+            {time.days > 0 && (
+              <div className="flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
+                <span className="text-2xl md:text-4xl">
+                  {String(time.days).padStart(2, "0")}
+                </span>
+                <span className="text-[10px] md:text-xs">Days</span>
+              </div>
+            )}
+            {time.days > 0 && <span className="text-5xl self-center text-center text-gray-100">:</span>}
+            <div className="flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
+              <span className="text-2xl md:text-4xl">
                 {String(time.hours).padStart(2, "0")}
               </span>
-              <span className="text-xs">Hours</span>
+              <span className="text-[10px] md:text-xs">Hours</span>
             </div>
-            <span className="text-5xl self-center text-center text-gray-100">
-              :
-            </span>
-            <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
-              <span className="text-4xl">
+            <span className="text-5xl self-center text-center text-gray-100">:</span>
+            <div className="flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
+              <span className="text-2xl md:text-4xl">
                 {String(time.minutes).padStart(2, "0")}
               </span>
-              <span className="text-xs">Minutes</span>
+              <span className="text-[10px] md:text-xs">Minutes</span>
             </div>
-            <span className="text-5xl self-center text-center text-gray-100">
-              :
-            </span>
-            <div className="col-span-3 flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
-              <span className="text-4xl">
+            <span className="text-5xl self-center text-center text-gray-100">:</span>
+            <div className="flex flex-col items-center bg-neutral-200 font-semibold px-2 py-2 rounded">
+              <span className="text-2xl md:text-4xl">
                 {String(time.seconds).padStart(2, "0")}
               </span>
-              <span className="text-xs">Seconds</span>
+              <span className="text-[10px] md:text-xs">Seconds</span>
             </div>
           </div>
-        )}        
+        )}    
       </div>
       <span className="text-2xl absolute top-3 md:top-8 right-4 md:right-12 animate-pulse">
         <i className="fa-solid fa-hourglass-end"></i>
