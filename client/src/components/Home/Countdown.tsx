@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { CountdownSkeleton } from "./CountdownSkeleton";
+import { ClockIcon } from "@heroicons/react/24/solid";
 
 const Countdown = () => {
   const [time, setTime] = useState({
@@ -124,7 +125,7 @@ const Countdown = () => {
         )}    
       </div>
       <span className="text-2xl absolute top-3 md:top-8 right-4 md:right-12 animate-pulse">
-        <i className="fa-solid fa-hourglass-end"></i>
+        <ClockIcon className="size-6" />
       </span>
     </div>
   );

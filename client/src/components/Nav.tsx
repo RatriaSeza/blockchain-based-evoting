@@ -1,6 +1,6 @@
 import React from 'react';
 import { HomeIcon as HomeOutline, DocumentCheckIcon as VoteOutline, UserIcon as ProfileOutline } from '@heroicons/react/24/outline';
-import { HomeIcon as HomeSolid, DocumentCheckIcon as VoteSolid, UserIcon as ProfileSolid } from '@heroicons/react/24/solid';
+import { HomeIcon as HomeSolid, DocumentCheckIcon as VoteSolid, UserIcon as ProfileSolid, UserIcon } from '@heroicons/react/24/solid';
 import Ballot from '../assets/img/ballot-box.png';
 import { ToastError, ToastSuccess } from './Toast';
 import { useNavigate } from 'react-router-dom';
@@ -85,7 +85,7 @@ const Nav: React.FC<NavProps> = ({ active, isLogin }) => {
             <span className='font-semibold text-neutral-200 pr-14 pl-5 group-hover:z-10'>Profile</span>
             <span className='absolute right-1 w-[36px] h-[36px] ml-2 bg-gradient-to-br from-[#2b4162] via-[#262626] to-[#12100e] flex justify-end group-hover:justify-end items-center rounded-xl group-hover:w-32 transition-all ease-in'>
               <span className='w-[36px] h-[36px] flex justify-center items-center'>
-              <i className="fa-solid fa-user "></i>
+              <UserIcon className='size-6' />
               </span>
             </span>
           </a>

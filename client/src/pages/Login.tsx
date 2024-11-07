@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { ToastError, ToastSuccess, ToastWarning } from "../components/Toast";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -97,9 +98,9 @@ const Login = () => {
                 placeholder="********"
                 icon={
                   passwordVisible ? (
-                    <i className="fa-solid fa-eye-slash"></i>
+                    <EyeSlashIcon className="size-6" />
                   ) : (
-                    <i className="fa-solid fa-eye"></i>
+                    <EyeIcon className="size-6"/>
                   )
                 }
                 onChange={(e) => setPassword(e.target.value)}
