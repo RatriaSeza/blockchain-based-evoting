@@ -6,6 +6,8 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { ToastError, ToastSuccess, ToastWarning } from "../components/Toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import Ballot from '@assets/img/ballot-box.png';
+
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -74,9 +76,10 @@ const Login = () => {
     <div className="min-h-dvh text-neutral-100 profile-background">
       <div className="h-dvh flex justify-center items-center">
         <div className="w-11/12 md:max-w-md px-6 md:px-8 py-6 md:py-8 bg-dark-card shadow-inner shadow-neutral-800 rounded-lg md:rounded-xl">
-          <h3 className="text-2xl md:text-3xl font-bold text-center uppercase mb-2 md:mb-4">
-            Login
-          </h3>
+          <div className="flex flex-col items-center gap-2">
+            <img className='w-14 h-14 mr-2' src={Ballot} alt="Logo" />
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-2 md:mb-4">Pemira FSM UNDIP</h3>
+          </div>
 
           <form onSubmit={handleSubmit}>
             <div className="flex w-full flex-col gap-6">
