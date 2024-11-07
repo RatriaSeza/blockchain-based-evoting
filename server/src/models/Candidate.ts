@@ -10,7 +10,6 @@ const CandidateSchema = new Schema<ICandidate>({
   chiefClassOf: { type: Number, required: true },
   viceClassOf: { type: Number, required: true },
   candidateImage: { type: String, required: true },
-  voteCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
