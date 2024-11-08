@@ -1,9 +1,14 @@
+import { CandidateType } from "@components/Vote/CandidateType";
 import Chart from "react-apexcharts";
 
-export const SummaryChart = () => {
+type SummaryChartProps = {
+  candidates: CandidateType[];
+};
+
+export const SummaryChart: React.FC<SummaryChartProps> = ({ candidates }) => {
   const summaryOptions = {
-    series: [750, 202],
-    labels: ["Candidate #1", "Candidate #2"],
+    series: candidates.map(candidate => candidate.votes).filter(vote => vote !== undefined),
+    labels: candidates.map(candidate => `Candidate #${candidate.candidateNumber}`),
     chart: {
       height: 170,
       fontFamily: "Plus Jakarta Sans', sans-serif",
@@ -74,14 +79,12 @@ export const SummaryChart = () => {
       <div className="flex items-center justify-center gap-12">
         <div>
           <div className="flex gap-4">
-            <div className="flex gap-2 items-center">
-              <span className="w-2 h-2 rounded-full bg-[#5284B4]"></span>
-              <p className="text-gray-400 font-normal text-xs">Candidate #1: <span className="text-gray-500 font-semibold">750</span></p>
-            </div>
-            <div className="flex gap-2 items-center">
-              <span className="w-2 h-2 rounded-full bg-[#DEA748ff]"></span>
-              <p className="text-gray-400 font-normal text-xs">Candidate #2: <span className="text-gray-500 font-semibold">202</span></p>
-            </div>
+            {candidates && candidates.map((candidate, index) => (
+              <div key={index} className="flex gap-2 items-center">
+                <span className="w-2 h-2 rounded-full bg-[#DEA748ff]"></span>
+                <p className="text-gray-400 font-normal text-xs">Candidate #{candidate.candidateNumber}: <span className="text-gray-500 font-semibold">{candidate.votes}</span></p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

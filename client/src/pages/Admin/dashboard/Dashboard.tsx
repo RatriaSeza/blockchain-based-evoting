@@ -7,20 +7,43 @@ import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCa
 import { StatisticsCard } from "@components/Admin/dashboard/StatisticsCard";
 import { SummaryChart } from "@components/Admin/dashboard/SummaryChart";
 import { VoteByMajor } from "@components/Admin/dashboard/VoteByMajor";
+import { CandidateType } from "@components/Vote/CandidateType";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export const Dashboard = () => {
-	const candidates = [
-		{
-			candidateNumber: 1,
-			votes: 750
-		},
-		{
-			candidateNumber: 2,
-			votes: 202
-		}
-	]
+  const [candidates, setCandidates] = useState<CandidateType[]>([]);
+  const [totalVotes, setTotalVotes] = useState<number>(0);
 
-	const totalVotes = candidates.reduce((acc, candidate) => acc + candidate.votes, 0);
+	useEffect(() => {
+    const getCandidates = async () => {
+      try {
+        const responseGetCandidates = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
+      const candidates = responseGetCandidates.data;
+      
+      let totalVotes = 0;
+      const candidatesWithVotes = await Promise.all(
+        candidates.map(async (candidate: CandidateType) => {
+          const responseGetVotes = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates/${candidate.candidateNumber}/votes`);
+          const votes = parseInt(responseGetVotes.data.totalVotes);
+          
+          totalVotes += votes;
+          return {
+            ...candidate,
+            votes
+          };
+        })
+      );
+
+      setCandidates(candidatesWithVotes.sort((a, b) => a.candidateNumber - b.candidateNumber));
+      setTotalVotes(totalVotes);
+      } catch (error: unknown) {
+        console.error(error);
+      } 
+    }
+    
+    getCandidates();    
+  }, []);
 
   return (
     <main className="bg-surface">
@@ -45,11 +68,11 @@ export const Dashboard = () => {
 										<CountdownCard />
 									</div>
 									<div className="col-span-2">
-										<TotalVotesCard />
+										<TotalVotesCard totalVotes={totalVotes} />
 									</div>
                   <div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
 										{candidates && candidates.map((candidate, index) => (
-											<CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes} percentage={(candidate.votes / totalVotes * 100).toFixed(1) } />
+                      <CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes ?? 0} percentage={((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) } />
 										))}
 									</div>
 									<div className="col-span-5">
@@ -60,7 +83,7 @@ export const Dashboard = () => {
 								<div className="grow">
 									<div className="card mb-4 md:mb-6">
 										<div className="card-body">
-											<SummaryChart />
+											<SummaryChart candidates={candidates.sort((a, b) => a.candidateNumber - b.candidateNumber)} />
 											<VoteByMajor />
 										</div>
 									</div>

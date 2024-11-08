@@ -1,6 +1,10 @@
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 
-export const TotalVotesCard = () => {
+type TotalVotesCardProps = {
+  totalVotes: number;
+}
+
+export const TotalVotesCard: React.FC<TotalVotesCardProps> = ({ totalVotes }) => {
   return (
     <div className="card h-full">
       <div className="card-body p-4 md:p-6 md:gap-4 lg:gap-8">
@@ -15,7 +19,7 @@ export const TotalVotesCard = () => {
             </span>
           </div>
           <div>
-            <h4 className="text-gray-500 text-4xl lg:text-4xl font-semibold">1.000</h4>
+            <h4 className="text-gray-500 text-4xl lg:text-4xl font-semibold">{totalVotes}</h4>
             <p className="text-gray-400 text-sm font-normal text-nowrap">Total Votes</p>
           </div>
         </div>
