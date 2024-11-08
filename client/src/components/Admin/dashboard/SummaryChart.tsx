@@ -81,7 +81,7 @@ export const SummaryChart: React.FC<SummaryChartProps> = ({ candidates }) => {
           <div className="flex gap-4">
             {candidates && candidates.map((candidate, index) => (
               <div key={index} className="flex gap-2 items-center">
-                <span className="w-2 h-2 rounded-full bg-[#DEA748ff]"></span>
+                <span className={`w-2 h-2 rounded-full bg-[${candidate.candidateNumber % 2 == 0 ? '#DEA748ff' : '#5284B4'}]`}></span>
                 <p className="text-gray-400 font-normal text-xs">Candidate #{candidate.candidateNumber}: <span className="text-gray-500 font-semibold">{candidate.votes}</span></p>
               </div>
             ))}
