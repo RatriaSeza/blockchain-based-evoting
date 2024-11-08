@@ -53,11 +53,9 @@ export const getByUserId = async (req: Request, res: Response): Promise<void> =>
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const defaultPassword = crypto.randomBytes(8).toString('hex');
-
     const user = new User({
       username: req.body.nim,
-      password: defaultPassword,
+      password: "password",
       role: 'voter',
     });
     await user.save();
@@ -79,7 +77,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.status(201).json({ voter, user: { username: user.username, password: defaultPassword } });
+    res.status(201).json({ voter, user: { username: user.username } });
   }
   catch (error: any) {
     res.status(500).json({ error: error.message });

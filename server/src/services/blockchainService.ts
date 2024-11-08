@@ -8,6 +8,12 @@ const contract = new web3.eth.Contract(ElectionABI, ElectionAddress);
 export const recordVoteOnBlockchain = async (voterId: string, candidateId: number) => {
   try { 
     const accounts = await web3.eth.getAccounts();
+    const voter: { hasVoted: boolean } = await contract.methods.voters(voterId).call();
+
+    if (!voter || voter.hasVoted) {
+      return { success: false, message: "Voter is not registered or has already voted." };
+    }
+
     await contract.methods.vote(voterId, candidateId).send({ from: accounts[0] });
     return { success: true };
   } catch (error: any) {
