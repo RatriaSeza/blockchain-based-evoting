@@ -8,7 +8,7 @@ const contract = new web3.eth.Contract(ElectionABI, ElectionAddress);
 export const recordVoteOnBlockchain = async (voterId: string, candidateId: number) => {
   try { 
     const accounts = await web3.eth.getAccounts();
-    await contract.methods.vote(candidateId).send({ from: accounts[0] });
+    await contract.methods.vote(voterId, candidateId).send({ from: accounts[0] });
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -23,5 +23,27 @@ export const getTotalVotesFromBlockchain = async (candidateNumber: number) => {
   } catch (error: any) {
     console.error(error);
     return "0";
+  }
+}
+
+export const createVoterOnBlockchain = async (voterId: unknown) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    await contract.methods.addVoter(voterId).send({ from: accounts[0] });
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { success: false, message: error.message };
+  }
+}
+
+export const removeVoterOnBlockchain = async (voterId: unknown) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    await contract.methods.removeVoter(voterId).send({ from: accounts[0] });
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { success: false, message: error.message };
   }
 }

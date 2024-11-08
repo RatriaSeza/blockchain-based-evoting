@@ -3,6 +3,7 @@ import { Voter } from "../models/Voter";
 import crypto from 'crypto';
 import { User } from "../models/User";
 import mongoose from "mongoose";
+import { createVoterOnBlockchain, removeVoterOnBlockchain } from "../services/blockchainService";
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -70,6 +71,14 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     });
     await voter.save();
 
+    const result = await createVoterOnBlockchain(voter._id);
+    if (!result.success) {
+      await User.findByIdAndDelete(user._id);
+      await Voter.findByIdAndDelete(voter._id);
+      res.status(500).json({ error: result.message });
+      return;
+    }
+
     res.status(201).json({ voter, user: { username: user.username, password: defaultPassword } });
   }
   catch (error: any) {
@@ -129,6 +138,12 @@ export const deleteById = async (req: Request, res: Response): Promise<void> => 
     const deletedUser = await User.findByIdAndDelete(deletedVoter.userId);
     if (!deletedUser) {
       res.status(404).json({ message: "User not found." });
+    }
+
+    const result = await removeVoterOnBlockchain(deletedVoter._id);
+    if (!result.success) {
+      res.status(500).json({ error: result.message });
+      return
     }
 
     res.status(200).json({ message: "Voter deleted", voter: deletedVoter });
