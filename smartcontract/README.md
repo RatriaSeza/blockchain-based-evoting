@@ -9,5 +9,7 @@ npx hardhat help
 npx hardhat test
 REPORT_GAS=true npx hardhat test
 npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+
+# deploy locally
+npx hardhat ignition deploy ./ignition/modules/Election.ts --network localhost
+``
