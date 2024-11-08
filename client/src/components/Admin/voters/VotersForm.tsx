@@ -1,3 +1,4 @@
+import { ToastSuccess } from "@components/Toast";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -65,7 +66,10 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
           const updatedVoter = data.voter;
 
           if (updatedVoter) {
-            onAddVoter?.(updatedVoter);
+            ToastSuccess({ message: "Voter data updated successfully", duration: 1400 });
+            setTimeout(() => {
+              onAddVoter?.(updatedVoter);
+            }, 2000);
           } else {
             toast.error("Failed to retrieve the updated candidate", {
               position: "bottom-right",
@@ -78,6 +82,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
             autoClose: 1400
           });
         }
+        setLoading(false);
       } else {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/voter`, { ...voter }, {
           withCredentials: true
@@ -89,7 +94,10 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
           const newVoter = data.voter; 
   
           if (newVoter) {
-            onAddVoter?.(newVoter);
+            ToastSuccess({ message: "Voter data added successfully", duration: 1400 });
+            setTimeout(() => {
+              onAddVoter?.(newVoter);
+            }, 2000);
           } else {
             toast.error("Failed to retrieve the new candidate", {
                 position: "bottom-right",
@@ -102,6 +110,7 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
             autoClose: 1400
           });
         }
+        setLoading(false);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -127,7 +136,6 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
           autoClose: 1400
         });
       }
-    } finally {
       setLoading(false);
     }
   }

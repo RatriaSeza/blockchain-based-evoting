@@ -43,10 +43,6 @@ export const Voters = () => {
     });
     setOpenFormModal(false);
     setEditingVoter(null);
-    toast.success("Voter added successfully", {
-      position: "bottom-right",
-      autoClose: 1400
-    });
   };
 
   const handleEditClik = (voter: VoterType) => {
