@@ -35,7 +35,7 @@ export const getTotalVotesFromBlockchain = async (candidateNumber: number) => {
 export const createVoterOnBlockchain = async (voterId: unknown) => {
   try {
     const accounts = await web3.eth.getAccounts();
-    await contract.methods.addVoter(voterId).send({ from: accounts[0] });
+    await contract.methods.addVoter(String(voterId)).send({ from: accounts[0] });
     return { success: true };
   } catch (error: any) {
     console.error(error);

@@ -132,6 +132,8 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
     }
   }
 
+  const majors = ["Mathematics", "Physics", "Biology", "Chemistry", "Statistic", "Informatics", "Biotechnology"];
+
   return (
     <div className="fixed top-0 left-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-all duration-300 overflow-hidden">
       <div className="relative m-4 pt-4 px-4 w-11/12 md:min-w-[40%] md:max-w-[40%] rounded-lg bg-white shadow-sm">
@@ -167,12 +169,16 @@ export const VotersForm: React.FC<VotersFormProps> = ({ onClick, onAddVoter, edi
 
             <div className="w-full">
               <label className="block mb-2 text-sm text-slate-600">Major</label>
-              <input
+              <select
+                className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
                 value={voter.major}
                 onChange={(e) => setVoter({ ...voter, major: e.target.value })}
-                type="text"
-                className={`w-full bg-gray-50 placeholder:text-slate-400 text-slate-700 text-sm border ${errors.major ? 'border-red-500' : 'border-slate-200'} rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow`}
-              />
+              >
+                <option value="">-- Select key--</option>
+                {majors.map((major, index) => (
+                  <option key={index} value={major}>{major}</option>
+                ))}
+              </select>
               {errors.major && <p className="text-red-500 text-xs mt-1">{errors.major}</p>}
             </div>
 
