@@ -93,8 +93,8 @@ export const editCandidate = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Find the candidate by ID and update the candidate data
-    const candidate = await Candidate.findByIdAndUpdate(id, {
+    // Prepare the update data
+    const updateData: any = {
       candidateNumber: req.body.candidateNumber,
       chiefName: req.body.chiefName,
       viceName: req.body.viceName,
@@ -102,8 +102,14 @@ export const editCandidate = async (req: Request, res: Response): Promise<void> 
       viceMajor: req.body.viceMajor,
       chiefClassOf: req.body.chiefClassOf,
       viceClassOf: req.body.viceClassOf,
-      candidateImage: req.file ? req.file.buffer.toString("base64") : undefined,
-    }, { new: true });
+    };
+
+    // Check if a new image file is provided
+    if (req.file) {
+      updateData.candidateImage = req.file.buffer.toString("base64");
+    }
+
+    const candidate = await Candidate.findByIdAndUpdate(id, updateData, { new: true });
 
     // If no candidate was found and updated, return a 404
     if (!candidate) {
@@ -139,7 +145,7 @@ export const deleteCandidate = async (req: Request, res: Response): Promise<void
     }
 
     // Success: Return the deleted candidate data
-    res.status(200).json(deletedCandidate);
+    res.status(200).json({ message: "Candidate deleted successfully", candidate: deletedCandidate });
 
   } catch (error: any) {
     res.status(500).json({ error: error.message });
