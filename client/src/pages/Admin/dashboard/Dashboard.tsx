@@ -19,24 +19,24 @@ export const Dashboard = () => {
     const getCandidates = async () => {
       try {
         const responseGetCandidates = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
-      const candidates = responseGetCandidates.data;
-      
-      let totalVotes = 0;
-      const candidatesWithVotes = await Promise.all(
-        candidates.map(async (candidate: CandidateType) => {
-          const responseGetVotes = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates/${candidate.candidateNumber}/votes`);
-          const votes = parseInt(responseGetVotes.data.totalVotes);
-          
-          totalVotes += votes;
-          return {
-            ...candidate,
-            votes
-          };
-        })
-      );
+        const candidates = responseGetCandidates.data;
+        
+        let totalVotes = 0;
+        const candidatesWithVotes = await Promise.all(
+          candidates.map(async (candidate: CandidateType) => {
+            const responseGetVotes = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates/${candidate.candidateNumber}/votes`);
+            const votes = parseInt(responseGetVotes.data.totalVotes);
+            
+            totalVotes += votes;
+            return {
+              ...candidate,
+              votes
+            };
+          })
+        );
 
-      setCandidates(candidatesWithVotes.sort((a, b) => a.candidateNumber - b.candidateNumber));
-      setTotalVotes(totalVotes);
+        setCandidates(candidatesWithVotes.sort((a, b) => a.candidateNumber - b.candidateNumber));
+        setTotalVotes(totalVotes);
       } catch (error: unknown) {
         console.error(error);
       } 
@@ -72,7 +72,7 @@ export const Dashboard = () => {
 									</div>
                   <div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
 										{candidates && candidates.map((candidate, index) => (
-                      <CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes ?? 0} percentage={((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) } />
+                      <CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes ?? 0} percentage={candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0' } />
 										))}
 									</div>
 									<div className="col-span-5">

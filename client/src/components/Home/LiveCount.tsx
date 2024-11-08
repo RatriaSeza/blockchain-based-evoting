@@ -68,7 +68,7 @@ const LiveCount = () => {
                 <p className="text-xs">{candidate.votes} votes</p>
               </div>
               <p className="basis-12 text-sm text-right">
-                { candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0'}%
+                { candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0' }%
               </p>
             </div>
           ))}
