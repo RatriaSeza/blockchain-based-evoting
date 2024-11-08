@@ -46,7 +46,7 @@ export const createVoterOnBlockchain = async (voterId: unknown) => {
 export const removeVoterOnBlockchain = async (voterId: unknown) => {
   try {
     const accounts = await web3.eth.getAccounts();
-    await contract.methods.removeVoter(voterId).send({ from: accounts[0] });
+    await contract.methods.removeVoter(String(voterId)).send({ from: accounts[0] });
     return { success: true };
   } catch (error: any) {
     console.error(error);
