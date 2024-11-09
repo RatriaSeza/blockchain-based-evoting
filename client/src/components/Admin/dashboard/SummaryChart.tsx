@@ -67,24 +67,26 @@ export const SummaryChart: React.FC<SummaryChartProps> = ({ candidates }) => {
   };
 
   return (
-    <div className="mb-6 md:mb-10">
-      <h4 className="text-gray-600 font-semibold">Summary</h4>
-      <div className="">
-        <Chart 
-          options={summaryOptions}
-          series={summaryOptions.series}
-          type="donut"
-        />
-      </div>
-      <div className="flex items-center justify-center gap-12">
-        <div>
-          <div className="flex gap-4">
-            {candidates && candidates.map((candidate, index) => (
-              <div key={index} className="flex gap-2 items-center">
-                <span className={`w-2 h-2 rounded-full ${candidate.candidateNumber % 2 == 0 ? 'bg-[#DEA748ff]' : 'bg-[#5284B4]'}`}></span>
-                <p className="text-gray-400 font-normal text-xs">Candidate #{candidate.candidateNumber}: <span className="text-gray-500 font-semibold">{candidate.votes}</span></p>
-              </div>
-            ))}
+    <div className="card">
+      <div className="card-body">
+        <h4 className="text-gray-500 font-semibold">Summary</h4>
+        <div className="">
+          <Chart 
+            options={summaryOptions}
+            series={summaryOptions.series}
+            type="donut"
+          />
+        </div>
+        <div className="flex items-center justify-center gap-12">
+          <div>
+            <div className="flex gap-4">
+              {candidates && candidates.map((candidate, index) => (
+                <div key={index} className="flex gap-2 items-center">
+                  <span className={`w-2 h-2 rounded-full ${candidate.candidateNumber % 2 == 0 ? 'bg-[#DEA748ff]' : 'bg-[#5284B4]'}`}></span>
+                  <p className="text-gray-400 font-normal text-xs">Candidate #{candidate.candidateNumber}: <span className="text-gray-500 font-semibold">{candidate.votes}</span></p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

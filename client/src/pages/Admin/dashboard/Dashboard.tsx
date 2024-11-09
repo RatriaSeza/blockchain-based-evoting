@@ -9,6 +9,7 @@ import { VoteByMajor } from "@components/Admin/dashboard/VoteByMajor";
 import { CandidateType } from "@components/Vote/CandidateType";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { RecentVotes } from "@components/Admin/dashboard/RecentVotes";
 
 export const Dashboard = () => {
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
@@ -65,8 +66,8 @@ export const Dashboard = () => {
               </header>
 
               {/* main content */}
-              <div className="flex flex-col md:flex-row md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
-								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6 h-fit">
+              <div className="flex flex-col md:flex-row h-full md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
+								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6 h-full">
 									<div className="col-span-5">
 										<CountdownCard />
 									</div>
@@ -91,13 +92,9 @@ export const Dashboard = () => {
 									</div>
 								</div>
 
-								<div className="grow">
-									<div className="card mb-4 md:mb-6">
-										<div className="card-body">
-											<SummaryChart candidates={candidates.sort((a, b) => a.candidateNumber - b.candidateNumber)} />
-											<VoteByMajor />
-										</div>
-									</div>
+								<div className="basis-1/3 flex flex-col justify-between gap-6 h-full overflow-y-auto">
+                  <SummaryChart candidates={candidates.sort((a, b) => a.candidateNumber - b.candidateNumber)} />
+                  <RecentVotes />
 								</div>
 							</div>
               <Footer />
