@@ -86,24 +86,23 @@ export const VoteByMajor = () => {
       },
     ],
   })
-  const majors = ["Mathematics", "Physics", "Biology", "Chemistry", "Statistic", "Informatics", "Biotechnology"];
 
   useEffect(() => {
-    getChartSeries();
-  })
-
-  const getChartSeries = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/votes/chart-series-by-major`, {
-        params: {majors}
-      });
-      const series = response.data.series;
-      setChartOptions({...chartOptions, series});
-    } catch (error: unknown) {
-      console.error(error);
-      return [];
-    }
-  }
+    const majors = ["Mathematics", "Physics", "Biology", "Chemistry", "Statistic", "Informatics", "Biotechnology"];
+    const fetchChartSeries = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/votes/chart-series-by-major`, {
+          params: { majors },
+        });
+        const series = response.data.series;
+        setChartOptions({ ...chartOptions, series });
+      } catch (error) {
+        console.error(error);
+        setChartOptions({ ...chartOptions, series: [] });
+      }
+    };
+    fetchChartSeries();
+  }, [chartOptions]);
 
   return (
     <>
