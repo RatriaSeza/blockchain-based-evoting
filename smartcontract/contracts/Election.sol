@@ -70,7 +70,7 @@ contract Election {
     return votes[_candidateId];
   }
 
-  function totalVotesForByMajor(uint256 _candidateId, string memory _major) public view returns (uint256) {
+  function totalVotesByMajor(uint256 _candidateId, string memory _major) public view returns (uint256) {
     return votesByMajor[_candidateId][_major];
   }
   
