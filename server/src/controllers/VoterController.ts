@@ -69,7 +69,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     });
     await voter.save();
 
-    const result = await createVoterOnBlockchain(voter._id);
+    const result = await createVoterOnBlockchain(voter._id, voter.major);
     if (!result.success) {
       await User.findByIdAndDelete(user._id);
       await Voter.findByIdAndDelete(voter._id);
