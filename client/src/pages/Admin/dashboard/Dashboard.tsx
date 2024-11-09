@@ -1,7 +1,7 @@
 import { Sidebar } from "@components/Admin/ui/sidebar/Sidebar";
 import { Header } from "@components/Admin/ui/header/Header";
 import { Footer } from "@components/Admin/ui/footer/Footer";
-import { TotalVotesCard } from "@components/Admin/dashboard/TotalVotesCard";
+import { VotesCard } from "@components/Admin/dashboard/VotesCard";
 import { CountdownCard } from "@components/Admin/dashboard/CountdownCard";
 import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCard";
 import { StatisticsCard } from "@components/Admin/dashboard/StatisticsCard";
@@ -14,11 +14,13 @@ import axios from "axios";
 export const Dashboard = () => {
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
+  const [totalVoters, setTotalVoters] = useState<number>(0);
 
 	useEffect(() => {
-    const getCandidates = async () => {
+    const fetchData = async () => {
       try {
         const responseGetCandidates = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
+        const responseTotalVoters = await axios.get(`${import.meta.env.VITE_API_URL}/api/voters/total`);
         const candidates = responseGetCandidates.data;
         
         let totalVotes = 0;
@@ -34,15 +36,17 @@ export const Dashboard = () => {
             };
           })
         );
+        
 
         setCandidates(candidatesWithVotes.sort((a, b) => a.candidateNumber - b.candidateNumber));
         setTotalVotes(totalVotes);
+        setTotalVoters(responseTotalVoters.data.totalVoters);
       } catch (error: unknown) {
         console.error(error);
       } 
     }
     
-    getCandidates();    
+    fetchData();    
   }, []);
 
   return (
@@ -64,11 +68,12 @@ export const Dashboard = () => {
               {/* main content */}
               <div className="flex flex-col md:flex-row md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
 								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6 h-fit">
-									<div className="col-span-3">
+									<div className="col-span-5">
 										<CountdownCard />
 									</div>
-									<div className="col-span-2">
-										<TotalVotesCard totalVotes={totalVotes} />
+									<div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
+										<VotesCard count={totalVoters} description="Registered Voters" />
+										<VotesCard count={totalVotes} description="Total Votes" />
 									</div>
                   <div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
 										{candidates && candidates.map((candidate, index) => (

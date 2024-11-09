@@ -51,6 +51,16 @@ export const getByUserId = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+export const getTotalVoters = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const totalVoters = await Voter.countDocuments();
+    res.status(200).json({ totalVoters });
+  }
+  catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = new User({

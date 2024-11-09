@@ -20,7 +20,7 @@ export const CountdownCard = () => {
         const endTime = new Date(endTimeResponse.data.value).getTime();
         
         if (currentTime < startTime) {
-          setStatus("Election Start In:");
+          setStatus("Election <br/>Start In:");
           const diff = Math.floor((startTime - currentTime) / 1000);
           setTime({
             days: Math.floor(diff / 86400),
@@ -29,7 +29,7 @@ export const CountdownCard = () => {
             seconds: diff % 60,
           });
         } else if (currentTime >= startTime && currentTime < endTime) {
-          setStatus("Election End In:");
+          setStatus("Election <br/>End In:");
           const diff = Math.floor((endTime - currentTime) / 1000);
           setTime({
             days: Math.floor(diff / 86400),
@@ -38,7 +38,7 @@ export const CountdownCard = () => {
             seconds: diff % 60,
           });
         } else {
-          setStatus("Election is Ended");
+          setStatus("Election <br/>is Ended");
           setTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         }
       } catch (error: unknown) {
@@ -81,24 +81,24 @@ export const CountdownCard = () => {
 
   return (
     <div className="card">
-      <div className="card-body p-4 md:p-6">
-        <h4 className="text-center text-gray-500 text-2xl md:text-3xl lg:text-base font-semibold">{status}</h4>
-        <div className={`flex items-center justify-evenly ${time.days > 0 ? 'md:gap-2 lg:gap-4' : 'md:gap-4 lg:gap-8'} `}>
+      <div className="card-body flex justify-between p-4 md:p-6">
+        <h4 dangerouslySetInnerHTML={{ __html:status }} className="text-gray-500 text-xl md:text-xl font-semibold"></h4>
+        <div className={`flex items-center justify-evenly ${time.days > 0 ? 'gap-2' : 'gap-3'} md:gap-4 lg:gap-8`}>
           {time.days > 0 && <div className="text-center ">
-            <p className={`text-[#5284B4] ${time.days > 0 ? 'text-xl md:text-2xl' : 'text-3xl md:text-5xl'} font-semibold`}>{time.days}</p>
-            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-xs md:text-sm'}`}>Days</p>
+            <p className={`text-[#5284B4] text-3xl font-semibold`}>{time.days}</p>
+            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-sm md:text-xs'}`}>Days</p>
           </div>}
           <div className="text-center ">
-            <p className={`text-[#5284B4] ${time.days > 0 ? 'text-xl md:text-2xl' : 'text-3xl md:text-5xl'} font-semibold`}>{time.hours}</p>
-            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-xs md:text-sm'}`}>Hours</p>
+            <p className={`text-[#5284B4] text-3xl font-semibold`}>{time.hours}</p>
+            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-sm md:text-xs'}`}>Hours</p>
           </div>
           <div className="text-center ">
-            <p className={`text-[#5284B4] ${time.days > 0 ? 'text-xl md:text-2xl' : 'text-3xl md:text-5xl'} font-semibold`}>{time.minutes}</p>
-            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-xs md:text-sm'}`}>Minutes</p>
+            <p className={`text-[#5284B4] text-3xl font-semibold`}>{time.minutes}</p>
+            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-sm md:text-xs'}`}>Minutes</p>
           </div>
           <div className="text-center ">
-            <p className={`text-[#5284B4] ${time.days > 0 ? 'text-xl md:text-2xl' : 'text-3xl md:text-5xl'} font-semibold`}>{time.seconds}</p>
-            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-xs md:text-sm'}`}>Seconds</p>
+            <p className={`text-[#5284B4] text-3xl font-semibold`}>{time.seconds}</p>
+            <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-sm md:text-xs'}`}>Seconds</p>
           </div>
         </div>
       </div>
