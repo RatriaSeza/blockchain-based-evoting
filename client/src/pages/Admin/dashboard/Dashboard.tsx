@@ -92,7 +92,7 @@ export const Dashboard = () => {
 									</div>
 								</div>
 
-								<div className="basis-1/3 flex flex-col justify-between gap-6 h-full overflow-y-auto">
+								<div className="basis-1/3 flex flex-col justify-between gap-6 grow">
                   <SummaryChart candidates={candidates.sort((a, b) => a.candidateNumber - b.candidateNumber)} />
                   <RecentVotes />
 								</div>
