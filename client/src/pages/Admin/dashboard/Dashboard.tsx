@@ -77,7 +77,14 @@ export const Dashboard = () => {
 									</div>
                   <div className="col-span-5 flex flex-wrap justify-between gap-4 md:gap-6">
 										{candidates && candidates.map((candidate, index) => (
-                      <CandidateCountCard key={index} candidateNumber={candidate.candidateNumber} totalVotes={candidate.votes ?? 0} percentage={candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0' } />
+                      <CandidateCountCard 
+                        key={index} 
+                        candidateNumber={candidate.candidateNumber} 
+                        totalVotes={candidate.votes ?? 0} 
+                        percentage={candidate.votes ? ((candidate.votes ?? 0) / totalVotes * 100).toFixed(1) : '0' } 
+                        backgroundColor={candidate.candidateNumber % 2 === 0 ? 'bg-[#5284B4]' : 'bg-[#D8E1B8]'}
+                        numberColor={candidate.candidateNumber % 2 === 0 ? 'text-white' : 'text-gray-700'}
+                        />
 										))}
 									</div>
 									<div className="col-span-5">
