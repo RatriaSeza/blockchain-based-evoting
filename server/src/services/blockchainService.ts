@@ -63,3 +63,13 @@ export const getVotesByMajorOnBlockchain = async (candidateId: number, major: st
     return "0";
   }
 }
+
+export const getVoteHistoryOnBlochchain = async (count: number) => {
+  try {
+    const result: string[] = await contract.methods.getVoteHistory(count).call();
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return [];
+  }
+}

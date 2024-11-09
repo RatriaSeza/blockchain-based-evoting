@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Voter } from "../models/Voter";
 import { Candidate } from "../models/Candidate";
-import { getVotesByMajorOnBlockchain, recordVoteOnBlockchain } from "../services/blockchainService";
+import { getVoteHistoryOnBlochchain, getVotesByMajorOnBlockchain, recordVoteOnBlockchain } from "../services/blockchainService";
 
 export const Vote = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -57,6 +57,16 @@ export const getChartVotesByMajorSeries = async (req: Request, res: Response, ne
     }
 
     res.status(200).json({ series });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const getVoteHistory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const count = parseInt(req.params.count as string) || 0; // default value is 0 to get all history
+    const history = await getVoteHistoryOnBlochchain(count);
+    res.status(200).json({ history });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
