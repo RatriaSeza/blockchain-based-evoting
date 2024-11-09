@@ -4,7 +4,6 @@ import { Footer } from "@components/Admin/ui/footer/Footer";
 import { VotesCard } from "@components/Admin/dashboard/VotesCard";
 import { CountdownCard } from "@components/Admin/dashboard/CountdownCard";
 import { CandidateCountCard } from "@components/Admin/dashboard/CandidateCountCard";
-import { StatisticsCard } from "@components/Admin/dashboard/StatisticsCard";
 import { SummaryChart } from "@components/Admin/dashboard/SummaryChart";
 import { VoteByMajor } from "@components/Admin/dashboard/VoteByMajor";
 import { CandidateType } from "@components/Vote/CandidateType";
@@ -88,7 +87,7 @@ export const Dashboard = () => {
 										))}
 									</div>
 									<div className="col-span-5">
-										<StatisticsCard />
+										<VoteByMajor />
 									</div>
 								</div>
 

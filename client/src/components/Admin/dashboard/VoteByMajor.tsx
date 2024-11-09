@@ -52,14 +52,14 @@ export const VoteByMajor = () => {
       },
       labels: {
         style: {
-          colors: "#a1aab2",
+          colors: "#6b7280",
         },
       },
     },
     yaxis: {
       labels: {
         style: {
-          colors: "#a1aab2",
+          colors: "#6b7280",
         },
       },
     },
@@ -105,14 +105,16 @@ export const VoteByMajor = () => {
   }, [chartOptions]);
 
   return (
-    <>
-      <h4 className="text-gray-600 font-semibold">Vote by major</h4>
-      <Chart 
-        options={chartOptions}
-        series={chartOptions.series}
-        type="bar"
-        height={370}
-      />
-    </>
+    <div className="card">
+      <div className="card-body">
+        <h5 className="text-gray-500 text-lg font-semibold">Vote Summary by major</h5>
+        <Chart 
+          options={chartOptions}
+          series={chartOptions.series}
+          type="bar"
+          width={"100%"}
+        />
+      </div>
+    </div>
   )
 }

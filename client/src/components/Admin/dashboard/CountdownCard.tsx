@@ -83,7 +83,7 @@ export const CountdownCard = () => {
     <div className="card">
       <div className="card-body flex justify-between p-4 md:p-6">
         <h4 dangerouslySetInnerHTML={{ __html:status }} className="text-gray-500 text-xl md:text-xl font-semibold"></h4>
-        <div className={`flex items-center justify-evenly ${time.days > 0 ? 'gap-2' : 'gap-3'} md:gap-4 lg:gap-8`}>
+        <div className={`flex items-center justify-evenly gap-3 md:gap-4 lg:gap-8`}>
           {time.days > 0 && <div className="text-center ">
             <p className={`text-[#5284B4] text-3xl font-semibold`}>{time.days}</p>
             <p className={`text-gray-500 ${time.days > 0 ? 'text-xs' : 'text-sm md:text-xs'}`}>Days</p>
