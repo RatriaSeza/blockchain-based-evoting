@@ -1,17 +1,10 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 
 export const VoteByMajor = () => {
-  const voteByMajorOptions = {
-    series: [
-      {
-        name: "Candidate #1",
-        data: [9, 5, 3, 7, 5, 10, 3],
-      },
-      {
-        name: "Candidate #2",
-        data: [6, 3, 9, 5, 4, 6, 4],
-      },
-    ],
+  const [chartOptions, setChartOptions] = useState({
+    series: [],
     chart: {
       fontFamily: "Poppins,sans-serif",
       height: 370,
@@ -92,14 +85,32 @@ export const VoteByMajor = () => {
         },
       },
     ],
-  };
+  })
+  const majors = ["Mathematics", "Physics", "Biology", "Chemistry", "Statistic", "Informatics", "Biotechnology"];
+
+  useEffect(() => {
+    getChartSeries();
+  })
+
+  const getChartSeries = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/votes/chart-series-by-major`, {
+        params: {majors}
+      });
+      const series = response.data.series;
+      setChartOptions({...chartOptions, series});
+    } catch (error: unknown) {
+      console.error(error);
+      return [];
+    }
+  }
 
   return (
     <>
       <h4 className="text-gray-600 font-semibold">Vote by major</h4>
       <Chart 
-        options={voteByMajorOptions}
-        series={voteByMajorOptions.series}
+        options={chartOptions}
+        series={chartOptions.series}
         type="bar"
         height={370}
       />

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Voter } from "../models/Voter";
 import { Candidate } from "../models/Candidate";
-import { recordVoteOnBlockchain } from "../services/blockchainService";
+import { getVotesByMajorOnBlockchain, recordVoteOnBlockchain } from "../services/blockchainService";
 
 export const Vote = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -36,6 +36,27 @@ export const Vote = async (req: Request, res: Response, next: NextFunction): Pro
     await voter.save();
 
     res.status(200).json({ message: "Vote recorded successfully." });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const getChartVotesByMajorSeries = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const majors = req.query.majors as string[]; 
+    const candidates = await Candidate.find();
+    const series = [];
+
+    for (const candidate of candidates) {
+      const data = [];
+      for (const major of majors) {
+        const votes = await getVotesByMajorOnBlockchain(candidate.candidateNumber, major);
+        data.push(votes);
+      }
+      series.push({ name: candidate.chiefName, data });
+    }
+
+    res.status(200).json({ series });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

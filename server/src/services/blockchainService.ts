@@ -53,3 +53,13 @@ export const removeVoterOnBlockchain = async (voterId: unknown) => {
     return { success: false, message: error.message };
   }
 }
+
+export const getVotesByMajorOnBlockchain = async (candidateId: number, major: string) => {
+  try {
+    const result: BigInt = await contract.methods.totalVotesForByMajor(candidateId, major).call();
+    return result.toString();
+  } catch (error: any) {
+    console.error(error);
+    return "0";
+  }
+}
