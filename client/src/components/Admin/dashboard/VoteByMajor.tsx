@@ -34,7 +34,7 @@ export const VoteByMajor = () => {
       enabled: true,
       offsetX: 20,
       style: {
-        colors: ["#a1aab2"],
+        colors: ["#374151"],
       }
     },
     stroke: {
@@ -114,6 +114,7 @@ export const VoteByMajor = () => {
           series={series}
           type="bar"
           width={"100%"}
+          height={500}
         />
       </div>
     </div>

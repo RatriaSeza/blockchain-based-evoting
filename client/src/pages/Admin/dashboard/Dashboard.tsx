@@ -67,7 +67,7 @@ export const Dashboard = () => {
 
               {/* main content */}
               <div className="flex flex-col md:flex-row h-full md:gap-x-6 gap-x-0 md:gap-y-0 gap-y-6">
-								<div className="basis-2/3 grid grid-cols-5 gap-4 md:gap-6 h-full">
+								<div className="basis-3/5 grid grid-cols-5 gap-4 md:gap-6 h-full">
 									<div className="col-span-5">
 										<CountdownCard />
 									</div>
@@ -92,7 +92,7 @@ export const Dashboard = () => {
 									</div>
 								</div>
 
-								<div className="basis-1/3 flex flex-col justify-between gap-6 grow">
+								<div className="basis-2/5 flex flex-col justify-between gap-6 grow">
                   <SummaryChart candidates={candidates.sort((a, b) => a.candidateNumber - b.candidateNumber)} />
                   <RecentVotes />
 								</div>
