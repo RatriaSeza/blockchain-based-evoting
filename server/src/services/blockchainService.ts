@@ -66,8 +66,13 @@ export const getVotesByMajorOnBlockchain = async (candidateId: number, major: st
 
 export const getVoteHistoryOnBlochchain = async (count: number) => {
   try {
-    const result: string[] = await contract.methods.getVoteHistory(count).call();
-    return result;
+    const result: any[] = await contract.methods.getVoteHistory(count).call();
+    const voteHistory = result.map(vote => ({
+      voterId: vote.voterId,
+      candidateId: vote.candidateId.toString(),
+      timestamp: vote.timestamp.toString()
+    }))
+    return voteHistory;
   } catch (error: any) {
     console.error(error);
     return [];
