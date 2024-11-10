@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Voter } from "../models/Voter";
 import { Candidate } from "../models/Candidate";
 import { getVoteHistoryOnBlochchain, getVotesByMajorOnBlockchain, recordVoteOnBlockchain } from "../services/blockchainService";
+import { formatTimestampDistanceToNow } from "../utils/formatTimestampDistanceToNow";
 
 export const Vote = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -65,8 +66,18 @@ export const getChartVotesByMajorSeries = async (req: Request, res: Response, ne
 export const getVoteHistory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const count = parseInt(req.params.count as string) || 0; // default value is 0 to get all history
-    const history = await getVoteHistoryOnBlochchain(count);
-    res.status(200).json({ history });
+
+    // get vote history from blockchain and voter information from database
+    const voteHistory = await getVoteHistoryOnBlochchain(count);
+    const voters = await Voter.find();
+
+    const result = voteHistory.map(vote => ({
+      voter: voters.find(voter => voter._id == vote.voterId),
+      candidate: vote.candidateId,
+      timestamp: formatTimestampDistanceToNow(vote.timestamp)
+    }));
+
+    res.status(200).json({ recentVotes: result });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
