@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 
 export const VoteByMajor = () => {
-  const [chartOptions, setChartOptions] = useState({
-    series: [],
+  const [series, setSeries] = useState([]);
+
+  const chartOptions = {
     chart: {
       fontFamily: "Poppins,sans-serif",
       height: 370,
@@ -85,7 +86,7 @@ export const VoteByMajor = () => {
         },
       },
     ],
-  })
+  }
 
   useEffect(() => {
     const majors = ["Mathematics", "Physics", "Biology", "Chemistry", "Statistic", "Informatics", "Biotechnology"];
@@ -94,15 +95,15 @@ export const VoteByMajor = () => {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/votes/chart-series-by-major`, {
           params: { majors },
         });
-        const series = response.data.series;
-        setChartOptions({ ...chartOptions, series });
+        setSeries(response.data.series);
+
       } catch (error) {
         console.error(error);
-        setChartOptions({ ...chartOptions, series: [] });
+        setSeries([]);
       }
     };
     fetchChartSeries();
-  }, [chartOptions]);
+  }, []);
 
   return (
     <div className="card">
@@ -110,7 +111,7 @@ export const VoteByMajor = () => {
         <h5 className="text-gray-500 text-lg font-semibold">Vote Summary by major</h5>
         <Chart 
           options={chartOptions}
-          series={chartOptions.series}
+          series={series}
           type="bar"
           width={"100%"}
         />
