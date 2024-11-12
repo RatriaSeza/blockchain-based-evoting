@@ -6,7 +6,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import Ballot from '@assets/img/ballot-box.png';
 import Button from "@components/Button";
 import Input from "@components/Input";
-import { ToastError, ToastWarning } from "@components/Toast";
+import { ToastError, ToastSuccess, ToastWarning } from "@components/Toast";
+import axios from "axios";
 
 export const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -36,6 +37,31 @@ export const ChangePassword = () => {
 
     if (newPassword !== confirmPassword) {
       return ToastError({ message: "New password does not match with confirm password." , duration: 1500});
+    }
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/change-password`, {
+        oldPassword,
+        newPassword,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      ToastSuccess({ message: response.data.message, duration: 1500 });
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          ToastError({ message:error.response.data.message || "An error occurred. Please try again."});
+        } else if (error.request) {
+          ToastWarning({ message: "No response from server. Please try again later." });
+        } else {
+          ToastWarning({ message: "An error occurred. Please try again." });
+        }
+      } else {
+        ToastWarning({ message: "An unexpected error occurred. Please try again." });
+      }
     }
   };
 
