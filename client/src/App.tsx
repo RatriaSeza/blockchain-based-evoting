@@ -12,6 +12,7 @@ import { LoginAdmin } from "./pages/Admin/Login";
 import { Dashboard } from "./pages/Admin/dashboard/Dashboard";
 import { Masters } from "./pages/Admin/masters/Masters";
 import { Voters } from "./pages/Admin/voters/Voters";
+import { ChangePassword } from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/vote" element={<Vote/>} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="*" element={<NotFound />} />
 
         {/* Admin */}

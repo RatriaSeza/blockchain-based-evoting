@@ -95,13 +95,14 @@ const Profile = () => {
           <div className="md:flex md:flex-col-reverse md:justify-between">
             <div className="mt-10 md:mt-0 flex flex-col items-center gap-2">
               <h6 className="font-semibold text-lg md:hidden">Status</h6>
-              <div className="w-fit px-6 md:px-10 py-1 md:py-3 bg-cyan-600 text-base font-medium opacity-90 rounded-full">{user.status}</div>
+              <div className="w-fit px-6 md:px-8 py-1 md:py-3 bg-cyan-600 text-base font-medium opacity-90 rounded-full">{user.status}</div>
             </div>
-            <div className="flex justify-center mt-20 md:mt-0">
+            <div className="flex flex-col items-center md:items-end mt-20 md:mt-0">
               <button onClick={handleLogout}
                 className="select-none rounded-lg bg-red-600 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
                 <span><i className="fa-solid fa-arrow-right-from-bracket mr-2"></i></span>Logout
               </button>
+              <a href="/change-password" className="underline text-sm mt-3 text-gray-200 hover:text-gray-300">Change Password</a>
             </div>
           </div>
         </div>

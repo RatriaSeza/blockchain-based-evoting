@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ id, label, name, value, type, placeholder
       <div className="relative mt-1">
         <input
           id={id}
-          className="bg-neutral-900 px-4 py-3 outline-none w-full text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] pr-10"
+          className="bg-neutral-900 px-3 py-2 outline-none w-full text-sm text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] pr-10"
           name={name}
           placeholder={placeholder}
           value={value}

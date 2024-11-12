@@ -82,7 +82,7 @@ const Login = () => {
           </a>
 
           <form onSubmit={handleSubmit}>
-            <div className="flex w-full flex-col gap-6">
+            <div className="flex w-full flex-col gap-4">
               <Input
                 id="nim"
                 label="NIM"
@@ -112,7 +112,7 @@ const Login = () => {
             </div>
 
             <div className="flex justify-center mt-4 md:mt-8">
-              <Button type="submit" label="Login" customClass="px-8 md:px-10 py-2 md:py-3" />
+              <Button type="submit" label="Login" customClass="px-6 py-2" />
             </div>
           </form>
           <ToastContainer  
