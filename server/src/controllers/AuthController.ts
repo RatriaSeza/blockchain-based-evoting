@@ -48,6 +48,15 @@ export const Logout = async (_req: any, res: any): Promise<void> => {
 export const ChangePassword = async (req: any, res: any): Promise<void> => {
   try {
     const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Old password and new password are required." });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters." });
+    }
+
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found." });
