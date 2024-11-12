@@ -7,18 +7,12 @@ import { ToastError, ToastSuccess } from "../components/Toast";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 
-const user = {
-  name: "Satria Reza Ramadhan",
-  nim: "24060120130052",
-  major: "Informatika",
-  classOf: 2021,
-  status: "Voted"
-}
-
 const Profile = () => {
   const navigate = useNavigate();
   const [cookies, ,removeCookie] = useCookies(["token"]);
   const [isLogin, setIsLogin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -51,9 +45,23 @@ const Profile = () => {
         navigate("/login");
       }
     };
+
+    const getVoterStatus = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/blockchain/voter/${user.voter._id}`);
+        const { status, data: { voter } } = response;
+
+        if (status == 200) {
+          setStatus(voter.hasVoted);
+        }
+      } catch (error: unknown) {
+        console.log(error);
+      }
+    }
     
     verifyToken();
-  },  [cookies, navigate, removeCookie]);
+    getVoterStatus()
+  },  [cookies, navigate, removeCookie, user]);
 
   const handleLogout = async () => {
     try {
@@ -87,15 +95,15 @@ const Profile = () => {
               <img className="absolute md:static -bottom-12 left-1/2 -translate-x-1/2 md:translate-x-0 w-24 h-24 object-cover bg-neutral-800 ring-[6px] md:ring-0 ring-black md:ring-neutral-300 rounded-full" src={avatar} alt="User Avatar" />
             </div>
             <div className="mt-20 md:mt-0 text-center md:text-left">
-              <p className="mb-1 text-2xl font-semibold">{user.name}</p>
-              <p className="text-neutral-300">{user.nim}</p>
-              <p className="font-semibold">{user.major} - {user.classOf}</p>
+              <p className="mb-1 text-2xl font-semibold">{user.voter.name ?? user.username}</p>
+              <p className="text-neutral-300">{user.voter.nim}</p>
+              <p className="font-semibold">{user.voter.major} - {user.voter.classOf}</p>
             </div>
           </div>
           <div className="md:flex md:flex-col-reverse md:justify-between">
             <div className="mt-10 md:mt-0 flex flex-col items-center gap-2">
               <h6 className="font-semibold text-lg md:hidden">Status</h6>
-              <div className="w-fit px-6 md:px-8 py-1 md:py-3 bg-cyan-600 text-base font-medium opacity-90 rounded-full">{user.status}</div>
+              <div className={`w-fit px-6 md:px-8 py-1 md:py-2 ${status ? 'bg-cyan-600' : 'bg-red-600'} text-sm font-medium opacity-90 rounded-full`}>{status ? 'Has Voted' : 'Has Not Voted'}</div>
             </div>
             <div className="flex flex-col items-center md:items-end mt-20 md:mt-0">
               <button onClick={handleLogout}
