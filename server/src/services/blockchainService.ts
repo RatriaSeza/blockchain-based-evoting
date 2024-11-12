@@ -78,3 +78,17 @@ export const getVoteHistoryOnBlochchain = async (count: number) => {
     return [];
   }
 }
+
+export const getVoterOnBlockchain = async (voterId: unknown) => {
+  try {
+    const voter: any = await contract.methods.voters(String(voterId)).call();
+    
+    return { success: true, voter: {
+      major: voter.major.toString(),
+      hasVoted: voter.hasVoted
+    }};
+  } catch (error: any) {
+    console.error(error);
+    return { success: false, message: error.message };
+  }
+}

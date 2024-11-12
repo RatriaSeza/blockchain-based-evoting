@@ -11,6 +11,7 @@ import TestRoutes from './routes/TestRoutes';
 import VoterRoutes from './routes/VoterRoutes';
 import VoteRoute from './routes/VoteRoutes';
 import CandidateImageRoutes from './routes/CandidateImageRoutes';
+import BlockchainRoutes from './routes/BlockchainRoutes';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api', CandidateRoute);
 app.use('/api', MasterRoute);
 app.use('/api', CandidateImageRoutes);
 app.use('/api', VoteRoute)
+app.use('/api/blockchain', BlockchainRoutes)
 
 app.use('/api/test', TestRoutes);
 
