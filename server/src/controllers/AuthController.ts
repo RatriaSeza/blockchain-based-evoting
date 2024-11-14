@@ -10,8 +10,9 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
       return res.status(400).json({ message: "Username and password are required." });
     }
 
+    const user = await User.findOne({ username });
+
     if (role === 'voter') {
-      const user = await User.findOne({ username });
       if (!user) {
         return res.status(404).json({ message: "User not found. Please check your NIM." });
       }
@@ -36,7 +37,29 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
       
       next();
     } else {
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
 
+      if (user.role !== 'admin') {
+        return res.status(400).json({ message: "You not registered as an admin." });
+      }
+
+      const auth = await bcrypt.compare(password, user.password);
+      if (!auth) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      const token = createSecretToken(user._id as string);
+
+      res.cookie('token', token, {
+        withCredentials: true,
+        httpOnly: true,
+      });
+      
+      res.status(200).json({ message: "Login successful.", token, user });
+      
+      next();
     }
 
   } catch (error) {
