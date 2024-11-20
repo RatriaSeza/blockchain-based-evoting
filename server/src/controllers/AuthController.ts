@@ -52,7 +52,7 @@ export const Login = async (req: any, res: any, next: any): Promise<void> => {
 
       const token = createSecretToken(user._id as string);
 
-      res.cookie('token', token, {
+      res.cookie('admin-token', token, {
         withCredentials: true,
         httpOnly: true,
       });

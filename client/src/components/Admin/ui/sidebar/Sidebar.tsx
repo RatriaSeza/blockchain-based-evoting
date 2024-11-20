@@ -7,6 +7,12 @@ type SidebarProps = {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ active }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("admin-token");
+    localStorage.removeItem("admin");
+    window.location.href = "/admin/login";
+  }
+
   return (
     <div>
       <div className="p-4">
@@ -25,22 +31,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ active }) => {
             </li>
 
             <li className="sidebar-item">
-              <a
+              <button onClick={handleLogout}
                 className="sidebar-link gap-3 py-2.5 my-1 text-base flex items-center relative rounded-md text-gray-500 w-full"
-                href="@@webRoot/pages/authentication-login.html"
               >
-                <i className="ti ti-login ps-2 text-2xl"></i> <span>Login</span>
-              </a>
-            </li>
-
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link gap-3 py-2.5 my-1 text-base flex items-center relative rounded-md text-gray-500 w-full"
-                href="@@webRoot/pages/authentication-register.html"
-              >
-                <i className="ti ti-user-plus ps-2 text-2xl"></i>{" "}
-                <span>Register</span>
-              </a>
+                <span className="flex justify-center w-8 text-lg"><i className="fa-solid fa-right-from-bracket"></i></span> Logout
+              </button>
             </li>
           </ul>
         </nav>

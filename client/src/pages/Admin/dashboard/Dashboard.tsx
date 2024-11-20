@@ -10,13 +10,56 @@ import { CandidateType } from "@components/Vote/CandidateType";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { RecentVotes } from "@components/Admin/dashboard/RecentVotes";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 export const Dashboard = () => {
   const [candidates, setCandidates] = useState<CandidateType[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
   const [totalVoters, setTotalVoters] = useState<number>(0);
 
+  const navigate = useNavigate();
+  const [cookies, ,removeCookie] = useCookies(["admin-token"]);
+
 	useEffect(() => {
+    const verifyToken = async () => {
+      if (!localStorage.getItem("admin-token")) {
+        console.log('No token found, redirecting to login...');
+        navigate("/admin/login");
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+        },{ 
+          withCredentials: true 
+        });
+        
+        const { status, data: { user } } = response;
+
+        if (status == 200) {
+          if (!user) {
+            localStorage.removeItem("admin-token");
+            navigate("/admin/login");
+          }
+        } else {
+          localStorage.removeItem("admin-token");
+          navigate("/admin/login");
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.error(error.response.data.message || "An error occurred. Please try again.");
+          } else if (error.request) {
+            console.error("No response from server. Please try again later.");
+          } else {
+            console.error("An error occurred. Please try again.");
+          }
+        }
+        navigate("/admin/login");
+      }
+    };
+    
     const fetchData = async () => {
       try {
         const responseGetCandidates = await axios.get(`${import.meta.env.VITE_API_URL}/api/candidates`);
@@ -46,8 +89,9 @@ export const Dashboard = () => {
       } 
     }
     
-    fetchData();    
-  }, []);
+    verifyToken();   
+    fetchData(); 
+  }, [cookies, navigate, removeCookie]);
 
   return (
     <main className="bg-surface">

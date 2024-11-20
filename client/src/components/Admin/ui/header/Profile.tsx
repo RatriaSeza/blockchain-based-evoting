@@ -8,6 +8,12 @@ export const Profile = () => {
     setIsDropdownOpen(!isDropdownOpen);
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("admin-token");
+    localStorage.removeItem("admin");
+    window.location.href = "/admin/login";
+  }
+
   return (
     <div className="hs-dropdown relative inline-flex [--placement:bottom-right] sm:[--trigger:hover]">
       <a 
@@ -29,12 +35,11 @@ export const Profile = () => {
       >
         <div className="card-body p-0 py-2">
           <div className="px-4 grid">
-            <a
-              href="../../pages/authentication-login.html"
+            <button onClick={handleLogout}
               className="btn-outline-primary font-medium text-[15px] w-full hover:bg-blue-600 hover:text-white"
             >
               Logout
-            </a>
+            </button>
           </div>
         </div>
       </div>

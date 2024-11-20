@@ -43,8 +43,8 @@ export const LoginAdmin = () => {
       const { status, data: { message, token, user } } = response;
 
       if (status == 200) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("admin-token", token);
+        localStorage.setItem("admin", JSON.stringify(user));
 
         ToastSuccess({ message, duration: 1400 });
         setTimeout(() => {

@@ -9,13 +9,58 @@ import { VoterType } from "src/types/VotersType";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { VotersForm } from "@components/Admin/voters/VotersForm";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 export const Voters = () => {
   const [openFormModal, setOpenFormModal] = useState(false);
   const [voters, setVoters] = useState<VoterType[]>([]);
   const [editingVoter, setEditingVoter] = useState<VoterType | null>(null);
 
+  const navigate = useNavigate();
+  const [cookies, ,removeCookie] = useCookies(["admin-token"]);
+
   useEffect(() => {
+    const verifyToken = async () => {
+      if (!localStorage.getItem("admin-token")) {
+        console.log('No token found, redirecting to login...');
+        navigate("/admin/login");
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth`, {
+        },{ 
+          withCredentials: true 
+        });
+        
+        const { status, data: { user } } = response;
+
+        if (status == 200) {
+          if (!user) {
+            localStorage.removeItem("admin-token");
+            navigate("/admin/login");
+          }
+        } else {
+          localStorage.removeItem("admin-token");
+          navigate("/admin/login");
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.error(error.response.data.message || "An error occurred. Please try again.");
+          } else if (error.request) {
+            console.error("No response from server. Please try again later.");
+          } else {
+            console.error("An error occurred. Please try again.");
+          }
+        }
+        navigate("/admin/login");
+      }
+    };
+
+    verifyToken();
+
     const fetchVoters = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/voters`);
@@ -26,7 +71,7 @@ export const Voters = () => {
     };
 
     fetchVoters();
-  }, []);
+  }, [cookies, navigate, removeCookie]);
 
   const handleAddVoter = (newVoter: VoterType) => {
     setVoters((prevVoters) => {
